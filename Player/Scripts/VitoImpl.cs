@@ -7,6 +7,11 @@ namespace Game.Player
     {
         private Vector2 _velocity = new Vector2();
 
+        public override void _Process(float delta)
+        {
+            MovementComponentReference.Direction = Input.GetAxis("move_left", "move_right");
+        }
+
         public override void _PhysicsProcess(float delta)
         {
             if (!IsOnFloor())
@@ -17,6 +22,7 @@ namespace Game.Player
             {
                 _velocity.y = 0.0f;
             }
+            _velocity.x = MovementComponentReference.GetMovementSpeed(_velocity.x);
             _velocity = MoveAndSlide(_velocity, Vector2.Up);
         }
 
@@ -30,6 +36,15 @@ namespace Game.Player
             JumpComponentReference.ReleaseJump();
         }
 
+        public override void StartRunning()
+        {
+            MovementComponentReference.StartRunning();
+        }
+
+        public override void StopRunning()
+        {
+            MovementComponentReference.StopRunning();
+        }
 
         public override void OnSuccessfulJump()
         {
@@ -58,6 +73,14 @@ namespace Game.Player
             {
                 ReleaseJump();
             }
+            if (@event.IsActionPressed("run"))
+            {
+                StartRunning();
+            }
+            else if (@event.IsActionReleased("run"))
+            {
+                StopRunning();
+            }  
         }
     }
 }
