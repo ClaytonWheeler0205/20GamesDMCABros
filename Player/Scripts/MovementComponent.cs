@@ -1,4 +1,5 @@
 using Godot;
+using Util.ExtensionMethods;
 
 namespace Game.Player
 {
@@ -27,6 +28,18 @@ namespace Game.Player
         {
             get { return _direction; }
             set { _direction = value; }
+        }
+        private KinematicBody2D _movingBody;
+        public KinematicBody2D MovingBody
+        {
+            get { return _movingBody; }
+            set
+            {
+                if (value.IsValid())
+                {
+                    _movingBody = value;
+                }
+            }
         }
 
         public abstract float GetMovementSpeed(float currentSpeed);

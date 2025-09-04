@@ -26,12 +26,23 @@ _jumpBufferPath = NodePath("JumpBufferTimer")
 _coyoteTimerPath = NodePath("CoyoteTimer")
 
 [node name="JumpBufferTimer" type="Timer" parent="JumpComponent"]
+process_mode = 0
 one_shot = true
 
 [node name="CoyoteTimer" type="Timer" parent="JumpComponent"]
+process_mode = 0
+one_shot = true
 
 [node name="MovementComponent" type="Node" parent="."]
 script = ExtResource( 4 )
+_walkSpeed = 90.0
+_runReleaseTimerPath = NodePath("RunReleaseTimer")
+_slowAirDecelerationSpeedLimit = 120.0
+
+[node name="RunReleaseTimer" type="Timer" parent="MovementComponent"]
+process_mode = 0
+one_shot = true
 
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]
+[connection signal="timeout" from="MovementComponent/RunReleaseTimer" to="MovementComponent" method="OnRunReleaseTimerTimeout"]

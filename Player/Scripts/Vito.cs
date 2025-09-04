@@ -25,6 +25,7 @@ namespace Game.Player
             SetNodeReferences();
             SetNodeConnections();
             _jumpComponentReference.JumpingBody = this;
+            _movementComponentReference.MovingBody = this;
         }
 
         private void SetNodeReferences()

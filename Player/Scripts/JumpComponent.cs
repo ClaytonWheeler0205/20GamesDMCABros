@@ -34,6 +34,18 @@ namespace Game.Player
         {
             get { return _jumpPower; }
         }
+        [Export]
+        private float _superJumpPower = -500.0f;
+        public float SuperJumpPower
+        {
+            get { return _superJumpPower; }
+        }
+        [Export]
+        private float _superJumpSpeedRequirement = 130.0f;
+        public float SuperJumpSpeedRequirement
+        {
+            get { return _superJumpSpeedRequirement;}
+        }
 
         public abstract float GetGravity(float yDirection);
         public abstract void AttemptJump();

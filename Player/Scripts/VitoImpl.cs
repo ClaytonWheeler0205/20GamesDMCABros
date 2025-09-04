@@ -14,14 +14,7 @@ namespace Game.Player
 
         public override void _PhysicsProcess(float delta)
         {
-            if (!IsOnFloor())
-            {
-                _velocity.y += JumpComponentReference.GetGravity(_velocity.y) * delta;
-            }
-            else if (_velocity.y > 0.0f)
-            {
-                _velocity.y = 0.0f;
-            }
+            _velocity.y += JumpComponentReference.GetGravity(_velocity.y) * delta;
             _velocity.x = MovementComponentReference.GetMovementSpeed(_velocity.x);
             _velocity = MoveAndSlide(_velocity, Vector2.Up);
         }
@@ -52,7 +45,14 @@ namespace Game.Player
             {
                 GD.PushError("UH OH");
             }
-            _velocity.y = JumpComponentReference.JumpPower;
+            if (Mathf.Abs(_velocity.x) >= JumpComponentReference.SuperJumpSpeedRequirement)
+            {
+                _velocity.y = JumpComponentReference.SuperJumpPower;
+            }
+            else
+            {
+                _velocity.y = JumpComponentReference.JumpPower;
+            }
         }
 
         public override void OnJumpReleased()
@@ -80,7 +80,7 @@ namespace Game.Player
             else if (@event.IsActionReleased("run"))
             {
                 StopRunning();
-            }  
+            }
         }
     }
 }
