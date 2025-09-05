@@ -63,6 +63,12 @@ namespace Game.Player
             }
         }
 
+        public override Vector2 GetVelocityVector()
+        {
+            return _velocity;
+        }
+
+
         public override void _UnhandledInput(InputEvent @event)
         {
             if (@event.IsActionPressed("jump"))

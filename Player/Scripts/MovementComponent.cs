@@ -18,10 +18,16 @@ namespace Game.Player
             get { return _runSpeed; }
         }
         private bool _isRunning = false;
-        protected bool IsRunning
+        public bool IsRunning
         {
             get { return _isRunning; }
             set { _isRunning = value; }
+        }
+        private bool _isSkidding = false;
+        public bool IsSkidding
+        {
+            get { return _isSkidding; }
+            set { _isSkidding = value; }
         }
         private float _direction = 0.0f;
         public float Direction

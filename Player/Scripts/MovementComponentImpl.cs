@@ -17,7 +17,6 @@ namespace Game.Player
         private float _skiddingDeceleration = 0.4f;
         [Export]
         private float _skidTurnaroundSpeed = 50.0f;
-        private bool _isSkidding = false;
         [Export]
         private NodePath _runReleaseTimerPath;
         private Timer _runReleaseTimerReference;
@@ -97,12 +96,12 @@ namespace Game.Player
         {
             if (IsMovingInOppositeDirection(currentSpeed) && Mathf.Abs(currentSpeed) > _skidTurnaroundSpeed)
             {
-                _isSkidding = true;
+                IsSkidding = true;
                 return GetSkiddingSpeed(currentSpeed);
             }
             else
             {
-                _isSkidding = false;
+                IsSkidding = false;
                 float newSpeed = Mathf.Lerp(currentSpeed, Direction * RunSpeed, _runAcceleration);
                 return Mathf.Clamp(newSpeed, -Mathf.Abs(Direction) * RunSpeed, Mathf.Abs(Direction) * RunSpeed);
             }
@@ -112,12 +111,12 @@ namespace Game.Player
         {
             if (IsMovingInOppositeDirection(currentSpeed) && Mathf.Abs(currentSpeed) > _skidTurnaroundSpeed)
             {
-                _isSkidding = true;
+                IsSkidding = true;
                 return GetSkiddingSpeed(currentSpeed);
             }
             else
             {
-                _isSkidding = false;
+                IsSkidding = false;
                 float newSpeed = Mathf.Lerp(currentSpeed, Direction * WalkSpeed, _walkAcceleration);
                 return Mathf.Clamp(newSpeed, -Mathf.Abs(Direction) * WalkSpeed, Mathf.Abs(Direction) * WalkSpeed);
             }
@@ -125,12 +124,12 @@ namespace Game.Player
 
         private float GetSlowdownGroundSpeed(float currentSpeed)
         {
-            if (_isSkidding)
+            if (IsSkidding)
             {
                 float skiddingSpeed = GetSkiddingSpeed(currentSpeed);
                 if (FloatOperator.EqualityComparisonWithTolerance(skiddingSpeed, 0.0f, 0.01f))
                 {
-                    _isSkidding = false;
+                    IsSkidding = false;
                 }
                 return skiddingSpeed;
             }

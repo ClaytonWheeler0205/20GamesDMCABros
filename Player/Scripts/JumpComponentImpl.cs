@@ -22,6 +22,9 @@ namespace Game.Player
         private bool _coyoteTimerActivated = false;
         private bool _coyoteTimerTimedout = false;
         private bool _performedJump = false;
+        [Export]
+        private NodePath _jumpSoundPath;
+        private AudioStreamPlayer _jumpSoundReference;
 
         public override void _Ready()
         {
@@ -32,6 +35,7 @@ namespace Game.Player
         {
             _jumpBuffer = GetNode<Timer>(_jumpBufferPath);
             _coyoteTimer = GetNode<Timer>(_coyoteTimerPath);
+            _jumpSoundReference = GetNode<AudioStreamPlayer>(_jumpSoundPath);
         }
 
         public override void _PhysicsProcess(float delta)
@@ -87,6 +91,7 @@ namespace Game.Player
         {
             _performedJump = true;
             _jumpReleased = false;
+            _jumpSoundReference.Play();
             EmitSignal("SuccessfulJump");
         }
 

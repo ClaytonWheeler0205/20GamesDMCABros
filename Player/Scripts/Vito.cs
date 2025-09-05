@@ -19,6 +19,13 @@ namespace Game.Player
         {
             get { return _movementComponentReference; }
         }
+        [Export]
+        private NodePath _playerVisualPath;
+        private PlayerAnimator _playerVisualReference;
+        protected PlayerAnimator PlayerVisualReference
+        {
+            get { return _playerVisualReference; }
+        }
 
         public override void _Ready()
         {
@@ -26,12 +33,16 @@ namespace Game.Player
             SetNodeConnections();
             _jumpComponentReference.JumpingBody = this;
             _movementComponentReference.MovingBody = this;
+            _playerVisualReference.PlayerToAnimate = this;
+            _playerVisualReference.PlayerJump = _jumpComponentReference;
+            _playerVisualReference.PlayerMovement = _movementComponentReference;
         }
 
         private void SetNodeReferences()
         {
             _jumpComponentReference = GetNode<JumpComponent>(_jumpComponentPath);
             _movementComponentReference = GetNode<MovementComponent>(_movementComponentPath);
+            _playerVisualReference = GetNode<PlayerAnimator>(_playerVisualPath);
         }
 
         private void SetNodeConnections()
@@ -46,5 +57,6 @@ namespace Game.Player
         public abstract void StopRunning();
         public abstract void OnSuccessfulJump();
         public abstract void OnJumpReleased();
+        public abstract Vector2 GetVelocityVector();
     }
 }
