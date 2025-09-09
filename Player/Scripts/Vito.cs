@@ -58,5 +58,6 @@ namespace Game.Player
         public abstract void OnSuccessfulJump();
         public abstract void OnJumpReleased();
         public abstract Vector2 GetVelocityVector();
+        public abstract void SetMovementDirection(float newDirection);
     }
 }

@@ -7,11 +7,6 @@ namespace Game.Player
     {
         private Vector2 _velocity = new Vector2();
 
-        public override void _Process(float delta)
-        {
-            MovementComponentReference.Direction = Input.GetAxis("move_left", "move_right");
-        }
-
         public override void _PhysicsProcess(float delta)
         {
             _velocity.y += JumpComponentReference.GetGravity(_velocity.y) * delta;
@@ -68,25 +63,9 @@ namespace Game.Player
             return _velocity;
         }
 
-
-        public override void _UnhandledInput(InputEvent @event)
+        public override void SetMovementDirection(float newDirection)
         {
-            if (@event.IsActionPressed("jump"))
-            {
-                Jump();
-            }
-            else if (@event.IsActionReleased("jump"))
-            {
-                ReleaseJump();
-            }
-            if (@event.IsActionPressed("run"))
-            {
-                StartRunning();
-            }
-            else if (@event.IsActionReleased("run"))
-            {
-                StopRunning();
-            }
+            MovementComponentReference.Direction = newDirection;
         }
     }
 }
