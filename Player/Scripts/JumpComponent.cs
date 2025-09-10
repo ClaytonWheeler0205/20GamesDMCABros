@@ -46,6 +46,12 @@ namespace Game.Player
         {
             get { return _superJumpSpeedRequirement;}
         }
+        [Export]
+        private float _terminalVelocity = 500.0f;
+        public float TerminalVelocity
+        {
+            get { return _terminalVelocity; }
+        }
 
         public abstract float GetGravity(float yDirection);
         public abstract void AttemptJump();

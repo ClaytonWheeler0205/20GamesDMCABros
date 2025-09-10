@@ -46,7 +46,7 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 8 )
+extents = Vector2( 5.5, 6.5 )
 
 [node name="Vito" type="KinematicBody2D" groups=["player"]]
 collision_layer = 2
@@ -62,10 +62,13 @@ animation = "idle"
 script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 1.5 )
 shape = SubResource( 1 )
 
 [node name="JumpComponent" type="Node" parent="."]
 script = ExtResource( 3 )
+_jumpPower = -410.0
+_superJumpSpeedRequirement = 140.0
 _jumpBufferPath = NodePath("JumpBufferTimer")
 _coyoteTimerPath = NodePath("CoyoteTimer")
 _jumpSoundPath = NodePath("AudioStreamPlayer")
@@ -86,6 +89,11 @@ script = ExtResource( 4 )
 _walkSpeed = 90.0
 _skiddingDeceleration = 0.1
 _runReleaseTimerPath = NodePath("RunReleaseTimer")
+_slowAirAcceleration = 0.125
+_fastAirAcceleration = 0.15
+_fastAirDeceleration = 0.15
+_mediumAirDeceleration = 0.138
+_slowAirDeceleration = 0.125
 _slowAirDecelerationSpeedLimit = 120.0
 
 [node name="RunReleaseTimer" type="Timer" parent="MovementComponent"]

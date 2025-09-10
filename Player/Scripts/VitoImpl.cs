@@ -10,6 +10,10 @@ namespace Game.Player
         public override void _PhysicsProcess(float delta)
         {
             _velocity.y += JumpComponentReference.GetGravity(_velocity.y) * delta;
+            if (_velocity.y > JumpComponentReference.TerminalVelocity)
+            {
+                _velocity.y = JumpComponentReference.TerminalVelocity;
+            }
             _velocity.x = MovementComponentReference.GetMovementSpeed(_velocity.x);
             _velocity = MoveAndSlide(_velocity, Vector2.Up);
         }
