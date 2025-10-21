@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Player/Scripts/PlayerAnimatorImpl.cs" type="Script" id=7]
 [ext_resource path="res://Player/Art/VitoWalk.png" type="Texture" id=8]
 [ext_resource path="res://Player/Art/VitoSkid.png" type="Texture" id=9]
+[ext_resource path="res://Player/Scripts/JumpHitbox.cs" type="Script" id=10]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 8 )
@@ -48,6 +49,9 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.5, 6.5 )
 
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 4.5, 1.5 )
+
 [node name="Vito" type="KinematicBody2D" groups=["player"]]
 collision_layer = 2
 collision_mask = 5
@@ -55,6 +59,7 @@ script = ExtResource( 2 )
 _jumpComponentPath = NodePath("JumpComponent")
 _movementComponentPath = NodePath("MovementComponent")
 _playerVisualPath = NodePath("VisualComponent")
+_jumpHitDataPath = NodePath("JumpInteraction")
 
 [node name="VisualComponent" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
@@ -99,6 +104,15 @@ _slowAirDecelerationSpeedLimit = 120.0
 [node name="RunReleaseTimer" type="Timer" parent="MovementComponent"]
 process_mode = 0
 one_shot = true
+
+[node name="JumpInteraction" type="Area2D" parent="." groups=["player"]]
+collision_layer = 2
+collision_mask = 8
+script = ExtResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpInteraction"]
+position = Vector2( 0.5, -6.5 )
+shape = SubResource( 6 )
 
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]

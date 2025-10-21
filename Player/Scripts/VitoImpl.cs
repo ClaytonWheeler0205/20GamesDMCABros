@@ -15,7 +15,32 @@ namespace Game.Player
                 _velocity.y = JumpComponentReference.TerminalVelocity;
             }
             _velocity.x = MovementComponentReference.GetMovementSpeed(_velocity.x);
+            AttemptCornerCorrection(3);
             _velocity = MoveAndSlide(_velocity, Vector2.Up);
+            JumpHitDataReference.VerticalVelocity = _velocity.y;
+            if (IsOnFloor())
+            {
+                JumpHitDataReference.HasHitBlock = false;
+            }
+        }
+
+        private void AttemptCornerCorrection(int amount)
+        {
+            float delta = GetPhysicsProcessDeltaTime();
+            if (_velocity.y < 0 && TestMove(GlobalTransform, new Vector2(0, _velocity.y * delta)))
+            {
+                for (int i = 1; i < amount + 1; i++)
+                {
+                    for (int j = -1; j <= 1; j += 2)
+                    {
+                        if (!TestMove(GlobalTransform.Translated(new Vector2(i * j, 0)), new Vector2(0, _velocity.y * delta)))
+                        {
+                            Translate(new Vector2(i * j, 0));
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         public override void Jump()
@@ -40,10 +65,6 @@ namespace Game.Player
 
         public override void OnSuccessfulJump()
         {
-            if (_velocity.y < 0.0f)
-            {
-                GD.PushError("UH OH");
-            }
             if (Mathf.Abs(_velocity.x) >= JumpComponentReference.SuperJumpSpeedRequirement)
             {
                 _velocity.y = JumpComponentReference.SuperJumpPower;

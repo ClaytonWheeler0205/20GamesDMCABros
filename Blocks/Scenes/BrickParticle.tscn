@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Blocks/Art/BrickParticle.png" type="Texture" id=1]
+[ext_resource path="res://Game/Scripts/OneShotParticle.cs" type="Script" id=2]
+
+[node name="BrickParticle" type="CPUParticles2D"]
+emitting = false
+amount = 4
+lifetime = 4.0
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource( 1 )
+direction = Vector2( 0, -1 )
+spread = 75.0
+gravity = Vector2( 0, 294 )
+initial_velocity = 150.0
+angular_velocity = 720.0
+script = ExtResource( 2 )
