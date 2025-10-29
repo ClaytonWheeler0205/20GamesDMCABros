@@ -1,0 +1,33 @@
+using Godot;
+
+namespace Game.Items
+{
+
+    public enum Item
+    {
+        Coin,
+        Coins,
+        Powerup,
+        Life,
+        Star
+    }
+    public static class ItemCreator
+    {
+        public static Node2D CreateItem(Item itemType)
+        {
+            PackedScene itemScene = null;
+            switch (itemType)
+            {
+                case Item.Coin:
+                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/BlockCoin.tscn");
+                    break;
+                case Item.Coins:
+                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/BlockCoin.tscn");
+                    break;
+
+            }
+            Node2D itemToCreate = itemScene.Instance<Node2D>();
+            return itemToCreate;
+        }
+    }
+}

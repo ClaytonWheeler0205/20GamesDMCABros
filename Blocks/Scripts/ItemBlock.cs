@@ -1,19 +1,10 @@
 using Godot;
-using System;
 using Util.ExtensionMethods;
+using Game.Items;
 
 
 namespace Game.Blocks
 {
-
-    public enum Item
-    {
-        Coin,
-        Coins,
-        Powerup,
-        Life,
-        Star
-    }
 
     [Tool]
     public class ItemBlock : Block
@@ -38,6 +29,7 @@ namespace Game.Blocks
         private NodePath _hitBlockSoundPath;
         private AudioStreamPlayer _hitBlockSoundReference;
         private Sprite _itemIconReference;
+        private Timer _coinsTimer = null;
 
         private void SetItemIcon(Item item)
         {
@@ -77,6 +69,11 @@ namespace Game.Blocks
                 {
                     animatedSprite.Play();
                 }
+                if (_itemInBlock != Item.Coins)
+                {
+                    return;
+                }
+                CreateCoinsTimer();
             }
             else
             {
@@ -93,13 +90,55 @@ namespace Game.Blocks
             _hitBlockSoundReference = GetNode<AudioStreamPlayer>(_hitBlockSoundPath);
         }
 
+        private void CreateCoinsTimer()
+        {
+            _coinsTimer = new Timer();
+            _coinsTimer.OneShot = true;
+            _coinsTimer.Connect("timeout", this, nameof(OnCoinsTimerTimerout));
+            AddChild(_coinsTimer);
+        }
+
         public void OnBlockHitByPlayer()
+        {
+            if (_itemInBlock != Item.Coins)
+            {
+                DisableBlock();
+            }
+            BounceAnimationReference.Play("bounce");
+            _hitBlockSoundReference.Play();
+
+            if (_itemInBlock != Item.Coin && _itemInBlock != Item.Coins)
+            {
+                return;
+            }
+            CreateCoin();
+            if (_itemInBlock != Item.Coins)
+            {
+                return;
+            }
+            StartCoinsTimer();
+        }
+
+        private void DisableBlock()
         {
             BlockVisualReference.Visible = false;
             _hitBlockVisualReference.Visible = true;
             InteractionHitBoxReference.SetDeferred("disabled", true);
-            BounceAnimationReference.Play("bounce");
-            _hitBlockSoundReference.Play();
+        }
+
+        private void CreateCoin()
+        {
+            Node2D coinNode = ItemCreator.CreateItem(_itemInBlock);
+            coinNode.Position = new Vector2(0, -16.0f);
+            AddChild(coinNode);
+        }
+
+        private void StartCoinsTimer()
+        {
+            if (_coinsTimer.IsValid() && _coinsTimer.IsStopped())
+            {
+                _coinsTimer.Start(3.8f);
+            }
         }
 
         public void OnBounceAnimationFinished(string anim_name)
@@ -108,6 +147,11 @@ namespace Game.Blocks
             {
                 GD.Print("Create item");
             }
+        }
+
+        public void OnCoinsTimerTimerout()
+        {
+            DisableBlock();
         }
     }
 }
