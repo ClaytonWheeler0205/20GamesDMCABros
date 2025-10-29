@@ -3,15 +3,6 @@ using Godot;
 
 namespace Game.Blocks
 {
-
-    public enum Item
-    {
-        None,
-        Powerup,
-        Life,
-        Star
-    }
-
     public abstract class Block : Node2D
     {
         [Export]
@@ -37,22 +28,15 @@ namespace Game.Blocks
         }
         [Export]
         private NodePath _blockVisualPath;
-        private Sprite _blockVisualReference;
-        protected Sprite BlockVisualReference
+        private Node2D _blockVisualReference;
+        protected Node2D BlockVisualReference
         {
             get { return _blockVisualReference; }
-        }
-        [Export]
-        private Item _itemInBlock = Item.None;
-        protected Item ItemInBlock
-        {
-            get { return _itemInBlock; }
         }
 
         public override void _Ready()
         {
             SetNodeReferences();
-            SetNodeConnections();
         }
 
         private void SetNodeReferences()
@@ -60,14 +44,7 @@ namespace Game.Blocks
             _hitboxReference = GetNode<BlockHitbox>(_hitboxPath);
             _bounceAnimationReference = GetNode<AnimationPlayer>(_bounceAnimationPath);
             _interactionHitBoxReference = GetNode<CollisionShape2D>(_interactionHitBoxPath);
-            _blockVisualReference = GetNode<Sprite>(_blockVisualPath);
+            _blockVisualReference = GetNode<Node2D>(_blockVisualPath);
         }
-
-        private void SetNodeConnections()
-        {
-            _hitboxReference.Connect("BlockHitByPlayer", this, nameof(OnBlockHitByPlayer));
-        }
-
-        public abstract void OnBlockHitByPlayer(Size playerSize);
     }
 }

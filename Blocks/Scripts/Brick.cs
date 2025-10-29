@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using Game.Player;
 using Godot;
 using Util.ExtensionMethods;
@@ -30,28 +31,20 @@ namespace Game.Blocks
             _brickBreakSoundReference = GetNode<AudioStreamPlayer>(_brickBreakSoundPath);
         }
 
-
-        public override void OnBlockHitByPlayer(Size playerSize)
+        public void OnBlockHitBySmallPlayer()
         {
-            switch (ItemInBlock)
-            {
-                case Item.None:
-                    AttemptBrickBreak(playerSize);
-                    break;
-            }
+            BounceBrick();
+        }
+        
+        public void OnBlockHitByBigPlayer()
+        {
+            BreakBrick();
         }
 
-        private void AttemptBrickBreak(Size playerSize)
+        private void BounceBrick()
         {
-            if (playerSize == Size.Small)
-            {
-                BounceAnimationReference.Play("bounce");
-                _brickHitSoundReference.Play();
-            }
-            else
-            {
-                BreakBrick();
-            }
+            BounceAnimationReference.Play("bounce");
+            _brickHitSoundReference.Play();
         }
 
         private void BreakBrick()

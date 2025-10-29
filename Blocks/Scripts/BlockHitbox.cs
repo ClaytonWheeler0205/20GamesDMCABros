@@ -7,7 +7,11 @@ namespace Game.Blocks
     public class BlockHitbox : Area2D
     {
         [Signal]
-        public delegate void BlockHitByPlayer(Size playerSize);
+        public delegate void BlockHitByPlayer();
+        [Signal]
+        public delegate void BlockHitBySmallPlayer();
+        [Signal]
+        public delegate void BlockHitByBigPlayer();
 
         public void OnAreaEntered(Area2D area)
         {
@@ -22,7 +26,15 @@ namespace Game.Blocks
         {
             if (jumpData.VerticalVelocity <= 0.0f)
             {
-                EmitSignal("BlockHitByPlayer", jumpData.PlayerSize);
+                EmitSignal("BlockHitByPlayer");
+                if (jumpData.PlayerSize == Size.Small)
+                {
+                    EmitSignal("BlockHitBySmallPlayer");
+                }
+                else
+                {
+                    EmitSignal("BlockHitByBigPlayer");
+                }
             }
         }
     }
