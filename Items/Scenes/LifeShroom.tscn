@@ -1,0 +1,99 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Items/Art/LifeShroom.png" type="Texture" id=1]
+[ext_resource path="res://Items/Audio/powerup_rise.wav" type="AudioStream" id=2]
+[ext_resource path="res://Items/Audio/life_get.wav" type="AudioStream" id=3]
+[ext_resource path="res://UI/Art/1UP.png" type="Texture" id=4]
+[ext_resource path="res://Items/Scripts/LifeShroom.cs" type="Script" id=5]
+[ext_resource path="res://Game/Scripts/BasicMovement.cs" type="Script" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 8 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "life_float"
+tracks/0/type = "value"
+tracks/0/path = NodePath("LifeText:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -48 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "powerup_rise"
+length = 0.57
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.57 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -16 ) ]
+}
+
+[node name="LifeShroom" type="KinematicBody2D"]
+z_index = -1
+collision_layer = 0
+script = ExtResource( 5 )
+_shroomVisualPath = NodePath("Sprite")
+_physicalCollisionPath = NodePath("CollisionShape2D")
+_interactionCollisionPath = NodePath("Area2D/CollisionShape2D")
+_movementPath = NodePath("MushroomMovement")
+_lifeTextPath = NodePath("LifeText")
+_shroomAnimationPath = NodePath("AnimationPlayer")
+_lifeGetSoundPath = NodePath("LifeGetSound")
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+disabled = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
+disabled = true
+
+[node name="LifeText" type="Sprite" parent="."]
+visible = false
+z_index = 2
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "powerup_rise"
+anims/life_float = SubResource( 4 )
+anims/powerup_rise = SubResource( 3 )
+
+[node name="PowerupRiseSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+autoplay = true
+
+[node name="LifeGetSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="MushroomMovement" type="Node2D" parent="."]
+script = ExtResource( 6 )
+_speed = 45.0
+_wallDetectorPath = NodePath("WallDetector")
+
+[node name="WallDetector" type="RayCast2D" parent="MushroomMovement"]
+enabled = true
+cast_to = Vector2( 9, 0 )
+
+[connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

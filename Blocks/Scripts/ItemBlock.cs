@@ -145,8 +145,18 @@ namespace Game.Blocks
         {
             if (anim_name == "bounce")
             {
-                GD.Print("Create item");
+                CreatePowerup();
             }
+        }
+
+        private void CreatePowerup()
+        {
+            if (_itemInBlock == Item.Coin || _itemInBlock == Item.Coins)
+            {
+                return;
+            }
+            Node powerupNode = ItemCreator.CreateItem(_itemInBlock);
+            AddChild(powerupNode);
         }
 
         public void OnCoinsTimerTimerout()

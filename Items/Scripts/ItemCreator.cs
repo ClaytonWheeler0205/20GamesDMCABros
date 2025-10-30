@@ -24,7 +24,15 @@ namespace Game.Items
                 case Item.Coins:
                     itemScene = GD.Load<PackedScene>("res://Items/Scenes/BlockCoin.tscn");
                     break;
-
+                case Item.Powerup:
+                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/LifeShroom.tscn");
+                    break;
+                case Item.Life:
+                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/LifeShroom.tscn");
+                    break;
+                case Item.Star:
+                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/LifeShroom.tscn");
+                    break;
             }
             Node2D itemToCreate = itemScene.Instance<Node2D>();
             return itemToCreate;

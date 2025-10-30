@@ -1,0 +1,54 @@
+using Godot;
+using Util.ExtensionMethods;
+
+
+namespace Game.Items
+{
+
+    public class LifeShroom : Shroom
+    {
+        [Export]
+        private NodePath _lifeTextPath;
+        private Node2D _lifeTextReference;
+        [Export]
+        private NodePath _shroomAnimationPath;
+        private AnimationPlayer _shroomAnimationReference;
+        [Export]
+        private NodePath _lifeGetSoundPath;
+        private AudioStreamPlayer _lifeGetSoundReference;
+
+        public override void _Ready()
+        {
+            base._Ready();
+            SetNodeReferences();
+        }
+
+        private void SetNodeReferences()
+        {
+            _lifeTextReference = GetNode<Node2D>(_lifeTextPath);
+            _shroomAnimationReference = GetNode<AnimationPlayer>(_shroomAnimationPath);
+            _lifeGetSoundReference = GetNode<AudioStreamPlayer>(_lifeGetSoundPath);
+        }
+
+        public void OnBodyEntered(Node body)
+        {
+            if (body.IsInGroup("player"))
+            {
+                CollectShroom();
+                _lifeGetSoundReference.Play();
+                _lifeTextReference.Visible = true;
+                _shroomAnimationReference.Play("life_float");
+            }
+        }
+
+        public override void OnAnimationFinished(string anim_name)
+        {
+            if (anim_name == "life_float")
+            {
+                this.SafeQueueFree();
+                return;
+            }
+            base.OnAnimationFinished(anim_name);
+        }
+    }
+}
