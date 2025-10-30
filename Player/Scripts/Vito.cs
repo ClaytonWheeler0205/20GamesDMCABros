@@ -3,12 +3,6 @@ using Godot;
 namespace Game.Player
 {
 
-    public enum Size
-    {
-        Small,
-        Big
-    }
-
     public abstract class Vito : KinematicBody2D
     {
         [Export]
@@ -37,13 +31,7 @@ namespace Game.Player
         private JumpHitbox _jumpHitDataReference;
         protected JumpHitbox JumpHitDataReference
         {
-            get { return _jumpHitDataReference;}
-        }
-        private Size _vitoSize = Size.Small;
-        public Size VitoSize
-        {
-            get { return _vitoSize; }
-            set { _vitoSize = value; }
+            get { return _jumpHitDataReference; }
         }
 
         public override void _Ready()
@@ -55,7 +43,6 @@ namespace Game.Player
             _playerVisualReference.PlayerToAnimate = this;
             _playerVisualReference.PlayerJump = _jumpComponentReference;
             _playerVisualReference.PlayerMovement = _movementComponentReference;
-            _jumpHitDataReference.PlayerSize = _vitoSize;
         }
 
         private void SetNodeReferences()

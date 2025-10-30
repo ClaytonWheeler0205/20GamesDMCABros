@@ -27,7 +27,7 @@ namespace Game.Blocks
             if (jumpData.VerticalVelocity <= 0.0f)
             {
                 EmitSignal("BlockHitByPlayer");
-                if (jumpData.PlayerSize == Size.Small)
+                if (GlobalPlayerData.PlayerSize == Size.Small)
                 {
                     EmitSignal("BlockHitBySmallPlayer");
                 }

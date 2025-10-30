@@ -5,12 +5,6 @@ namespace Game.Player
 
     public class JumpHitbox : Area2D
     {
-        private Size _playerSize;
-        public Size PlayerSize
-        {
-            get { return _playerSize; }
-            set { _playerSize = value; }
-        }
         private float _verticalVelocity;
         public float VerticalVelocity
         {

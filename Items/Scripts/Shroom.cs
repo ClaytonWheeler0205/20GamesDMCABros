@@ -17,6 +17,9 @@ namespace Game.Items
         [Export]
         private NodePath _movementPath;
         private BasicMovement _movementReference;
+        [Export]
+        private NodePath _shroomGetSoundPath;
+        private AudioStreamPlayer _shroomGetSoundReference;
 
         public override void _Ready()
         {
@@ -30,6 +33,7 @@ namespace Game.Items
             _physicalCollisionReference = GetNode<CollisionShape2D>(_physicalCollisionPath);
             _interactionCollisionReference = GetNode<CollisionShape2D>(_interactionCollisionPath);
             _movementReference = GetNode<BasicMovement>(_movementPath);
+            _shroomGetSoundReference = GetNode<AudioStreamPlayer>(_shroomGetSoundPath);
         }
 
         protected void CollectShroom()
@@ -37,6 +41,7 @@ namespace Game.Items
             _shroomVisualReference.Visible = false;
             _interactionCollisionReference.SetDeferred("disabled", true);
             _movementReference.ShouldMove = false;
+            _shroomGetSoundReference.Play();
         }
 
         public virtual void OnAnimationFinished(string anim_name)

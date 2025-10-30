@@ -1,3 +1,4 @@
+using Game.Player;
 using Godot;
 
 namespace Game.Items
@@ -25,7 +26,7 @@ namespace Game.Items
                     itemScene = GD.Load<PackedScene>("res://Items/Scenes/BlockCoin.tscn");
                     break;
                 case Item.Powerup:
-                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/LifeShroom.tscn");
+                    itemScene = CreatePowerup();
                     break;
                 case Item.Life:
                     itemScene = GD.Load<PackedScene>("res://Items/Scenes/LifeShroom.tscn");
@@ -36,6 +37,18 @@ namespace Game.Items
             }
             Node2D itemToCreate = itemScene.Instance<Node2D>();
             return itemToCreate;
+        }
+
+        private static PackedScene CreatePowerup()
+        {
+            if (GlobalPlayerData.PlayerSize == Size.Small)
+            {
+                return GD.Load<PackedScene>("res://Items/Scenes/Mushroom.tscn");
+            }
+            else
+            {
+                return GD.Load<PackedScene>("res://Items/Scenes/FireFlower.tscn");
+            }
         }
     }
 }

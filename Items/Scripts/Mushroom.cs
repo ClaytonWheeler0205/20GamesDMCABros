@@ -1,15 +1,14 @@
+using Game.Player;
 using Godot;
 using Util.ExtensionMethods;
 
-
 namespace Game.Items
 {
-
-    public class LifeShroom : Shroom
+    public class Mushroom : Shroom
     {
         [Export]
-        private NodePath _lifeTextPath;
-        private Node2D _lifeTextReference;
+        private NodePath _pointTextPath;
+        private Node2D _pointTextReference;
         [Export]
         private NodePath _shroomAnimationPath;
         private AnimationPlayer _shroomAnimationReference;
@@ -19,10 +18,10 @@ namespace Game.Items
             base._Ready();
             SetNodeReferences();
         }
-
+        
         private void SetNodeReferences()
         {
-            _lifeTextReference = GetNode<Node2D>(_lifeTextPath);
+            _pointTextReference = GetNode<Node2D>(_pointTextPath);
             _shroomAnimationReference = GetNode<AnimationPlayer>(_shroomAnimationPath);
         }
 
@@ -30,20 +29,23 @@ namespace Game.Items
         {
             if (body.IsInGroup("player"))
             {
+                GlobalPlayerData.PlayerSize = Size.Big;
                 CollectShroom();
-                _lifeTextReference.Visible = true;
-                _shroomAnimationReference.Play("life_float");
+                _pointTextReference.Visible = true;
+                _shroomAnimationReference.Play("score_float");
+                //TODO: update the score
             }
         }
 
         public override void OnAnimationFinished(string anim_name)
         {
-            if (anim_name == "life_float")
+            if (anim_name == "score_float")
             {
                 this.SafeQueueFree();
                 return;
             }
             base.OnAnimationFinished(anim_name);
         }
+
     }
 }
