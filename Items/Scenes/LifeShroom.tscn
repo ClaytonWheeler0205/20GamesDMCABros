@@ -50,7 +50,7 @@ collision_layer = 0
 script = ExtResource( 5 )
 _shroomVisualPath = NodePath("Sprite")
 _physicalCollisionPath = NodePath("CollisionShape2D")
-_interactionCollisionPath = NodePath("Area2D/CollisionShape2D")
+_interactionCollisionPath = NodePath("InteractionHitbox/CollisionShape2D")
 _movementPath = NodePath("MushroomMovement")
 _shroomGetSoundPath = NodePath("LifeGetSound")
 _lifeTextPath = NodePath("LifeText")
@@ -63,9 +63,9 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 disabled = true
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="InteractionHitbox" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionHitbox"]
 shape = SubResource( 2 )
 disabled = true
 
@@ -95,5 +95,5 @@ _wallDetectorPath = NodePath("WallDetector")
 enabled = true
 cast_to = Vector2( 9, 0 )
 
-[connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]
+[connection signal="body_entered" from="InteractionHitbox" to="." method="OnBodyEntered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

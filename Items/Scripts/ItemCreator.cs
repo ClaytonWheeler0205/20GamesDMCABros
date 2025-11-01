@@ -32,7 +32,7 @@ namespace Game.Items
                     itemScene = GD.Load<PackedScene>("res://Items/Scenes/LifeShroom.tscn");
                     break;
                 case Item.Star:
-                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/LifeShroom.tscn");
+                    itemScene = GD.Load<PackedScene>("res://Items/Scenes/Star.tscn");
                     break;
             }
             Node2D itemToCreate = itemScene.Instance<Node2D>();

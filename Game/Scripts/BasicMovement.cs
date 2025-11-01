@@ -1,4 +1,5 @@
 using Godot;
+using Util.ExtensionMethods;
 
 namespace Game
 {
@@ -22,7 +23,13 @@ namespace Game
         public KinematicBody2D BodyToMove
         {
             protected get { return _bodyToMove; }
-            set { _bodyToMove = value; }
+            set
+            {
+                if (value.IsValid())
+                {
+                    _bodyToMove = value;
+                }
+            }
         }
         private bool _shouldMove = false;
         public bool ShouldMove
@@ -64,7 +71,7 @@ namespace Game
                 FlipDirection();
             }
         }
-        
+
         private void FlipDirection()
         {
             switch (_movementDirection)

@@ -25,7 +25,7 @@ namespace Game.Items
             _shroomAnimationReference = GetNode<AnimationPlayer>(_shroomAnimationPath);
         }
 
-        public void OnBodyEntered(Node body)
+        public override void OnBodyEntered(Node body)
         {
             if (body.IsInGroup("player"))
             {

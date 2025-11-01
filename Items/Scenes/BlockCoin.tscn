@@ -111,6 +111,7 @@ anims/point_float = SubResource( 8 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+volume_db = -10.0
 autoplay = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="OnCoinAnimationFinished"]

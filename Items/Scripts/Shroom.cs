@@ -54,5 +54,6 @@ namespace Game.Items
             }
         }
 
+        public abstract void OnBodyEntered(Node body);
     }
 }
