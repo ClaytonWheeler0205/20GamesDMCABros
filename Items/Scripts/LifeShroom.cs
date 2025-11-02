@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -33,6 +34,7 @@ namespace Game.Items
                 CollectShroom();
                 _lifeTextReference.Visible = true;
                 _shroomAnimationReference.Play("life_float");
+                LivesEventBus.Instance.EmitSignal("GainLife");
             }
         }
 
