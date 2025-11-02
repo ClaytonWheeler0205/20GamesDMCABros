@@ -32,6 +32,7 @@ namespace Game.Items
         {
             SetNodeReferences();
             _movementReference.BodyToMove = this;
+            _starVisualReference.Play();
         }
 
         private void SetNodeReferences()
