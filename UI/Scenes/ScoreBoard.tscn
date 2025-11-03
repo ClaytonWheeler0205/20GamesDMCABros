@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://UI/Fonts/GameUIText.tres" type="DynamicFont" id=1]
 [ext_resource path="res://UI/Animations/CoinIconAnim.tres" type="Texture" id=2]
 [ext_resource path="res://UI/Scripts/CoinsManager.cs" type="Script" id=3]
 [ext_resource path="res://Items/Audio/life_get.wav" type="AudioStream" id=4]
 [ext_resource path="res://UI/Scripts/ScoreManager.cs" type="Script" id=5]
+[ext_resource path="res://UI/Scripts/TimeManagerImpl.cs" type="Script" id=6]
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 2 )
@@ -104,6 +105,9 @@ margin_left = 80.0
 margin_right = 105.0
 margin_bottom = 28.0
 custom_constants/separation = 0
+script = ExtResource( 6 )
+_levelTimerPath = NodePath("Timer")
+_timeTextPath = NodePath("Label2")
 
 [node name="Label" type="Label" parent="TimeUI"]
 margin_right = 25.0
@@ -120,3 +124,8 @@ custom_fonts/font = ExtResource( 1 )
 text = "400"
 align = 2
 uppercase = true
+
+[node name="Timer" type="Timer" parent="TimeUI"]
+wait_time = 0.4
+
+[connection signal="timeout" from="TimeUI/Timer" to="TimeUI" method="OnLevelTimerTimeout"]
