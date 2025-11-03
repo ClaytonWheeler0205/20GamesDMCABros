@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -15,6 +16,7 @@ namespace Game.Items
         [Export]
         private NodePath _coinCollectSoundPath;
         private AudioStreamPlayer _coinCollectSoundReference;
+        private const int COIN_POINT_VALUE = 200;
 
         public override void _Ready()
         {
@@ -36,7 +38,8 @@ namespace Game.Items
                 _coinVisualReference.Visible = false;
                 _coinCollisionReference.SetDeferred("disabled", true);
                 _coinCollectSoundReference.Play();
-                //TODO: Update the player's score
+                CoinEventBus.Instance.EmitSignal("CoinCollected");
+                PointsEventBus.Instance.EmitSignal("PointsGained", COIN_POINT_VALUE);
             }
         }
 

@@ -4,17 +4,13 @@ using Util.ExtensionMethods;
 namespace Game.Buses
 {
 
-    public class LivesEventBus : Node
+    public class CoinEventBus : Node
     {
         [Signal]
-        public delegate void LifeLost();
-        [Signal]
-        public delegate void LifeGained();
-        [Signal]
-        public delegate void GameOver();
+        public delegate void CoinCollected();
 
-        private static LivesEventBus _instance;
-        public static LivesEventBus Instance
+        private static CoinEventBus _instance;
+        public static CoinEventBus Instance
         {
             get { return _instance; }
         }
@@ -28,5 +24,6 @@ namespace Game.Buses
             }
             _instance = this;
         }
+
     }
 }

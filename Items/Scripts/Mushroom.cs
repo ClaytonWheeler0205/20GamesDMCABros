@@ -1,3 +1,4 @@
+using Game.Buses;
 using Game.Player;
 using Godot;
 using Util.ExtensionMethods;
@@ -12,6 +13,7 @@ namespace Game.Items
         [Export]
         private NodePath _shroomAnimationPath;
         private AnimationPlayer _shroomAnimationReference;
+        private const int MUSHROOM_POINT_VALUE = 1000;
 
         public override void _Ready()
         {
@@ -33,7 +35,7 @@ namespace Game.Items
                 CollectShroom();
                 _pointTextReference.Visible = true;
                 _shroomAnimationReference.Play("score_float");
-                //TODO: update the score
+                PointsEventBus.Instance.EmitSignal("PointsGained", MUSHROOM_POINT_VALUE);
             }
         }
 

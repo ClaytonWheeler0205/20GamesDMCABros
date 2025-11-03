@@ -17,6 +17,8 @@ config/icon="res://MushroomIcon.png"
 [autoload]
 
 LivesEventBus="*res://Buses/Scenes/LivesEventBus.tscn"
+CoinEventBus="*res://Buses/Scenes/CoinEventBus.tscn"
+PointEventBus="*res://Buses/Scenes/PointEventBus.tscn"
 
 [display]
 

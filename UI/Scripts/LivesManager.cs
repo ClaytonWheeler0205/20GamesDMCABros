@@ -4,7 +4,7 @@ using Game.Buses;
 namespace Game.UI
 {
 
-    public class LivesManager : Control
+    public class LivesManager : Node
     {
         [Export]
         private NodePath _livesTextPath;
@@ -24,8 +24,8 @@ namespace Game.UI
 
         private void SetNodeConnections()
         {
-            LivesEventBus.Instance.Connect("LoseLife", this, nameof(OnLifeLost));
-            LivesEventBus.Instance.Connect("GainLife", this, nameof(OnLifeGained));
+            LivesEventBus.Instance.Connect("LifeLost", this, nameof(OnLifeLost));
+            LivesEventBus.Instance.Connect("LifeGained", this, nameof(OnLifeGained));
         }
 
         public void OnLifeLost()

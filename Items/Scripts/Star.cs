@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -27,6 +28,7 @@ namespace Game.Items
         [Export]
         private NodePath _powerupGetSoundPath;
         private AudioStreamPlayer _powerupGetSoundReference;
+        private const int STAR_POINT_VALUE = 1000;
 
         public override void _Ready()
         {
@@ -70,7 +72,7 @@ namespace Game.Items
                 _interactionCollisionReference.SetDeferred("disabled", true);
                 _powerupGetSoundReference.Play();
                 _starAnimationReference.Play("score_float");
-                //TODO: give the player 100 points
+                PointsEventBus.Instance.EmitSignal("PointsGained", STAR_POINT_VALUE);
                 //TODO: give the player invincibility
             }
         }

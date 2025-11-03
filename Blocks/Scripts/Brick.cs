@@ -1,4 +1,5 @@
 using System.Xml.Serialization;
+using Game.Buses;
 using Game.Player;
 using Godot;
 using Util.ExtensionMethods;
@@ -17,6 +18,7 @@ namespace Game.Blocks
         [Export]
         private NodePath _physicalHitBoxPath;
         private CollisionShape2D _physicalHitBoxReference;
+        private const int BRICK_POINT_VALUE = 50;
 
         public override void _Ready()
         {
@@ -57,6 +59,7 @@ namespace Game.Blocks
             OneShotParticle brickParticle = particleScene.Instance<OneShotParticle>();
             brickParticle.Connect("ParticleFinished", this, nameof(OnParticleFinished));
             AddChild(brickParticle);
+            PointsEventBus.Instance.EmitSignal("PointsGained", BRICK_POINT_VALUE);
         }
 
         public void OnParticleFinished()

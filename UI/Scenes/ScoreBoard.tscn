@@ -1,0 +1,122 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://UI/Fonts/GameUIText.tres" type="DynamicFont" id=1]
+[ext_resource path="res://UI/Animations/CoinIconAnim.tres" type="Texture" id=2]
+[ext_resource path="res://UI/Scripts/CoinsManager.cs" type="Script" id=3]
+[ext_resource path="res://Items/Audio/life_get.wav" type="AudioStream" id=4]
+[ext_resource path="res://UI/Scripts/ScoreManager.cs" type="Script" id=5]
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( -1.05662, 0, 8.26003, 8.09616 )
+margin = Rect2( 0, 3, 0, 0 )
+
+[node name="ScoreBoard" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -128.0
+margin_top = -120.0
+margin_right = 128.0
+margin_bottom = 120.0
+
+[node name="ScoreUI" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -104.0
+margin_right = -68.0
+margin_bottom = 28.0
+custom_constants/separation = 0
+alignment = 1
+script = ExtResource( 5 )
+_scoreTextPath = NodePath("Label2")
+
+[node name="Label" type="Label" parent="ScoreUI"]
+margin_right = 36.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "Vito"
+uppercase = true
+
+[node name="Label2" type="Label" parent="ScoreUI"]
+margin_top = 14.0
+margin_right = 36.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "000000"
+uppercase = true
+
+[node name="CoinCounter" type="HBoxContainer" parent="."]
+margin_left = 80.0
+margin_top = 13.0
+margin_right = 106.0
+margin_bottom = 27.0
+custom_constants/separation = 0
+alignment = 2
+script = ExtResource( 3 )
+_coinCounterTextPath = NodePath("Label")
+_lifeGainedSoundPath = NodePath("AudioStreamPlayer")
+
+[node name="TextureRect" type="TextureRect" parent="CoinCounter"]
+margin_right = 8.0
+margin_bottom = 14.0
+texture = SubResource( 2 )
+
+[node name="Label" type="Label" parent="CoinCounter"]
+margin_left = 8.0
+margin_right = 26.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "x00"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CoinCounter"]
+stream = ExtResource( 4 )
+
+[node name="WorldUI" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 16.0
+margin_right = 57.0
+margin_bottom = 28.0
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="WorldUI"]
+margin_right = 41.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "World"
+uppercase = true
+
+[node name="Label2" type="Label" parent="WorldUI"]
+margin_top = 14.0
+margin_right = 41.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "1-1"
+align = 1
+uppercase = true
+
+[node name="TimeUI" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 80.0
+margin_right = 105.0
+margin_bottom = 28.0
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="TimeUI"]
+margin_right = 25.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "TIme"
+uppercase = true
+
+[node name="Label2" type="Label" parent="TimeUI"]
+margin_top = 14.0
+margin_right = 25.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "400"
+align = 2
+uppercase = true

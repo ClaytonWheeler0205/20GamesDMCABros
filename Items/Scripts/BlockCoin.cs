@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -15,12 +16,14 @@ namespace Game.Items
         [Export]
         private NodePath _coinAnimationPlayerPath;
         private AnimationPlayer _coinAnimationPlayerReference;
+        private const int COIN_POINT_VALUE = 200;
 
         public override void _Ready()
         {
             SetNodeReferences();
             _coinSpriteReference.Play();
-            //TODO: Give the player 200 points
+            CoinEventBus.Instance.EmitSignal("CoinCollected");
+            PointsEventBus.Instance.EmitSignal("PointsGained", COIN_POINT_VALUE);
         }
 
         private void SetNodeReferences()

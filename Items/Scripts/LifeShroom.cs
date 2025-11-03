@@ -34,7 +34,7 @@ namespace Game.Items
                 CollectShroom();
                 _lifeTextReference.Visible = true;
                 _shroomAnimationReference.Play("life_float");
-                LivesEventBus.Instance.EmitSignal("GainLife");
+                LivesEventBus.Instance.EmitSignal("LifeGained");
             }
         }
 
