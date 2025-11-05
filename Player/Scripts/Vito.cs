@@ -20,12 +20,11 @@ namespace Game.Player
             get { return _movementComponentReference; }
         }
         [Export]
-        private NodePath _playerVisualPath;
-        private PlayerAnimator _playerVisualReference;
-        protected PlayerAnimator PlayerVisualReference
-        {
-            get { return _playerVisualReference; }
-        }
+        private NodePath _smallPlayerVisualPath;
+        private PlayerAnimator _smallPlayerVisualReference;
+        [Export]
+        private NodePath _superPlayerVisualPath;
+        private PlayerAnimator _superPlayerVisualReference;
         [Export]
         private NodePath _jumpHitDataPath;
         private JumpHitbox _jumpHitDataReference;
@@ -40,16 +39,15 @@ namespace Game.Player
             SetNodeConnections();
             _jumpComponentReference.JumpingBody = this;
             _movementComponentReference.MovingBody = this;
-            _playerVisualReference.PlayerToAnimate = this;
-            _playerVisualReference.PlayerJump = _jumpComponentReference;
-            _playerVisualReference.PlayerMovement = _movementComponentReference;
+            SetupPlayerVisuals();
         }
 
         private void SetNodeReferences()
         {
             _jumpComponentReference = GetNode<JumpComponent>(_jumpComponentPath);
             _movementComponentReference = GetNode<MovementComponent>(_movementComponentPath);
-            _playerVisualReference = GetNode<PlayerAnimator>(_playerVisualPath);
+            _smallPlayerVisualReference = GetNode<PlayerAnimator>(_smallPlayerVisualPath);
+            _superPlayerVisualReference = GetNode<PlayerAnimator>(_superPlayerVisualPath);
             _jumpHitDataReference = GetNode<JumpHitbox>(_jumpHitDataPath);
         }
 
@@ -57,6 +55,14 @@ namespace Game.Player
         {
             _jumpComponentReference.Connect("SuccessfulJump", this, nameof(OnSuccessfulJump));
             _jumpComponentReference.Connect("JumpReleased", this, nameof(OnJumpReleased));
+        }
+
+        private void SetupPlayerVisuals()
+        {
+            _smallPlayerVisualReference.PlayerToAnimate = this;
+            _smallPlayerVisualReference.PlayerMovement = _movementComponentReference;
+            _superPlayerVisualReference.PlayerToAnimate = this;
+            _superPlayerVisualReference.PlayerMovement = _movementComponentReference;
         }
 
         public abstract void Jump();

@@ -3,16 +3,33 @@ using Godot;
 namespace Game.Player
 {
 
-    public class PlayerAnimatorImpl : AnimatedSprite, PlayerAnimator
+    public class SuperPlayerAnimator : Node, PlayerAnimator
     {
         public Vito PlayerToAnimate { get; set; }
         public MovementComponent PlayerMovement { get; set; }
         [Export]
         private float _minimumSpeedForMovement = 10.0f;
+        [Export]
+        private NodePath _topPartToAnimatePath;
+        private AnimatedSprite _topPartToAnimateReference;
+        [Export]
+        private NodePath _bottomPartToAnimatePath;
+        private AnimatedSprite _bottomPartToAnimateReference;
+
+        public override void _Ready()
+        {
+            SetNodeReferences();
+        }
+
+        private void SetNodeReferences()
+        {
+            _topPartToAnimateReference = GetNode<AnimatedSprite>(_topPartToAnimatePath);
+            _bottomPartToAnimateReference = GetNode<AnimatedSprite>(_bottomPartToAnimatePath);
+        }
 
         public override void _Process(float delta)
         {
-            if (Visible)
+            if (_topPartToAnimateReference.Visible)
             {
                 AnimatePlayer();
             }
@@ -37,11 +54,13 @@ namespace Game.Player
                 {
                     if (PlayerMovement.IsRunning)
                     {
-                        SpeedScale = 1.5f;
+                        _topPartToAnimateReference.SpeedScale = 1.5f;
+                        _bottomPartToAnimateReference.SpeedScale = 1.5f;
                     }
                     else
                     {
-                        SpeedScale = 1.0f;
+                        _topPartToAnimateReference.SpeedScale = 1.0f;
+                        _bottomPartToAnimateReference.SpeedScale = 1.0f;
                     }
                     animationToPlay = "walk";
                 }
@@ -50,7 +69,8 @@ namespace Game.Player
             {
                 animationToPlay = "jump";
             }
-            Play(animationToPlay);
+            _topPartToAnimateReference.Play(animationToPlay);
+            _bottomPartToAnimateReference.Play(animationToPlay);
         }
 
         private void FlipToCurrentDirection()
@@ -58,24 +78,24 @@ namespace Game.Player
             float horizontalDirection = PlayerToAnimate.GetVelocityVector().x;
             if (horizontalDirection > 0.0f)
             {
-                FlipH = false;
+                _topPartToAnimateReference.FlipH = false;
+                _bottomPartToAnimateReference.FlipH = false;
             }
             else if (horizontalDirection < 0.0f)
             {
-                FlipH = true;
+                _topPartToAnimateReference.FlipH = true;
+                _bottomPartToAnimateReference.FlipH = true;
             }
         }
 
         public void ToggleAnimation()
         {
-            if (Visible)
+            if (_topPartToAnimateReference.Visible)
             {
-                Stop();
-                Visible = false;
-            }
-            else
-            {
-                Visible = true;
+                _topPartToAnimateReference.Stop();
+                _topPartToAnimateReference.Visible = false;
+                _bottomPartToAnimateReference.Stop();
+                _bottomPartToAnimateReference.Visible = false;
             }
         }
     }

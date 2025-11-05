@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -10,6 +10,112 @@
 [ext_resource path="res://Player/Art/VitoWalk.png" type="Texture" id=8]
 [ext_resource path="res://Player/Art/VitoSkid.png" type="Texture" id=9]
 [ext_resource path="res://Player/Scripts/JumpHitbox.cs" type="Script" id=10]
+[ext_resource path="res://Player/Art/SuperVitoIdleBottom.png" type="Texture" id=11]
+[ext_resource path="res://Player/Art/SuperVitoIdleTop.png" type="Texture" id=12]
+[ext_resource path="res://Player/Art/SuperVitoJumpBottom.png" type="Texture" id=13]
+[ext_resource path="res://Player/Art/SuperVitoJumpTop.png" type="Texture" id=14]
+[ext_resource path="res://Player/Art/SuperVitoSkidTop.png" type="Texture" id=15]
+[ext_resource path="res://Player/Art/SuperVitoSkidBottom.png" type="Texture" id=16]
+[ext_resource path="res://Player/Art/SuperVitoWalkBottom.png" type="Texture" id=17]
+[ext_resource path="res://Player/Art/SuperVitoWalkTop.png" type="Texture" id=18]
+[ext_resource path="res://Player/Scripts/SuperPlayerAnimator.cs" type="Script" id=19]
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 12 )
+region = Rect2( 0, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 14 )
+region = Rect2( 0, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 15 )
+region = Rect2( 0, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 18 )
+region = Rect2( 0, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 18 )
+region = Rect2( 16, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 18 )
+region = Rect2( 32, 0, 16, 24 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 7 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "skid",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
+"loop": true,
+"name": "walk",
+"speed": 7.0
+} ]
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 0, 16, 8 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 16, 8 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 16 )
+region = Rect2( 0, 0, 16, 8 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 17 )
+region = Rect2( 0, 0, 16, 8 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 17 )
+region = Rect2( 16, 0, 16, 8 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 17 )
+region = Rect2( 32, 0, 16, 8 )
+
+[sub_resource type="SpriteFrames" id=10]
+animations = [ {
+"frames": [ SubResource( 9 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 12 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 14 ) ],
+"loop": true,
+"name": "skid",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
+"loop": true,
+"name": "walk",
+"speed": 7.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=21]
+extents = Vector2( 7.5, 13.5 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 8 )
@@ -52,23 +158,49 @@ extents = Vector2( 5.5, 6.5 )
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 4.5, 1.5 )
 
+[sub_resource type="RectangleShape2D" id=22]
+extents = Vector2( 5.5, 2.5 )
+
 [node name="Vito" type="KinematicBody2D" groups=["player"]]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 2 )
 _jumpComponentPath = NodePath("JumpComponent")
 _movementComponentPath = NodePath("MovementComponent")
-_playerVisualPath = NodePath("VisualComponent")
+_smallPlayerVisualPath = NodePath("SmallVisualComponent")
+_superPlayerVisualPath = NodePath("SuperVisualComponent")
 _jumpHitDataPath = NodePath("JumpInteraction")
 
-[node name="VisualComponent" type="AnimatedSprite" parent="."]
+[node name="SuperVisualComponent" type="Node2D" parent="."]
+script = ExtResource( 19 )
+_topPartToAnimatePath = NodePath("TopVisual")
+_bottomPartToAnimatePath = NodePath("BottomVisual")
+
+[node name="TopVisual" type="AnimatedSprite" parent="SuperVisualComponent"]
+position = Vector2( 0, -12 )
+frames = SubResource( 8 )
+animation = "idle"
+
+[node name="BottomVisual" type="AnimatedSprite" parent="SuperVisualComponent"]
+position = Vector2( 0, 4 )
+frames = SubResource( 10 )
+animation = "idle"
+
+[node name="SuperPhysicalCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, -5.5 )
+shape = SubResource( 21 )
+
+[node name="SmallVisualComponent" type="AnimatedSprite" parent="."]
+visible = false
 frames = SubResource( 2 )
 animation = "idle"
 script = ExtResource( 7 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="SmallPhysicalCollision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0.5, 1.5 )
 shape = SubResource( 1 )
+disabled = true
 
 [node name="JumpComponent" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -110,9 +242,15 @@ collision_layer = 2
 collision_mask = 8
 script = ExtResource( 10 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpInteraction"]
+[node name="SmallCollisionShape" type="CollisionShape2D" parent="JumpInteraction"]
+visible = false
 position = Vector2( 0.5, -6.5 )
 shape = SubResource( 6 )
+disabled = true
+
+[node name="SuperCollisionShape" type="CollisionShape2D" parent="JumpInteraction"]
+position = Vector2( 0.5, -21.5 )
+shape = SubResource( 22 )
 
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]
