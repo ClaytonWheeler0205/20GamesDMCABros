@@ -68,14 +68,10 @@ namespace Game.Player
 
         public void ToggleAnimation()
         {
-            if (Visible)
+            Visible = !Visible;
+            if (!Visible)
             {
                 Stop();
-                Visible = false;
-            }
-            else
-            {
-                Visible = true;
             }
         }
     }

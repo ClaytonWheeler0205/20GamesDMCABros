@@ -29,13 +29,13 @@ namespace Game.Items
 
         public override void OnBodyEntered(Node body)
         {
-            if (body.IsInGroup("player"))
+            if (body is Vito vito)
             {
-                GlobalPlayerData.PlayerSize = Size.Big;
                 CollectShroom();
                 _pointTextReference.Visible = true;
                 _shroomAnimationReference.Play("score_float");
                 PointsEventBus.Instance.EmitSignal("PointsGained", MUSHROOM_POINT_VALUE);
+                vito.GrowBig();
             }
         }
 

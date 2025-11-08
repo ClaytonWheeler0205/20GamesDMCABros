@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -19,6 +19,47 @@
 [ext_resource path="res://Player/Art/SuperVitoWalkBottom.png" type="Texture" id=17]
 [ext_resource path="res://Player/Art/SuperVitoWalkTop.png" type="Texture" id=18]
 [ext_resource path="res://Player/Scripts/SuperPlayerAnimator.cs" type="Script" id=19]
+[ext_resource path="res://Player/Art/SuperVitoCrouchBottom.png" type="Texture" id=20]
+[ext_resource path="res://Player/Art/SuperVitoCrouchTop.png" type="Texture" id=21]
+[ext_resource path="res://Debug/Scripts/VitoDebug.cs" type="Script" id=22]
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 8 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 8 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ) ],
+"loop": true,
+"name": "skid",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": true,
+"name": "walk",
+"speed": 7.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.5, 6.5 )
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 12 )
@@ -46,6 +87,11 @@ region = Rect2( 32, 0, 16, 24 )
 
 [sub_resource type="SpriteFrames" id=8]
 animations = [ {
+"frames": [ ExtResource( 21 ) ],
+"loop": true,
+"name": "crouch",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 7 ) ],
 "loop": true,
 "name": "idle",
@@ -93,6 +139,11 @@ region = Rect2( 32, 0, 16, 8 )
 
 [sub_resource type="SpriteFrames" id=10]
 animations = [ {
+"frames": [ ExtResource( 20 ) ],
+"loop": true,
+"name": "crouch",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 9 ) ],
 "loop": true,
 "name": "idle",
@@ -117,48 +168,16 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=21]
 extents = Vector2( 7.5, 13.5 )
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 8 )
-region = Rect2( 16, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 8 )
-region = Rect2( 32, 0, 16, 16 )
-
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ ExtResource( 1 ) ],
-"loop": true,
-"name": "idle",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 6 ) ],
-"loop": true,
-"name": "jump",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 9 ) ],
-"loop": true,
-"name": "skid",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
-"loop": true,
-"name": "walk",
-"speed": 7.0
-} ]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 5.5, 6.5 )
+[sub_resource type="RectangleShape2D" id=23]
+extents = Vector2( 7.5, 8.5 )
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 4.5, 1.5 )
 
 [sub_resource type="RectangleShape2D" id=22]
+extents = Vector2( 5.5, 2.5 )
+
+[sub_resource type="RectangleShape2D" id=24]
 extents = Vector2( 5.5, 2.5 )
 
 [node name="Vito" type="KinematicBody2D" groups=["player"]]
@@ -170,8 +189,19 @@ _movementComponentPath = NodePath("MovementComponent")
 _smallPlayerVisualPath = NodePath("SmallVisualComponent")
 _superPlayerVisualPath = NodePath("SuperVisualComponent")
 _jumpHitDataPath = NodePath("JumpInteraction")
+_debugPath = NodePath("DebugWindow/Control")
+
+[node name="SmallVisualComponent" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+animation = "idle"
+script = ExtResource( 7 )
+
+[node name="SmallPhysicalCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 1.5 )
+shape = SubResource( 1 )
 
 [node name="SuperVisualComponent" type="Node2D" parent="."]
+visible = false
 script = ExtResource( 19 )
 _topPartToAnimatePath = NodePath("TopVisual")
 _bottomPartToAnimatePath = NodePath("BottomVisual")
@@ -187,19 +217,15 @@ frames = SubResource( 10 )
 animation = "idle"
 
 [node name="SuperPhysicalCollision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0.5, -5.5 )
 shape = SubResource( 21 )
+disabled = true
 
-[node name="SmallVisualComponent" type="AnimatedSprite" parent="."]
+[node name="CrouchedPhysicalCollision" type="CollisionShape2D" parent="."]
 visible = false
-frames = SubResource( 2 )
-animation = "idle"
-script = ExtResource( 7 )
-
-[node name="SmallPhysicalCollision" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0.5, 1.5 )
-shape = SubResource( 1 )
+position = Vector2( 0.5, -0.5 )
+shape = SubResource( 23 )
 disabled = true
 
 [node name="JumpComponent" type="Node" parent="."]
@@ -243,14 +269,40 @@ collision_mask = 8
 script = ExtResource( 10 )
 
 [node name="SmallCollisionShape" type="CollisionShape2D" parent="JumpInteraction"]
-visible = false
 position = Vector2( 0.5, -6.5 )
 shape = SubResource( 6 )
-disabled = true
 
 [node name="SuperCollisionShape" type="CollisionShape2D" parent="JumpInteraction"]
+visible = false
 position = Vector2( 0.5, -21.5 )
 shape = SubResource( 22 )
+disabled = true
+
+[node name="CrouchedCollisionShape" type="CollisionShape2D" parent="JumpInteraction"]
+visible = false
+position = Vector2( 1.5, -11.5 )
+shape = SubResource( 24 )
+disabled = true
+
+[node name="DebugWindow" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Control" type="Control" parent="DebugWindow"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -40.0
+margin_right = 40.0
+script = ExtResource( 22 )
+_directionDisplayPath = NodePath("VitoProperties/DirectionLabel")
+
+[node name="VitoProperties" type="VBoxContainer" parent="DebugWindow/Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="DirectionLabel" type="Label" parent="DebugWindow/Control/VitoProperties"]
+margin_right = 75.0
+margin_bottom = 14.0
+text = "Direction: 0"
 
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]

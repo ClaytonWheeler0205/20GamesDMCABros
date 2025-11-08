@@ -63,7 +63,7 @@ namespace Game.Player
 
         private float GetGroundSpeed(float currentSpeed)
         {
-            if (Direction != 0.0f)
+            if (Direction != 0.0f && !IsCrouched)
             {
                 return GetMovingGroundSpeed(currentSpeed);
             }
@@ -124,7 +124,7 @@ namespace Game.Player
 
         private float GetSlowdownGroundSpeed(float currentSpeed)
         {
-            if (IsSkidding)
+            if (IsSkidding && !IsCrouched)
             {
                 float skiddingSpeed = GetSkiddingSpeed(currentSpeed);
                 if (FloatOperator.EqualityComparisonWithTolerance(skiddingSpeed, 0.0f, 0.01f))
@@ -253,6 +253,16 @@ namespace Game.Player
         {
             IsRunning = false;
             _wasRunning = true;
+        }
+
+        public override void StartCrouching()
+        {
+            IsCrouched = true;
+        }
+
+        public override void StopCrouching()
+        {
+            IsCrouched = false;
         }
     }
 }

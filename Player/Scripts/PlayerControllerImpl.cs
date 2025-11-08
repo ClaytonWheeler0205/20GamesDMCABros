@@ -8,6 +8,14 @@ namespace Game.Player
         public override void _Process(float delta)
         {
             CharacterToControl.SetMovementDirection(Input.GetAxis("move_left", "move_right"));
+            if (Input.IsActionPressed("crouch"))
+            {
+                CharacterToControl.StartCrouching();
+            }
+            else if (Input.IsActionJustReleased("crouch"))
+            {
+                CharacterToControl.StopCrouching();
+            }
         }
 
         public override void _UnhandledInput(InputEvent @event)

@@ -22,9 +22,17 @@ namespace Game.Player
         [Export]
         private NodePath _smallPlayerVisualPath;
         private PlayerAnimator _smallPlayerVisualReference;
+        protected PlayerAnimator SmallPlayerVisualReference
+        {
+            get { return _smallPlayerVisualReference; }
+        }
         [Export]
         private NodePath _superPlayerVisualPath;
         private PlayerAnimator _superPlayerVisualReference;
+        protected PlayerAnimator SuperPlayerVisualReference
+        {
+            get { return _superPlayerVisualReference; }
+        }
         [Export]
         private NodePath _jumpHitDataPath;
         private JumpHitbox _jumpHitDataReference;
@@ -69,9 +77,12 @@ namespace Game.Player
         public abstract void ReleaseJump();
         public abstract void StartRunning();
         public abstract void StopRunning();
+        public abstract void StartCrouching();
+        public abstract void StopCrouching();
         public abstract void OnSuccessfulJump();
         public abstract void OnJumpReleased();
         public abstract Vector2 GetVelocityVector();
         public abstract void SetMovementDirection(float newDirection);
+        public abstract void GrowBig();
     }
 }

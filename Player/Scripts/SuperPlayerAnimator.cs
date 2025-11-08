@@ -3,7 +3,7 @@ using Godot;
 namespace Game.Player
 {
 
-    public class SuperPlayerAnimator : Node, PlayerAnimator
+    public class SuperPlayerAnimator : Node2D, PlayerAnimator
     {
         public Vito PlayerToAnimate { get; set; }
         public MovementComponent PlayerMovement { get; set; }
@@ -29,7 +29,7 @@ namespace Game.Player
 
         public override void _Process(float delta)
         {
-            if (_topPartToAnimateReference.Visible)
+            if (Visible)
             {
                 AnimatePlayer();
             }
@@ -42,7 +42,18 @@ namespace Game.Player
             {
                 FlipToCurrentDirection();
                 float playerHorizontalSpeed = PlayerToAnimate.GetVelocityVector().x;
-                if (Mathf.Abs(playerHorizontalSpeed) < _minimumSpeedForMovement)
+                if (PlayerMovement.IsCrouched)
+                {
+                    if (PlayerMovement.Direction == 0.0f)
+                    {
+                        animationToPlay = "crouch";
+                    }
+                    else
+                    {
+                        animationToPlay = "idle";
+                    }
+                }
+                else if (Mathf.Abs(playerHorizontalSpeed) < _minimumSpeedForMovement)
                 {
                     animationToPlay = "idle";
                 }
@@ -67,7 +78,14 @@ namespace Game.Player
             }
             else
             {
-                animationToPlay = "jump";
+                if (_topPartToAnimateReference.Animation == "crouch")
+                {
+                    animationToPlay = "crouch";
+                }
+                else
+                {
+                    animationToPlay = "jump";
+                }
             }
             _topPartToAnimateReference.Play(animationToPlay);
             _bottomPartToAnimateReference.Play(animationToPlay);
@@ -90,12 +108,11 @@ namespace Game.Player
 
         public void ToggleAnimation()
         {
-            if (_topPartToAnimateReference.Visible)
+            Visible = !Visible;
+            if (!Visible)
             {
                 _topPartToAnimateReference.Stop();
-                _topPartToAnimateReference.Visible = false;
                 _bottomPartToAnimateReference.Stop();
-                _bottomPartToAnimateReference.Visible = false;
             }
         }
     }

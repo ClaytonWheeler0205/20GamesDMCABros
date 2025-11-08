@@ -47,9 +47,23 @@ namespace Game.Player
                 }
             }
         }
+        private bool _isCrouched = false;
+        public bool IsCrouched
+        {
+            get { return _isCrouched; }
+            protected set
+            {
+                if (value != _isCrouched)
+                {
+                    _isCrouched = value;
+                }
+            }
+        }
 
         public abstract float GetMovementSpeed(float currentSpeed);
         public abstract void StartRunning();
         public abstract void StopRunning();
+        public abstract void StartCrouching();
+        public abstract void StopCrouching();
     }
 }

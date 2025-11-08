@@ -91,8 +91,21 @@ namespace Game.Player
         {
             _performedJump = true;
             _jumpReleased = false;
-            _jumpSoundReference.Play();
+            PlayJumpSound();
             EmitSignal("SuccessfulJump");
+        }
+
+        private void PlayJumpSound()
+        {
+            if (GlobalPlayerData.PlayerSize == Size.Small)
+            {
+                _jumpSoundReference.PitchScale = 1.0f;
+            }
+            else
+            {
+                _jumpSoundReference.PitchScale = 0.8f;
+            }
+            _jumpSoundReference.Play();
         }
 
         public override void ReleaseJump()
