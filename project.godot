@@ -20,6 +20,7 @@ LivesEventBus="*res://Buses/Scenes/LivesEventBus.tscn"
 CoinEventBus="*res://Buses/Scenes/CoinEventBus.tscn"
 PointEventBus="*res://Buses/Scenes/PointEventBus.tscn"
 TimerEventBus="*res://Buses/Scenes/TimerEventBus.tscn"
+PowerupEventBus="*res://Buses/Scenes/PowerupEventBus.tscn"
 
 [display]
 

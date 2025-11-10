@@ -1,3 +1,4 @@
+using Game.Buses;
 using Game.Debug;
 using Godot;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Game.Player
         {
             base._Ready();
             SetupCollisionDictionaries();
+            SetupNodeConnections();
             _debug = GetNode<VitoDebug>(_debugPath);
         }
 
@@ -72,6 +74,11 @@ namespace Game.Player
                     }
                 }
             }
+        }
+
+        private void SetupNodeConnections()
+        {
+            PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
         }
 
         public override void _PhysicsProcess(float delta)
@@ -196,6 +203,11 @@ namespace Game.Player
             }
         }
 
+        public void OnMushroomCollected()
+        {
+            GrowBig();
+        }
+
         public override Vector2 GetVelocityVector()
         {
             return _velocity;
@@ -210,7 +222,7 @@ namespace Game.Player
             }
         }
 
-        public override void GrowBig()
+        private void GrowBig()
         {
             if (GlobalPlayerData.PlayerSize == Size.Small)
             {

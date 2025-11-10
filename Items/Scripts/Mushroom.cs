@@ -20,7 +20,7 @@ namespace Game.Items
             base._Ready();
             SetNodeReferences();
         }
-        
+
         private void SetNodeReferences()
         {
             _pointTextReference = GetNode<Node2D>(_pointTextPath);
@@ -29,14 +29,16 @@ namespace Game.Items
 
         public override void OnBodyEntered(Node body)
         {
-            if (body is Vito vito)
+            if (!body.IsInGroup("player"))
             {
-                CollectShroom();
-                _pointTextReference.Visible = true;
-                _shroomAnimationReference.Play("score_float");
-                PointsEventBus.Instance.EmitSignal("PointsGained", MUSHROOM_POINT_VALUE);
-                vito.GrowBig();
+                return;
             }
+            CollectShroom();
+            _pointTextReference.Visible = true;
+            _shroomAnimationReference.Play("score_float");
+            PauseMode = PauseModeEnum.Process;
+            PointsEventBus.Instance.EmitSignal("PointsGained", MUSHROOM_POINT_VALUE);
+            PowerupEventBus.Instance.EmitSignal("MushroomCollected");
         }
 
         public override void OnAnimationFinished(string anim_name)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://Player/Art/SuperVitoCrouchBottom.png" type="Texture" id=20]
 [ext_resource path="res://Player/Art/SuperVitoCrouchTop.png" type="Texture" id=21]
 [ext_resource path="res://Debug/Scripts/VitoDebug.cs" type="Script" id=22]
+[ext_resource path="res://Player/Art/VitoGrow.png" type="Texture" id=23]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 8 )
@@ -38,17 +39,17 @@ region = Rect2( 32, 0, 16, 16 )
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 1 ) ],
-"loop": true,
+"loop": false,
 "name": "idle",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 6 ) ],
-"loop": true,
+"loop": false,
 "name": "jump",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 9 ) ],
-"loop": true,
+"loop": false,
 "name": "skid",
 "speed": 5.0
 }, {
@@ -88,22 +89,22 @@ region = Rect2( 32, 0, 16, 24 )
 [sub_resource type="SpriteFrames" id=8]
 animations = [ {
 "frames": [ ExtResource( 21 ) ],
-"loop": true,
+"loop": false,
 "name": "crouch",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 7 ) ],
-"loop": true,
+"loop": false,
 "name": "idle",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 11 ) ],
-"loop": true,
+"loop": false,
 "name": "jump",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 13 ) ],
-"loop": true,
+"loop": false,
 "name": "skid",
 "speed": 5.0
 }, {
@@ -112,6 +113,18 @@ animations = [ {
 "name": "walk",
 "speed": 7.0
 } ]
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 23 )
+region = Rect2( 16, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 23 )
+region = Rect2( 0, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 23 )
+region = Rect2( 32, 0, 16, 32 )
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 11 )
@@ -140,22 +153,27 @@ region = Rect2( 32, 0, 16, 8 )
 [sub_resource type="SpriteFrames" id=10]
 animations = [ {
 "frames": [ ExtResource( 20 ) ],
-"loop": true,
+"loop": false,
 "name": "crouch",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 25 ), SubResource( 26 ), SubResource( 25 ), SubResource( 27 ), SubResource( 26 ), SubResource( 25 ), SubResource( 27 ), SubResource( 26 ), SubResource( 27 ) ],
+"loop": false,
+"name": "grow",
+"speed": 12.0
+}, {
 "frames": [ SubResource( 9 ) ],
-"loop": true,
+"loop": false,
 "name": "idle",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 12 ) ],
-"loop": true,
+"loop": false,
 "name": "jump",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 14 ) ],
-"loop": true,
+"loop": false,
 "name": "skid",
 "speed": 5.0
 }, {
@@ -207,6 +225,7 @@ _topPartToAnimatePath = NodePath("TopVisual")
 _bottomPartToAnimatePath = NodePath("BottomVisual")
 
 [node name="TopVisual" type="AnimatedSprite" parent="SuperVisualComponent"]
+visible = false
 position = Vector2( 0, -12 )
 frames = SubResource( 8 )
 animation = "idle"
@@ -214,7 +233,7 @@ animation = "idle"
 [node name="BottomVisual" type="AnimatedSprite" parent="SuperVisualComponent"]
 position = Vector2( 0, 4 )
 frames = SubResource( 10 )
-animation = "idle"
+animation = "grow"
 
 [node name="SuperPhysicalCollision" type="CollisionShape2D" parent="."]
 visible = false
@@ -304,6 +323,7 @@ margin_right = 75.0
 margin_bottom = 14.0
 text = "Direction: 0"
 
+[connection signal="animation_finished" from="SuperVisualComponent/BottomVisual" to="SuperVisualComponent" method="OnAnimationFinished"]
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]
 [connection signal="timeout" from="MovementComponent/RunReleaseTimer" to="MovementComponent" method="OnRunReleaseTimerTimeout"]

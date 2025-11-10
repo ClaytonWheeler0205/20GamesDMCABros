@@ -12,10 +12,11 @@ namespace Game.Player
 
         public override void _Process(float delta)
         {
-            if (Visible)
+            if (!Visible)
             {
-                AnimatePlayer();
+                return;
             }
+            AnimatePlayer();
         }
 
         private void AnimatePlayer()

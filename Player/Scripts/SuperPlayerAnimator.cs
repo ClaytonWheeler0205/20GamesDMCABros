@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 
 namespace Game.Player
@@ -15,10 +16,13 @@ namespace Game.Player
         [Export]
         private NodePath _bottomPartToAnimatePath;
         private AnimatedSprite _bottomPartToAnimateReference;
+        private Vector2 _growShrinkSpriteOffset = new Vector2(0, -12);
+        private bool _isGrowingOrShrinking = false;
 
         public override void _Ready()
         {
             SetNodeReferences();
+            SetNodeConnections();
         }
 
         private void SetNodeReferences()
@@ -27,12 +31,18 @@ namespace Game.Player
             _bottomPartToAnimateReference = GetNode<AnimatedSprite>(_bottomPartToAnimatePath);
         }
 
+        private void SetNodeConnections()
+        {
+            PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
+        }
+
         public override void _Process(float delta)
         {
-            if (Visible)
+            if (!Visible || _isGrowingOrShrinking)
             {
-                AnimatePlayer();
+                return;
             }
+            AnimatePlayer();
         }
 
         private void AnimatePlayer()
@@ -109,11 +119,34 @@ namespace Game.Player
         public void ToggleAnimation()
         {
             Visible = !Visible;
-            if (!Visible)
+            if (Visible)
             {
-                _topPartToAnimateReference.Stop();
-                _bottomPartToAnimateReference.Stop();
+                return;
             }
+            _topPartToAnimateReference.Stop();
+            _bottomPartToAnimateReference.Stop();
+        }
+
+        public void OnMushroomCollected()
+        {
+            PauseMode = PauseModeEnum.Process;
+            _isGrowingOrShrinking = true;
+            _bottomPartToAnimateReference.Offset = _growShrinkSpriteOffset;
+            _bottomPartToAnimateReference.Play("grow");
+            GetTree().Paused = true;
+        }
+
+        public void OnAnimationFinished()
+        {
+            if (_bottomPartToAnimateReference.Animation != "grow")
+            {
+                return;
+            }
+            _isGrowingOrShrinking = false;
+            _bottomPartToAnimateReference.Offset = Vector2.Zero;
+            _topPartToAnimateReference.Visible = true;
+            PauseMode = PauseModeEnum.Stop;
+            GetTree().Paused = false;
         }
     }
 }
