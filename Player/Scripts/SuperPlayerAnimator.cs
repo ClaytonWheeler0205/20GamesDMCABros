@@ -133,6 +133,8 @@ namespace Game.Player
             _isGrowingOrShrinking = true;
             _bottomPartToAnimateReference.Offset = _growShrinkSpriteOffset;
             _bottomPartToAnimateReference.Play("grow");
+            _topPartToAnimateReference.Visible = false;
+            FlipToCurrentDirection();
             GetTree().Paused = true;
         }
 

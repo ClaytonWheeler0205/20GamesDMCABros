@@ -106,6 +106,7 @@ anims/star_rise = SubResource( 7 )
 [node name="BouncyMovement" type="Node" parent="."]
 script = ExtResource( 2 )
 _speed = 60.0
+_maximumBounceForce = -500.0
 
 [node name="PowerupRiseSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )

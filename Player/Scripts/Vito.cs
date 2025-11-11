@@ -1,3 +1,4 @@
+using Game.Projectiles;
 using Godot;
 
 namespace Game.Player
@@ -40,6 +41,29 @@ namespace Game.Player
         {
             get { return _jumpHitDataReference; }
         }
+        [Export]
+        private NodePath _fireballPoolPath;
+        private FireballFactory _fireballPoolReference;
+        protected FireballFactory FireballPoolReference
+        {
+            get { return _fireballPoolReference; }
+        }
+        private Vector2 _rightFireballSpawn = new Vector2(9, -11);
+        protected Vector2 RightFireballSpawn
+        {
+            get { return _rightFireballSpawn; }
+        }
+        private Vector2 _leftFireballSpawn = new Vector2(-9, -11);
+        protected Vector2 LeftFireballSpawn
+        {
+            get { return _leftFireballSpawn; }
+        }
+        private bool _hasFlower = false;
+        protected bool HasFlower
+        {
+            get { return _hasFlower; }
+            set { _hasFlower = value; }
+        }
 
         public override void _Ready()
         {
@@ -57,6 +81,7 @@ namespace Game.Player
             _smallPlayerVisualReference = GetNode<PlayerAnimator>(_smallPlayerVisualPath);
             _superPlayerVisualReference = GetNode<PlayerAnimator>(_superPlayerVisualPath);
             _jumpHitDataReference = GetNode<JumpHitbox>(_jumpHitDataPath);
+            _fireballPoolReference = GetNode<FireballFactory>(_fireballPoolPath);
         }
 
         private void SetNodeConnections()
@@ -79,6 +104,7 @@ namespace Game.Player
         public abstract void StopRunning();
         public abstract void StartCrouching();
         public abstract void StopCrouching();
+        public abstract void ShootFireball();
         public abstract void OnSuccessfulJump();
         public abstract void OnJumpReleased();
         public abstract Vector2 GetVelocityVector();

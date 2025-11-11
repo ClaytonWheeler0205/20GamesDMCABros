@@ -56,6 +56,7 @@ namespace Game.Items
             _powerupGetSoundReference.Play();
             _flowerAnimationReference.Play("score_float");
             PointsEventBus.Instance.EmitSignal("PointsGained", FLOWER_POINT_VALUE);
+            PowerupEventBus.Instance.EmitSignal("FlowerCollected");
         }
         
         public void OnAnimationFinished(string anim_name)

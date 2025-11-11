@@ -1,0 +1,95 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Projectiles/Art/FireExplosion.png" type="Texture" id=1]
+[ext_resource path="res://Projectiles/Art/Fireball.png" type="Texture" id=2]
+[ext_resource path="res://Items/Scripts/BouncyMovement.cs" type="Script" id=3]
+[ext_resource path="res://Projectiles/Scripts/FireballImpl.cs" type="Script" id=4]
+[ext_resource path="res://Projectiles/Audio/fireball_throw.wav" type="AudioStream" id=5]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 8, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 24, 0, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
+"loop": false,
+"name": "explosion",
+"speed": 15.0
+}, {
+"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"loop": true,
+"name": "rolling",
+"speed": 15.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 4, 4 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 4, 4 )
+
+[node name="Fireball" type="KinematicBody2D"]
+collision_layer = 16
+script = ExtResource( 4 )
+_movementPath = NodePath("BouncyMovement")
+_visualPath = NodePath("AnimatedSprite")
+_wallDetectorPath = NodePath("WallDetector")
+_hitboxPath = NodePath("Hitbox/CollisionShape2D")
+_fireballSoundPath = NodePath("FireballSound")
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+visible = false
+frames = SubResource( 8 )
+animation = "rolling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 9 )
+
+[node name="BouncyMovement" type="Node" parent="."]
+script = ExtResource( 3 )
+_speed = 250.0
+
+[node name="WallDetector" type="RayCast2D" parent="."]
+cast_to = Vector2( 5, 0 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 4.17233e-07, 0 )
+rect = Rect2( -4, -4, 8, 8 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 10 )
+disabled = true
+
+[node name="FireballSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimationFinished"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="OnScreenExited"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnBodyEntered"]

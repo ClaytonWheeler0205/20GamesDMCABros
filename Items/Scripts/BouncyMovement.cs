@@ -9,6 +9,7 @@ namespace Game.Items
         [Export]
         private float _speed = 45.0f;
         [Export]
+        private float _maximumBounceForce = -150.0f;
         private KinematicBody2D _bodyToMove;
         public KinematicBody2D BodyToMove
         {
@@ -28,6 +29,19 @@ namespace Game.Items
             set
             {
                 _canMove = value;
+            }
+        }
+        private Direction _movementDirection = Direction.Right;
+        public Direction MovementDirection
+        {
+            set
+            {
+                if (_movementDirection == value)
+                {
+                    return;
+                }
+                _velocity *= -1;
+                _movementDirection = value;
             }
         }
 
@@ -52,7 +66,12 @@ namespace Game.Items
         private void HandleCollision(KinematicCollision2D collision)
         {
             _velocity = _velocity.Bounce(collision.Normal);
+            _velocity = new Vector2(_velocity.x, Mathf.Max(_velocity.y, _maximumBounceForce));
         }
 
+        public void ResetVelocity()
+        {
+            _velocity = (int)_movementDirection * _speed * Vector2.Right;
+        }
     }
 }

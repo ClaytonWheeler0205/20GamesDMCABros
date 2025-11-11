@@ -31,6 +31,7 @@ namespace Game.Player
             if (@event.IsActionPressed("run"))
             {
                 CharacterToControl.StartRunning();
+                CharacterToControl.ShootFireball();
             }
             else if (@event.IsActionReleased("run"))
             {

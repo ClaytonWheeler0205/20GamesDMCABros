@@ -1,5 +1,6 @@
 using Game.Buses;
 using Game.Debug;
+using Game.Projectiles;
 using Godot;
 using System.Collections.Generic;
 
@@ -79,6 +80,19 @@ namespace Game.Player
         private void SetupNodeConnections()
         {
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
+            PowerupEventBus.Instance.Connect("FlowerCollected", this, nameof(OnFlowerCollected));
+        }
+
+        public override void _Process(float delta)
+        {
+            if (_velocity.x > 0.0f)
+            {
+                FireballPoolReference.Position = RightFireballSpawn;
+            }
+            else if (_velocity.x < 0.0f)
+            {
+                FireballPoolReference.Position = LeftFireballSpawn;
+            }
         }
 
         public override void _PhysicsProcess(float delta)
@@ -183,6 +197,29 @@ namespace Game.Player
             }
         }
 
+        public override void ShootFireball()
+        {
+            if (!HasFlower)
+            {
+                return;
+            }
+            Fireball fireBallToShoot = FireballPoolReference.GetFireball();
+            if (fireBallToShoot == null)
+            {
+                return;
+            }
+            fireBallToShoot.GlobalPosition = FireballPoolReference.GlobalPosition;
+            if (FireballPoolReference.Position == RightFireballSpawn)
+            {
+                fireBallToShoot.MovementDirection = Direction.Right;
+            }
+            else
+            {
+                fireBallToShoot.MovementDirection = Direction.Left;
+            }
+            fireBallToShoot.Enable();
+        }
+
         public override void OnSuccessfulJump()
         {
             if (Mathf.Abs(_velocity.x) >= JumpComponentReference.SuperJumpSpeedRequirement)
@@ -206,6 +243,11 @@ namespace Game.Player
         public void OnMushroomCollected()
         {
             GrowBig();
+        }
+
+        public void OnFlowerCollected()
+        {
+            HasFlower = true;
         }
 
         public override Vector2 GetVelocityVector()
