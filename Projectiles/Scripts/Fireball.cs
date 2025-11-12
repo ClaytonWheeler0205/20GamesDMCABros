@@ -30,11 +30,18 @@ namespace Game.Projectiles
             get { return _visualReference; }
         }
         [Export]
-        private NodePath _wallDetectorPath;
-        private RayCast2D _wallDetectorReference;
-        protected RayCast2D WallDetectorReference
+        private NodePath _topWallDetectorPath;
+        private RayCast2D _topWallDetectorReference;
+        protected RayCast2D TopWallDetectorReference
         {
-            get { return _wallDetectorReference; }
+            get { return _topWallDetectorReference; }
+        }
+        [Export]
+        private NodePath _bottomWallDetectorPath;
+        private RayCast2D _bottomWallDetectorReference;
+        protected RayCast2D BottomWallDetectorReference
+        {
+            get { return _bottomWallDetectorReference; }
         }
         [Export]
         private NodePath _hitboxPath;
@@ -86,7 +93,8 @@ namespace Game.Projectiles
         {
             _movementReference = GetNode<BouncyMovement>(_movementPath);
             _visualReference = GetNode<AnimatedSprite>(_visualPath);
-            _wallDetectorReference = GetNode<RayCast2D>(_wallDetectorPath);
+            _topWallDetectorReference = GetNode<RayCast2D>(_topWallDetectorPath);
+            _bottomWallDetectorReference = GetNode<RayCast2D>(_bottomWallDetectorPath);
             _hitboxReference = GetNode<CollisionShape2D>(_hitboxPath);
             _fireballSoundReference = GetNode<AudioStreamPlayer>(_fireballSoundPath);
         }
@@ -115,7 +123,7 @@ namespace Game.Projectiles
 
         public override void _PhysicsProcess(float delta)
         {
-            if (!_wallDetectorReference.IsColliding())
+            if (!_topWallDetectorReference.IsColliding() && !_bottomWallDetectorReference.IsColliding())
             {
                 return;
             }
@@ -124,7 +132,8 @@ namespace Game.Projectiles
 
         private void ApplyDirection()
         {
-            _wallDetectorReference.CastTo = (int)_movementDirection * new Vector2(5, 0);
+            _topWallDetectorReference.CastTo = (int)_movementDirection * new Vector2(5, 0);
+            _bottomWallDetectorReference.CastTo = (int)_movementDirection * new Vector2(5, 0);
             _movementReference.MovementDirection = _movementDirection;
             _visualReference.FlipH = _movementDirection == Direction.Left;
         }

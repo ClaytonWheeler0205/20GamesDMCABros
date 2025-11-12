@@ -58,7 +58,8 @@ collision_layer = 16
 script = ExtResource( 4 )
 _movementPath = NodePath("BouncyMovement")
 _visualPath = NodePath("AnimatedSprite")
-_wallDetectorPath = NodePath("WallDetector")
+_topWallDetectorPath = NodePath("TopWallDetector")
+_bottomWallDetectorPath = NodePath("BottomWallDetector")
 _hitboxPath = NodePath("Hitbox/CollisionShape2D")
 _fireballSoundPath = NodePath("FireballSound")
 
@@ -74,7 +75,12 @@ shape = SubResource( 9 )
 script = ExtResource( 3 )
 _speed = 250.0
 
-[node name="WallDetector" type="RayCast2D" parent="."]
+[node name="TopWallDetector" type="RayCast2D" parent="."]
+position = Vector2( 0, -3.85 )
+cast_to = Vector2( 5, 0 )
+
+[node name="BottomWallDetector" type="RayCast2D" parent="."]
+position = Vector2( 0, 3.85 )
 cast_to = Vector2( 5, 0 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]

@@ -11,7 +11,8 @@ namespace Game.Projectiles
         {
             MovementReference.ResetVelocity();
             MovementReference.CanMove = true;
-            WallDetectorReference.Enabled = true;
+            TopWallDetectorReference.Enabled = true;
+            BottomWallDetectorReference.Enabled = true;
             HitboxReference.SetDeferred("disabled", false);
             VisualReference.Visible = true;
             VisualReference.Play("rolling");
@@ -47,7 +48,8 @@ namespace Game.Projectiles
         private void Disable()
         {
             MovementReference.CanMove = false;
-            WallDetectorReference.Enabled = false;
+            TopWallDetectorReference.Enabled = false;
+            BottomWallDetectorReference.Enabled = false;
             HitboxReference.SetDeferred("disabled", true);
             VisualReference.Visible = false;
             Enabled = false;
