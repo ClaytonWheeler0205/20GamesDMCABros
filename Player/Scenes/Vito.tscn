@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -145,6 +145,10 @@ region = Rect2( 0, 0, 16, 8 )
 atlas = ExtResource( 16 )
 region = Rect2( 0, 0, 16, 8 )
 
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 17 )
+region = Rect2( 0, 0, 16, 8 )
+
 [sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 17 )
 region = Rect2( 0, 0, 16, 8 )
@@ -182,6 +186,11 @@ animations = [ {
 "frames": [ SubResource( 14 ) ],
 "loop": false,
 "name": "skid",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 28 ) ],
+"loop": false,
+"name": "throw",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
@@ -235,7 +244,7 @@ _bottomPartToAnimatePath = NodePath("BottomVisual")
 [node name="TopVisual" type="AnimatedSprite" parent="SuperVisualComponent"]
 position = Vector2( 0, -12 )
 frames = SubResource( 8 )
-animation = "throw"
+animation = "idle"
 
 [node name="BottomVisual" type="AnimatedSprite" parent="SuperVisualComponent"]
 position = Vector2( 0, 4 )
@@ -331,7 +340,7 @@ margin_bottom = 14.0
 text = "Direction: 0"
 
 [node name="FireballFactory" type="Position2D" parent="."]
-position = Vector2( 9, -11 )
+position = Vector2( 7, -10 )
 script = ExtResource( 25 )
 
 [connection signal="animation_finished" from="SuperVisualComponent/BottomVisual" to="SuperVisualComponent" method="OnAnimationFinished"]

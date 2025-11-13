@@ -73,7 +73,7 @@ shape = SubResource( 9 )
 
 [node name="BouncyMovement" type="Node" parent="."]
 script = ExtResource( 3 )
-_speed = 250.0
+_speed = 300.0
 
 [node name="TopWallDetector" type="RayCast2D" parent="."]
 position = Vector2( 0, -3.85 )

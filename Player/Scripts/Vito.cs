@@ -48,12 +48,12 @@ namespace Game.Player
         {
             get { return _fireballPoolReference; }
         }
-        private Vector2 _rightFireballSpawn = new Vector2(9, -11);
+        private Vector2 _rightFireballSpawn = new Vector2(7, -10);
         protected Vector2 RightFireballSpawn
         {
             get { return _rightFireballSpawn; }
         }
-        private Vector2 _leftFireballSpawn = new Vector2(-9, -11);
+        private Vector2 _leftFireballSpawn = new Vector2(-7, -10);
         protected Vector2 LeftFireballSpawn
         {
             get { return _leftFireballSpawn; }

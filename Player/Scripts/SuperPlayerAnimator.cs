@@ -6,6 +6,7 @@ namespace Game.Player
 
     public class SuperPlayerAnimator : Node2D, PlayerAnimator
     {
+        // TODO: eliminate circular dependency (Vito and PlayerAnimator) by creating a class that stores player data
         public Vito PlayerToAnimate { get; set; }
         public MovementComponent PlayerMovement { get; set; }
         [Export]
@@ -34,6 +35,7 @@ namespace Game.Player
         private void SetNodeConnections()
         {
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
+            PlayerEventBus.Instance.Connect("FireballThrown", this, nameof(OnFireballThrown));
         }
 
         public override void _Process(float delta)
@@ -97,8 +99,18 @@ namespace Game.Player
                     animationToPlay = "jump";
                 }
             }
-            _topPartToAnimateReference.Play(animationToPlay);
-            _bottomPartToAnimateReference.Play(animationToPlay);
+            if (_topPartToAnimateReference.Animation != "throw")
+            {
+                _topPartToAnimateReference.Play(animationToPlay);
+            }
+            if (_bottomPartToAnimateReference.Animation != "throw")
+            {
+                _bottomPartToAnimateReference.Play(animationToPlay);
+            }
+            if (_topPartToAnimateReference.Animation == "walk" && _bottomPartToAnimateReference.Animation == "walk")
+            {
+                _topPartToAnimateReference.Frame = _bottomPartToAnimateReference.Frame;
+            }
         }
 
         private void FlipToCurrentDirection()
@@ -138,17 +150,45 @@ namespace Game.Player
             GetTree().Paused = true;
         }
 
-        public void OnAnimationFinished()
+        public void OnFireballThrown()
         {
-            if (_bottomPartToAnimateReference.Animation != "grow")
+            _topPartToAnimateReference.Play("throw");
+            if (_bottomPartToAnimateReference.Animation == "walk")
             {
                 return;
             }
+            _bottomPartToAnimateReference.Play("throw");
+        }
+
+        public void OnAnimationFinished()
+        {
+            if (_bottomPartToAnimateReference.Animation == "grow")
+            {
+                CleanupGrowAnimation();
+            }
+            else if (_topPartToAnimateReference.Animation == "throw")
+            {
+                CleanupThrowAnimation();
+            }
+        }
+
+        private void CleanupGrowAnimation()
+        {
             _isGrowingOrShrinking = false;
             _bottomPartToAnimateReference.Offset = Vector2.Zero;
             _topPartToAnimateReference.Visible = true;
             PauseMode = PauseModeEnum.Stop;
             GetTree().Paused = false;
+        }
+
+        private void CleanupThrowAnimation()
+        {
+            _topPartToAnimateReference.Animation = "idle";
+            if (_bottomPartToAnimateReference.Animation == "throw")
+            {
+                _bottomPartToAnimateReference.Animation = "idle";
+            }
+            AnimatePlayer();
         }
     }
 }

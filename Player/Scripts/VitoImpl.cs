@@ -218,6 +218,7 @@ namespace Game.Player
                 fireBallToShoot.MovementDirection = Direction.Left;
             }
             fireBallToShoot.Enable();
+            PlayerEventBus.Instance.EmitSignal("FireballThrown");
         }
 
         public override void OnSuccessfulJump()
