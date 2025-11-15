@@ -64,6 +64,22 @@ namespace Game.Player
             get { return _hasFlower; }
             set { _hasFlower = value; }
         }
+        private bool _canThrow = true;
+        protected bool CanThrow
+        {
+            get { return _canThrow; }
+            set { _canThrow = value; }
+        }
+        [Export]
+        private NodePath _paletteComponentPath;
+        private VitoPaletteComponent _paletteComponentReference;
+        [Export]
+        private NodePath _paletteAnimatorPath;
+        private AnimationPlayer _paletteAnimatorReference;
+        protected AnimationPlayer PaletteAnimatorReference
+        {
+            get { return _paletteAnimatorReference; }
+        }
 
         public override void _Ready()
         {
@@ -72,6 +88,7 @@ namespace Game.Player
             _jumpComponentReference.JumpingBody = this;
             _movementComponentReference.MovingBody = this;
             SetupPlayerVisuals();
+            _paletteComponentReference.PlayerMaterial = (ShaderMaterial)Material;
         }
 
         private void SetNodeReferences()
@@ -82,6 +99,8 @@ namespace Game.Player
             _superPlayerVisualReference = GetNode<PlayerAnimator>(_superPlayerVisualPath);
             _jumpHitDataReference = GetNode<JumpHitbox>(_jumpHitDataPath);
             _fireballPoolReference = GetNode<FireballFactory>(_fireballPoolPath);
+            _paletteComponentReference = GetNode<VitoPaletteComponent>(_paletteComponentPath);
+            _paletteAnimatorReference = GetNode<AnimationPlayer>(_paletteAnimatorPath);
         }
 
         private void SetNodeConnections()

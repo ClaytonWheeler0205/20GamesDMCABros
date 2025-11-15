@@ -167,6 +167,7 @@ namespace Game.Player
                             _jumpInteractionCollisions["super"].SetDeferred("disabled", false);
                             _jumpInteractionCollisions["crouched"].SetDeferred("disabled", true);
                         }
+                        CanThrow = true;
                     }
                     else
                     {
@@ -177,6 +178,7 @@ namespace Game.Player
                             _jumpInteractionCollisions["super"].SetDeferred("disabled", true);
                             _jumpInteractionCollisions["crouched"].SetDeferred("disabled", false);
                         }
+                        CanThrow = false;
                     }
                 }
             }
@@ -195,11 +197,12 @@ namespace Game.Player
                     _jumpInteractionCollisions["crouched"].SetDeferred("disabled", true);
                 }
             }
+            CanThrow = true;
         }
 
         public override void ShootFireball()
         {
-            if (!HasFlower)
+            if (!HasFlower || !CanThrow)
             {
                 return;
             }
@@ -246,9 +249,39 @@ namespace Game.Player
             GrowBig();
         }
 
+        private void GrowBig()
+        {
+            if (GlobalPlayerData.PlayerSize == Size.Small)
+            {
+                GlobalPlayerData.PlayerSize = Size.Big;
+                SmallPlayerVisualReference.ToggleAnimation();
+                SuperPlayerVisualReference.ToggleAnimation();
+                _physicalCollisions["small"].SetDeferred("disabled", true);
+                _physicalCollisions["super"].SetDeferred("disabled", false);
+                _jumpInteractionCollisions["small"].SetDeferred("disabled", true);
+                _jumpInteractionCollisions["super"].SetDeferred("disabled", false);
+            }
+        }
+
         public void OnFlowerCollected()
         {
+            if (GlobalPlayerData.PlayerSize == Size.Small)
+            {
+                PowerupEventBus.Instance.EmitSignal("MushroomCollected");
+                return;
+            }
+            if (HasFlower)
+            {
+                return;
+            }
+            GrabFlower();
+        }
+
+        private void GrabFlower()
+        {
             HasFlower = true;
+            PaletteAnimatorReference.Play("fire_transform");
+            GetTree().Paused = true;
         }
 
         public override Vector2 GetVelocityVector()
@@ -262,20 +295,6 @@ namespace Game.Player
             if (_debug.Visible)
             {
                 _debug.DisplayDirection(MovementComponentReference.Direction);
-            }
-        }
-
-        private void GrowBig()
-        {
-            if (GlobalPlayerData.PlayerSize == Size.Small)
-            {
-                GlobalPlayerData.PlayerSize = Size.Big;
-                SmallPlayerVisualReference.ToggleAnimation();
-                SuperPlayerVisualReference.ToggleAnimation();
-                _physicalCollisions["small"].SetDeferred("disabled", true);
-                _physicalCollisions["super"].SetDeferred("disabled", false);
-                _jumpInteractionCollisions["small"].SetDeferred("disabled", true);
-                _jumpInteractionCollisions["super"].SetDeferred("disabled", false);
             }
         }
     }

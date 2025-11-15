@@ -1,0 +1,41 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+
+uniform sampler2D palette;
+uniform int num_colors = 4;
+uniform int num_palettes = 3;
+uniform float precision : hint_range(0.0, 1.0, 0.1) = 0.1;
+
+uniform int palette_code = 0;
+
+vec4 swap_color(vec4 color)
+{
+	float color_inc = 1.0 / float(num_colors);
+	float palette_inc = 1.0 / float(num_palettes);
+	for (float i = 0.0; i < 1.0; i += color_inc)
+	{
+		vec2 in_uv = vec2(i, 0.0);
+		vec4 in_color = texture(palette, in_uv);
+		if (distance(color, in_color) <= precision)
+		{
+			vec2 out_uv = vec2(i, float(palette_code) * palette_inc + (palette_inc/2.0));
+			return texture(palette, out_uv);
+		}
+	}
+	return color;
+}
+
+void fragment()
+{
+	if (palette_code != 0)
+	{
+		vec4 color = texture(TEXTURE, UV);
+		COLOR = swap_color(color);
+	}
+	else
+	{
+		COLOR = texture(TEXTURE, UV);
+	}
+}"

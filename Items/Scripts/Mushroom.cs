@@ -38,6 +38,10 @@ namespace Game.Items
             _shroomAnimationReference.Play("score_float");
             PauseMode = PauseModeEnum.Process;
             PointsEventBus.Instance.EmitSignal("PointsGained", MUSHROOM_POINT_VALUE);
+            if (GlobalPlayerData.PlayerSize == Size.Big)
+            {
+                return;
+            }
             PowerupEventBus.Instance.EmitSignal("MushroomCollected");
         }
 

@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://Game/Shaders/palette_swap_shader.tres" type="Shader" id=1]
+[ext_resource path="res://Player/Art/VitoOverworldPalette.png" type="Texture" id=2]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/num_colors = 4
+shader_param/num_palettes = 6
+shader_param/precision = 0.1
+shader_param/palette_code = 0
+shader_param/palette = ExtResource( 2 )

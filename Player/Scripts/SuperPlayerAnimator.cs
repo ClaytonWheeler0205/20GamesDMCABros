@@ -149,7 +149,6 @@ namespace Game.Player
             FlipToCurrentDirection();
             GetTree().Paused = true;
         }
-
         public void OnFireballThrown()
         {
             _topPartToAnimateReference.Play("throw");

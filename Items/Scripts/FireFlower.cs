@@ -55,6 +55,7 @@ namespace Game.Items
             _collisionReference.SetDeferred("disabled", true);
             _powerupGetSoundReference.Play();
             _flowerAnimationReference.Play("score_float");
+            PauseMode = PauseModeEnum.Process;
             PointsEventBus.Instance.EmitSignal("PointsGained", FLOWER_POINT_VALUE);
             PowerupEventBus.Instance.EmitSignal("FlowerCollected");
         }
