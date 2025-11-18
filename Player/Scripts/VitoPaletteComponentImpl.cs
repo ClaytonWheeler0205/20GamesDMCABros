@@ -1,5 +1,3 @@
-using Godot;
-
 namespace Game.Player
 {
 
@@ -20,7 +18,25 @@ namespace Game.Player
             if (anim_name == "fire_transform")
             {
                 PlayerMaterial.SetShaderParam("palette_code", PaletteCode.Fire);
+                CurrentPlayerColor = PaletteCode.Fire;
                 GetTree().Paused = false;
+                ResetInvincibilityAnimation();
+            }
+        }
+
+        private void ResetInvincibilityAnimation()
+        {
+            if (IsInvincibilityTimerRunning)
+            {
+                if (IsFastFlashTimerRunning)
+                {
+                    PaletteAnimator.PlaybackSpeed = 2.0f;
+                }
+                else
+                {
+                    PaletteAnimator.PlaybackSpeed = 0.75f;
+                }
+                PaletteAnimator.Play("invincibility_flash");
             }
         }
     }

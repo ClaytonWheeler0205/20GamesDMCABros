@@ -52,14 +52,20 @@ namespace Game.Items
         {
             if (anim_name == "star_rise")
             {
-                _physicalCollisionReference.SetDeferred("disabled", false);
                 _interactionCollisionReference.SetDeferred("disabled", false);
                 _movementReference.CanMove = true;
+                DelayPhysicalCollision();
             }
             else if (anim_name == "score_float")
             {
                 this.SafeQueueFree();
             }
+        }
+
+        private async void DelayPhysicalCollision()
+        {
+            await ToSignal(GetTree().CreateTimer(0.25f), "timeout");
+            _physicalCollisionReference.SetDeferred("disabled", false);
         }
 
         public void OnBodyEntered(Node body)
@@ -73,7 +79,7 @@ namespace Game.Items
                 _powerupGetSoundReference.Play();
                 _starAnimationReference.Play("score_float");
                 PointsEventBus.Instance.EmitSignal("PointsGained", STAR_POINT_VALUE);
-                //TODO: give the player invincibility
+                PowerupEventBus.Instance.EmitSignal("StarCollected");
             }
         }
     }

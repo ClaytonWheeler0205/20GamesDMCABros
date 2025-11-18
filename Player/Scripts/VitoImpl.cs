@@ -81,6 +81,7 @@ namespace Game.Player
         {
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
             PowerupEventBus.Instance.Connect("FlowerCollected", this, nameof(OnFlowerCollected));
+            PowerupEventBus.Instance.Connect("StarCollected", this, nameof(OnStarCollected));
         }
 
         public override void _Process(float delta)
@@ -280,8 +281,16 @@ namespace Game.Player
         private void GrabFlower()
         {
             HasFlower = true;
+            PaletteAnimatorReference.PlaybackSpeed = 1.0f;
             PaletteAnimatorReference.Play("fire_transform");
             GetTree().Paused = true;
+        }
+
+        public void OnStarCollected()
+        {
+            PaletteAnimatorReference.PlaybackSpeed = 2.0f;
+            PaletteAnimatorReference.Play("invincibility_flash");
+            StarComponentReference.StartTimers();
         }
 
         public override Vector2 GetVelocityVector()

@@ -30,6 +30,37 @@ namespace Game.Player
                 }
             }
         }
+        private AnimationPlayer _paletteAnimator;
+        public AnimationPlayer PaletteAnimator
+        {
+            protected get { return _paletteAnimator; }
+            set
+            {
+                if (!value.IsValid())
+                {
+                    return;
+                }
+                _paletteAnimator = value;
+            }
+        }
+        private bool _isInvincibilityTimerRunning = false;
+        public bool IsInvincibilityTimerRunning
+        {
+            protected get { return _isInvincibilityTimerRunning; }
+            set
+            {
+                _isInvincibilityTimerRunning = value;
+            }
+        }
+        private bool _isFastFlashTimerRunning = false;
+        public bool IsFastFlashTimerRunning
+        {
+            protected get { return _isFastFlashTimerRunning; }
+            set
+            {
+                _isFastFlashTimerRunning = value;
+            }
+        }
 
         public abstract void SetPlayerColor(int paletteCode);
         public abstract void OnAnimationFinished(string anim_name);

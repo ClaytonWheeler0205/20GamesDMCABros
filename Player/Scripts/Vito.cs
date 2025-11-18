@@ -80,6 +80,13 @@ namespace Game.Player
         {
             get { return _paletteAnimatorReference; }
         }
+        [Export]
+        private NodePath _starComponentPath;
+        private StarComponent _starComponentReference;
+        protected StarComponent StarComponentReference
+        {
+            get { return _starComponentReference; }
+        }
 
         public override void _Ready()
         {
@@ -89,6 +96,9 @@ namespace Game.Player
             _movementComponentReference.MovingBody = this;
             SetupPlayerVisuals();
             _paletteComponentReference.PlayerMaterial = (ShaderMaterial)Material;
+            _paletteComponentReference.PaletteAnimator = _paletteAnimatorReference;
+            _starComponentReference.PlayerPalette = _paletteComponentReference;
+            _starComponentReference.PaletteAnimatior = _paletteAnimatorReference;
         }
 
         private void SetNodeReferences()
@@ -101,6 +111,7 @@ namespace Game.Player
             _fireballPoolReference = GetNode<FireballFactory>(_fireballPoolPath);
             _paletteComponentReference = GetNode<VitoPaletteComponent>(_paletteComponentPath);
             _paletteAnimatorReference = GetNode<AnimationPlayer>(_paletteAnimatorPath);
+            _starComponentReference = GetNode<StarComponent>(_starComponentPath);
         }
 
         private void SetNodeConnections()

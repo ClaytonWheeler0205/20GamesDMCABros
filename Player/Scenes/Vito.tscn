@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://Projectiles/Scripts/FireballFactoryImpl.cs" type="Script" id=25]
 [ext_resource path="res://Player/Materials/vito_palette_material.tres" type="Material" id=26]
 [ext_resource path="res://Player/Scripts/VitoPaletteComponentImpl.cs" type="Script" id=27]
+[ext_resource path="res://Player/Scripts/StarComponentImpl.cs" type="Script" id=28]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 8 )
@@ -268,6 +269,59 @@ tracks/0/keys = {
 } ]
 }
 
+[sub_resource type="Animation" id=30]
+resource_name = "invincibility_flash"
+length = 0.917
+loop = true
+step = 0.01
+tracks/0/type = "method"
+tracks/0/path = NodePath("PaletteComponent")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 0.56, 0.64, 0.72, 0.8, 0.88 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"values": [ {
+"args": [ 3 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 4 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 5 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ -1 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 3 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 4 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 5 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ -1 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 3 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 4 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ 5 ],
+"method": "SetPlayerColor"
+}, {
+"args": [ -1 ],
+"method": "SetPlayerColor"
+} ]
+}
+
 [node name="Vito" type="KinematicBody2D" groups=["player"]]
 material = ExtResource( 26 )
 collision_layer = 2
@@ -281,6 +335,7 @@ _jumpHitDataPath = NodePath("JumpInteraction")
 _fireballPoolPath = NodePath("FireballFactory")
 _paletteComponentPath = NodePath("PaletteComponent")
 _paletteAnimatorPath = NodePath("PaletteAnimationPlayer")
+_starComponentPath = NodePath("StarComponent")
 _debugPath = NodePath("DebugWindow/Control")
 
 [node name="SmallVisualComponent" type="AnimatedSprite" parent="."]
@@ -411,9 +466,30 @@ script = ExtResource( 27 )
 [node name="PaletteAnimationPlayer" type="AnimationPlayer" parent="."]
 pause_mode = 2
 anims/fire_transform = SubResource( 29 )
+anims/invincibility_flash = SubResource( 30 )
+
+[node name="StarComponent" type="Node" parent="."]
+script = ExtResource( 28 )
+_invincibilityTimePath = NodePath("InvincibilityTimer")
+_musicTimePath = NodePath("MusicTimer")
+_fastFlashTimePath = NodePath("FastFlashTimer")
+
+[node name="InvincibilityTimer" type="Timer" parent="StarComponent"]
+wait_time = 13.0
+one_shot = true
+
+[node name="MusicTimer" type="Timer" parent="StarComponent"]
+wait_time = 12.0
+one_shot = true
+
+[node name="FastFlashTimer" type="Timer" parent="StarComponent"]
+wait_time = 11.0
+one_shot = true
 
 [connection signal="animation_finished" from="SuperVisualComponent/BottomVisual" to="SuperVisualComponent" method="OnAnimationFinished"]
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]
 [connection signal="timeout" from="MovementComponent/RunReleaseTimer" to="MovementComponent" method="OnRunReleaseTimerTimeout"]
 [connection signal="animation_finished" from="PaletteAnimationPlayer" to="PaletteComponent" method="OnAnimationFinished"]
+[connection signal="timeout" from="StarComponent/InvincibilityTimer" to="StarComponent" method="OnInvincibilityTimeTimeout"]
+[connection signal="timeout" from="StarComponent/FastFlashTimer" to="StarComponent" method="OnFastFlashTimeTimeout"]
