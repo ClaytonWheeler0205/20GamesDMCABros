@@ -64,6 +64,7 @@ _interactionHitBoxPath = NodePath("HitboxComponent/InteractionHitBox")
 _blockVisualPath = NodePath("BrickSprite")
 _hitBlockVisualPath = NodePath("Sprite")
 _hitBlockSoundPath = NodePath("BrickHitPlayer")
+_physicalHitboxPath = NodePath("PhysicalHitBox")
 
 [node name="Sprite" type="Sprite" parent="."]
 visible = false

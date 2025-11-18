@@ -28,6 +28,9 @@ namespace Game.Blocks
         [Export]
         private NodePath _hitBlockSoundPath;
         private AudioStreamPlayer _hitBlockSoundReference;
+        [Export]
+        private NodePath _physicalHitboxPath;
+        private CollisionShape2D _physicalHitboxReference;
         private Sprite _itemIconReference;
         private Timer _coinsTimer = null;
         private bool _timerStopped = false;
@@ -65,7 +68,13 @@ namespace Game.Blocks
             {
                 base._Ready();
                 SetNodeReferences();
-                BlockVisualReference.Visible = !_invisible;
+                if (_invisible)
+                {
+                    BlockVisualReference.Visible = false;
+                    _physicalHitboxReference.OneWayCollision = true;
+                    _physicalHitboxReference.RotationDegrees = 180.0f;
+                }
+
                 if (BlockVisualReference is AnimatedSprite animatedSprite)
                 {
                     animatedSprite.Play();
@@ -89,6 +98,7 @@ namespace Game.Blocks
         {
             _hitBlockVisualReference = GetNode<Sprite>(_hitBlockVisualPath);
             _hitBlockSoundReference = GetNode<AudioStreamPlayer>(_hitBlockSoundPath);
+            _physicalHitboxReference = GetNode<CollisionShape2D>(_physicalHitboxPath);
         }
 
         private void CreateCoinsTimer()
@@ -130,6 +140,7 @@ namespace Game.Blocks
             BlockVisualReference.Visible = false;
             _hitBlockVisualReference.Visible = true;
             InteractionHitBoxReference.SetDeferred("disabled", true);
+            _physicalHitboxReference.SetDeferred("one_way_collision", false);
         }
 
         private void CreateCoin()

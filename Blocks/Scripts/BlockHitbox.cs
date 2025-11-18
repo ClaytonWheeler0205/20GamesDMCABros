@@ -24,7 +24,7 @@ namespace Game.Blocks
 
         private void HandlePlayerCollisions(JumpHitbox jumpData)
         {
-            if (jumpData.VerticalVelocity <= 0.0f)
+            if (jumpData.VerticalVelocity <= 0.0f && jumpData.YPosition > GlobalPosition.y)
             {
                 EmitSignal("BlockHitByPlayer");
                 if (GlobalPlayerData.PlayerSize == Size.Small)

@@ -107,6 +107,7 @@ namespace Game.Player
             AttemptCornerCorrection(3);
             _velocity = MoveAndSlide(_velocity, Vector2.Up);
             JumpHitDataReference.VerticalVelocity = _velocity.y;
+            JumpHitDataReference.YPosition = GlobalPosition.y;
             if (IsOnFloor())
             {
                 JumpHitDataReference.HasHitBlock = false;

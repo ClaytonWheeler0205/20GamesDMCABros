@@ -370,7 +370,7 @@ position = Vector2( 2088, 216 )
 position = Vector2( 2728, 280 )
 
 [node name="ItemBrick" parent="Blocks" instance=ExtResource( 4 )]
-position = Vector2( 1032, 256 )
+position = Vector2( 1032, 264 )
 ItemInBlock = 3
 _invisible = true
 
