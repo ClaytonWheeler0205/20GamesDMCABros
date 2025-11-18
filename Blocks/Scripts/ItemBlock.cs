@@ -30,6 +30,7 @@ namespace Game.Blocks
         private AudioStreamPlayer _hitBlockSoundReference;
         private Sprite _itemIconReference;
         private Timer _coinsTimer = null;
+        private bool _timerStopped = false;
 
         private void SetItemIcon(Item item)
         {
@@ -116,6 +117,11 @@ namespace Game.Blocks
             {
                 return;
             }
+            if (_timerStopped)
+            {
+                DisableBlock();
+                return;
+            }
             StartCoinsTimer();
         }
 
@@ -161,7 +167,7 @@ namespace Game.Blocks
 
         public void OnCoinsTimerTimerout()
         {
-            DisableBlock();
+            _timerStopped = true;
         }
     }
 }
