@@ -5,7 +5,7 @@
 [ext_resource path="res://Items/Audio/powerup_get.wav" type="AudioStream" id=3]
 [ext_resource path="res://Items/Scripts/Mushroom.cs" type="Script" id=4]
 [ext_resource path="res://UI/Art/1000Points.png" type="Texture" id=5]
-[ext_resource path="res://Game/Scripts/BasicMovement.cs" type="Script" id=6]
+[ext_resource path="res://Items/Scripts/MushroomMovementImpl.cs" type="Script" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
@@ -90,10 +90,12 @@ stream = ExtResource( 3 )
 script = ExtResource( 6 )
 _speed = 45.0
 _wallDetectorPath = NodePath("WallDetector")
+_bounceForce = -250.0
 
 [node name="WallDetector" type="RayCast2D" parent="MushroomMovement"]
 enabled = true
 cast_to = Vector2( 9, 0 )
 
+[connection signal="area_entered" from="InteractionHitbox" to="." method="OnAreaEntered"]
 [connection signal="body_entered" from="InteractionHitbox" to="." method="OnBodyEntered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

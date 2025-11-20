@@ -47,9 +47,10 @@ namespace Game.Blocks
         {
             BounceAnimationReference.Play("bounce");
             _brickHitSoundReference.Play();
+            BlockDamageReference.SetDeferred("disabled", false);
         }
 
-        private void BreakBrick()
+        private async void BreakBrick()
         {
             InteractionHitBoxReference.SetDeferred("disabled", true);
             _physicalHitBoxReference.SetDeferred("disabled", true);
@@ -60,6 +61,9 @@ namespace Game.Blocks
             brickParticle.Connect("ParticleFinished", this, nameof(OnParticleFinished));
             AddChild(brickParticle);
             PointsEventBus.Instance.EmitSignal("PointsGained", BRICK_POINT_VALUE);
+            BlockDamageReference.SetDeferred("disabled", false);
+            await ToSignal(GetTree().CreateTimer(0.25f), "timeout");
+            BlockDamageReference.SetDeferred("disabled", true);
         }
 
         public void OnParticleFinished()
@@ -67,5 +71,13 @@ namespace Game.Blocks
             this.SafeQueueFree();
         }
 
+        public override void OnAnimationFinished(string anim_name)
+        {
+            if (anim_name != "bounce")
+            {
+                return;
+            }
+            BlockDamageReference.SetDeferred("disabled", true);
+        }
     }
 }

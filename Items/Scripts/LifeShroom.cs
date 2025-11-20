@@ -47,5 +47,15 @@ namespace Game.Items
             }
             base.OnAnimationFinished(anim_name);
         }
+
+        public override void OnAreaEntered(Area2D area)
+        {
+            if (!area.IsInGroup("BlockDamage"))
+            {
+                return;
+            }
+            MovementReference.Bounce();
+            MovementReference.FlipDirection();
+        }
     }
 }

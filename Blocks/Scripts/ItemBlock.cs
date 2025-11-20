@@ -111,6 +111,7 @@ namespace Game.Blocks
 
         public void OnBlockHitByPlayer()
         {
+            BlockDamageReference.SetDeferred("disabled", false);
             if (_itemInBlock != Item.Coins)
             {
                 DisableBlock();
@@ -158,11 +159,12 @@ namespace Game.Blocks
             }
         }
 
-        public void OnBounceAnimationFinished(string anim_name)
+        public override void OnAnimationFinished(string anim_name)
         {
             if (anim_name == "bounce")
             {
                 CreatePowerup();
+                BlockDamageReference.SetDeferred("disabled", true);
             }
         }
 

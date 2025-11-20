@@ -16,7 +16,11 @@ namespace Game.Items
         private CollisionShape2D _interactionCollisionReference;
         [Export]
         private NodePath _movementPath;
-        private BasicMovement _movementReference;
+        private MushroomMovement _movementReference;
+        protected MushroomMovement MovementReference
+        {
+            get { return _movementReference; }
+        }
         [Export]
         private NodePath _shroomGetSoundPath;
         private AudioStreamPlayer _shroomGetSoundReference;
@@ -32,7 +36,7 @@ namespace Game.Items
             _shroomVisualReference = GetNode<Node2D>(_shroomVisualPath);
             _physicalCollisionReference = GetNode<CollisionShape2D>(_physicalCollisionPath);
             _interactionCollisionReference = GetNode<CollisionShape2D>(_interactionCollisionPath);
-            _movementReference = GetNode<BasicMovement>(_movementPath);
+            _movementReference = GetNode<MushroomMovement>(_movementPath);
             _shroomGetSoundReference = GetNode<AudioStreamPlayer>(_shroomGetSoundPath);
         }
 
@@ -55,5 +59,6 @@ namespace Game.Items
         }
 
         public abstract void OnBodyEntered(Node body);
+        public abstract void OnAreaEntered(Area2D area);
     }
 }

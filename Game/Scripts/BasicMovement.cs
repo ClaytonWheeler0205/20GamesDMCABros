@@ -10,15 +10,24 @@ namespace Game
         Right = 1
     }
 
-    public class BasicMovement : Node2D
+    public abstract class BasicMovement : Node2D
     {
         [Export]
         private float _speed = 90.0f;
         [Export]
         private NodePath _wallDetectorPath;
         private RayCast2D _wallDetectorReference;
+        protected RayCast2D WallDetectorReference
+        {
+            get { return _wallDetectorReference; }
+        }
         [Export]
         private Direction _movementDirection = Direction.Right;
+        protected Direction MovementDirection
+        {
+            get { return _movementDirection; }
+            set { _movementDirection = value; }
+        }
         private KinematicBody2D _bodyToMove;
         public KinematicBody2D BodyToMove
         {
@@ -37,6 +46,11 @@ namespace Game
             set { _shouldMove = value; }
         }
         private Vector2 _velocity = new Vector2();
+        protected Vector2 Velocity
+        {
+            get { return _velocity; }
+            set { _velocity = value; }
+        }
 
         public override void _Ready()
         {
@@ -72,18 +86,6 @@ namespace Game
             }
         }
 
-        private void FlipDirection()
-        {
-            switch (_movementDirection)
-            {
-                case Direction.Left:
-                    _movementDirection = Direction.Right;
-                    break;
-                case Direction.Right:
-                    _movementDirection = Direction.Left;
-                    break;
-            }
-            _wallDetectorReference.CastTo = -1 * _wallDetectorReference.CastTo;
-        }
+        public abstract void FlipDirection();
     }
 }

@@ -1,4 +1,3 @@
-using Game.Player;
 using Godot;
 
 namespace Game.Blocks
@@ -33,6 +32,13 @@ namespace Game.Blocks
         {
             get { return _blockVisualReference; }
         }
+        [Export]
+        private NodePath _blockDamagePath;
+        private CollisionShape2D _blockDamageReference;
+        protected CollisionShape2D BlockDamageReference
+        {
+            get { return _blockDamageReference; }
+        }
 
         public override void _Ready()
         {
@@ -45,6 +51,9 @@ namespace Game.Blocks
             _bounceAnimationReference = GetNode<AnimationPlayer>(_bounceAnimationPath);
             _interactionHitBoxReference = GetNode<CollisionShape2D>(_interactionHitBoxPath);
             _blockVisualReference = GetNode<Node2D>(_blockVisualPath);
+            _blockDamageReference = GetNode<CollisionShape2D>(_blockDamagePath);
         }
+
+        public abstract void OnAnimationFinished(string anim_name);
     }
 }

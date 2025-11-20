@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Blocks/Art/Brick.png" type="Texture" id=1]
 [ext_resource path="res://Blocks/Scripts/BlockHitbox.cs" type="Script" id=2]
@@ -42,6 +42,9 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -4 ), Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 8, 4 )
+
 [node name="Brick" type="StaticBody2D"]
 z_index = 1
 collision_mask = 2
@@ -50,6 +53,7 @@ _hitboxPath = NodePath("HitboxComponent")
 _bounceAnimationPath = NodePath("BounceAnimation")
 _interactionHitBoxPath = NodePath("HitboxComponent/InteractionHitBox")
 _blockVisualPath = NodePath("Sprite")
+_blockDamagePath = NodePath("DamageComponent/BlockDamageCollision")
 _brickHitSoundPath = NodePath("BrickHitPlayer")
 _brickBreakSoundPath = NodePath("BrickBreakPlayer")
 _physicalHitBoxPath = NodePath("PhysicalHitBox")
@@ -79,6 +83,14 @@ stream = ExtResource( 3 )
 [node name="BrickBreakPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 
+[node name="DamageComponent" type="Area2D" parent="." groups=["BlockDamage"]]
+
+[node name="BlockDamageCollision" type="CollisionShape2D" parent="DamageComponent"]
+position = Vector2( 0, -12 )
+shape = SubResource( 5 )
+disabled = true
+
 [connection signal="BlockHitByBigPlayer" from="HitboxComponent" to="." method="OnBlockHitByBigPlayer"]
 [connection signal="BlockHitBySmallPlayer" from="HitboxComponent" to="." method="OnBlockHitBySmallPlayer"]
 [connection signal="area_entered" from="HitboxComponent" to="HitboxComponent" method="OnAreaEntered"]
+[connection signal="animation_finished" from="BounceAnimation" to="." method="OnAnimationFinished"]
