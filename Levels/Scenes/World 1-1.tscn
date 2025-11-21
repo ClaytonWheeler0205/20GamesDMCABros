@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Levels/Art/OverworldTiles.png" type="Texture" id=1]
 [ext_resource path="res://Blocks/Scenes/Brick.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Blocks/Scenes/ItemBlock.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Blocks/Scenes/ItemBrick.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Items/Scenes/Coin.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Enemies/Scenes/Castanea.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ConvexPolygonShape2D" id=8]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -440,3 +441,53 @@ position = Vector2( 920, 456 )
 
 [node name="Coin14" parent="Coins" instance=ExtResource( 5 )]
 position = Vector2( 936, 488 )
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Castanea" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 360, 328 )
+
+[node name="Castanea2" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 648, 328 )
+
+[node name="Castanea3" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 824, 328 )
+
+[node name="Castanea4" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 848, 328 )
+
+[node name="Castanea5" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 1288, 200 )
+
+[node name="Castanea6" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 1320, 200 )
+
+[node name="Castanea7" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 1560, 328 )
+
+[node name="Castanea8" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 1584, 328 )
+
+[node name="Castanea9" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 1832, 328 )
+
+[node name="Castanea10" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 1856, 328 )
+
+[node name="Castanea11" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 1992, 328 )
+
+[node name="Castanea12" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 2016, 328 )
+
+[node name="Castanea13" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 2056, 328 )
+
+[node name="Castanea14" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 2080, 328 )
+
+[node name="Castanea15" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 2792, 328 )
+
+[node name="Castanea16" parent="Enemies" instance=ExtResource( 6 )]
+position = Vector2( 2816, 328 )

@@ -3,6 +3,7 @@ using Game.Debug;
 using Game.Projectiles;
 using Godot;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Game.Player
 {
@@ -12,6 +13,7 @@ namespace Game.Player
         private Vector2 _velocity = new Vector2();
         private Dictionary<string, CollisionShape2D> _physicalCollisions;
         private Dictionary<string, CollisionShape2D> _jumpInteractionCollisions;
+        private List<RayCast2D> _enemyRayCasts;
 
         [Export]
         private NodePath _debugPath;
@@ -22,6 +24,7 @@ namespace Game.Player
             base._Ready();
             SetupCollisionDictionaries();
             SetupNodeConnections();
+            SetupEnemyDetection();
             _debug = GetNode<VitoDebug>(_debugPath);
         }
 
@@ -77,6 +80,18 @@ namespace Game.Player
             }
         }
 
+        private void SetupEnemyDetection()
+        {
+            _enemyRayCasts = new List<RayCast2D>(EnemyDetectorsReference.GetChildCount());
+            foreach (Node node in EnemyDetectorsReference.GetChildren())
+            {
+                if (node is RayCast2D ray)
+                {
+                    _enemyRayCasts.Add(ray);
+                }
+            }
+        }
+
         private void SetupNodeConnections()
         {
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
@@ -112,6 +127,14 @@ namespace Game.Player
             {
                 JumpHitDataReference.HasHitBlock = false;
             }
+            if (_velocity.y >= 0)
+            {
+                EnableEnemyRays();
+            }
+            else
+            {
+                DisableEnemyRays();
+            }
         }
 
         private void AttemptCornerCorrection(int amount)
@@ -130,6 +153,22 @@ namespace Game.Player
                         }
                     }
                 }
+            }
+        }
+
+        private void EnableEnemyRays()
+        {
+            foreach(RayCast2D ray in _enemyRayCasts)
+            {
+                ray.Enabled = true;
+            }
+        }
+
+        private void DisableEnemyRays()
+        {
+            foreach(RayCast2D ray in _enemyRayCasts)
+            {
+                ray.Enabled = false;
             }
         }
 
@@ -306,6 +345,23 @@ namespace Game.Player
             {
                 _debug.DisplayDirection(MovementComponentReference.Direction);
             }
+        }
+
+        public override bool IsHittingEnemyAbove()
+        {
+            foreach (RayCast2D ray in _enemyRayCasts)
+            {
+                if (ray.IsColliding())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override void Bounce()
+        {
+            _velocity.y = JumpComponentReference.BouncePower;
         }
     }
 }

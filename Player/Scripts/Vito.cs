@@ -87,6 +87,13 @@ namespace Game.Player
         {
             get { return _starComponentReference; }
         }
+        [Export]
+        private NodePath _enemyDetectorsPath;
+        private Node _enemyDetectorsReference;
+        protected Node EnemyDetectorsReference
+        {
+            get { return _enemyDetectorsReference; }
+        }
 
         public override void _Ready()
         {
@@ -112,6 +119,7 @@ namespace Game.Player
             _paletteComponentReference = GetNode<VitoPaletteComponent>(_paletteComponentPath);
             _paletteAnimatorReference = GetNode<AnimationPlayer>(_paletteAnimatorPath);
             _starComponentReference = GetNode<StarComponent>(_starComponentPath);
+            _enemyDetectorsReference = GetNode<Node>(_enemyDetectorsPath);
         }
 
         private void SetNodeConnections()
@@ -139,5 +147,7 @@ namespace Game.Player
         public abstract void OnJumpReleased();
         public abstract Vector2 GetVelocityVector();
         public abstract void SetMovementDirection(float newDirection);
+        public abstract bool IsHittingEnemyAbove();
+        public abstract void Bounce();
     }
 }

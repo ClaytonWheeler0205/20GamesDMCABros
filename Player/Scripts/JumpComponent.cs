@@ -41,10 +41,16 @@ namespace Game.Player
             get { return _superJumpPower; }
         }
         [Export]
+        private float _bouncePower = -100.0f;
+        public float BouncePower
+        {
+            get { return _bouncePower; }
+        }
+        [Export]
         private float _superJumpSpeedRequirement = 130.0f;
         public float SuperJumpSpeedRequirement
         {
-            get { return _superJumpSpeedRequirement;}
+            get { return _superJumpSpeedRequirement; }
         }
         [Export]
         private float _terminalVelocity = 500.0f;

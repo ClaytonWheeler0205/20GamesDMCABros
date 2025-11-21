@@ -336,6 +336,7 @@ _fireballPoolPath = NodePath("FireballFactory")
 _paletteComponentPath = NodePath("PaletteComponent")
 _paletteAnimatorPath = NodePath("PaletteAnimationPlayer")
 _starComponentPath = NodePath("StarComponent")
+_enemyDetectorsPath = NodePath("EnemyDetectors")
 _debugPath = NodePath("DebugWindow/Control")
 
 [node name="SmallVisualComponent" type="AnimatedSprite" parent="."]
@@ -382,6 +383,7 @@ disabled = true
 [node name="JumpComponent" type="Node" parent="."]
 script = ExtResource( 3 )
 _jumpPower = -410.0
+_bouncePower = -225.0
 _superJumpSpeedRequirement = 140.0
 _jumpBufferPath = NodePath("JumpBufferTimer")
 _coyoteTimerPath = NodePath("CoyoteTimer")
@@ -485,6 +487,20 @@ one_shot = true
 [node name="FastFlashTimer" type="Timer" parent="StarComponent"]
 wait_time = 11.0
 one_shot = true
+
+[node name="EnemyDetectors" type="Node2D" parent="."]
+
+[node name="EnemyDetector" type="RayCast2D" parent="EnemyDetectors"]
+position = Vector2( -5, 8 )
+collision_mask = 32
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="EnemyDetector2" type="RayCast2D" parent="EnemyDetectors"]
+position = Vector2( 6, 8 )
+collision_mask = 32
+collide_with_areas = true
+collide_with_bodies = false
 
 [connection signal="animation_finished" from="SuperVisualComponent/BottomVisual" to="SuperVisualComponent" method="OnAnimationFinished"]
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]

@@ -1,0 +1,85 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Enemies/Art/CastaneaWalk.png" type="Texture" id=1]
+[ext_resource path="res://Enemies/Scripts/EnemyMovement.cs" type="Script" id=2]
+[ext_resource path="res://Enemies/Art/CastaneaSquish.png" type="Texture" id=3]
+[ext_resource path="res://Enemies/Scripts/Castanea.cs" type="Script" id=4]
+[ext_resource path="res://Enemies/Audio/enemy_squish.wav" type="AudioStream" id=5]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "squish",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 7, 2 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 5.5, 3.5 )
+
+[node name="Castanea" type="KinematicBody2D" groups=["enemy"]]
+collision_layer = 0
+script = ExtResource( 4 )
+_enemyVisualPath = NodePath("AnimatedSprite")
+_movementPath = NodePath("BasicMovement")
+_hitboxPath = NodePath("EnemyHitbox/HitboxCollision")
+_squishSoundPath = NodePath("SquishSoundPlayer")
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 3 )
+animation = "walk"
+
+[node name="PhysicalCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 6 )
+shape = SubResource( 4 )
+
+[node name="EnemyHitbox" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 18
+
+[node name="HitboxCollision" type="CollisionShape2D" parent="EnemyHitbox"]
+position = Vector2( 0.5, 0.5 )
+shape = SubResource( 5 )
+
+[node name="BasicMovement" type="Node2D" parent="."]
+script = ExtResource( 2 )
+_speed = 45.0
+_wallDetectorPath = NodePath("WallDetector")
+_movementDirection = 9223372036854775807
+_rightRayLocation = Vector2( 6.5, 0 )
+_leftRayLocation = Vector2( -5.5, 0 )
+
+[node name="WallDetector" type="RayCast2D" parent="BasicMovement"]
+position = Vector2( 6.5, 0 )
+enabled = true
+cast_to = Vector2( 3, 0 )
+collision_mask = 33
+collide_with_areas = true
+
+[node name="VisibilityEnabler2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( -1.43051e-06, -1.43051e-06 )
+scale = Vector2( 1.6, 1.6 )
+
+[node name="SquishSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimationFinished"]
+[connection signal="body_entered" from="EnemyHitbox" to="." method="OnBodyEntered"]
+[connection signal="screen_entered" from="VisibilityEnabler2D" to="." method="OnScreenEntered"]
+[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="OnScreenExited"]
