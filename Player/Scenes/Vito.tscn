@@ -507,5 +507,6 @@ collide_with_bodies = false
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]
 [connection signal="timeout" from="MovementComponent/RunReleaseTimer" to="MovementComponent" method="OnRunReleaseTimerTimeout"]
 [connection signal="animation_finished" from="PaletteAnimationPlayer" to="PaletteComponent" method="OnAnimationFinished"]
+[connection signal="timeout" from="StarComponent/InvincibilityTimer" to="." method="OnInvincibilityTimeTimeout"]
 [connection signal="timeout" from="StarComponent/InvincibilityTimer" to="StarComponent" method="OnInvincibilityTimeTimeout"]
 [connection signal="timeout" from="StarComponent/FastFlashTimer" to="StarComponent" method="OnFastFlashTimeTimeout"]

@@ -26,8 +26,8 @@ namespace Game.Enemies
         private NodePath _squishSoundPath;
         private AudioStreamPlayer _squishSoundReference;
         [Export]
-        private NodePath _burnSoundPath;
-        private AudioStreamPlayer _burnSoundReference;
+        private NodePath _deathSoundPath;
+        private AudioStreamPlayer _deathSoundReference;
         private float _deathBounceForce = -250.0f;
 
         public override void _Ready()
@@ -43,14 +43,14 @@ namespace Game.Enemies
             _hitboxReference = GetNode<CollisionShape2D>(_hitboxPath);
             _squishSoundReference = GetNode<AudioStreamPlayer>(_squishSoundPath);
             _physicalHitboxReference = GetNode<CollisionShape2D>(_physicalHitboxPath);
-            _burnSoundReference = GetNode<AudioStreamPlayer>(_burnSoundPath);
+            _deathSoundReference = GetNode<AudioStreamPlayer>(_deathSoundPath);
         }
 
         public void Squish(Vito jumpingPlayer)
         {
             jumpingPlayer.Bounce();
             EnemyVisualReference.Play("squish");
-            _hitboxReference.SetDeferred("disabled", true);
+            EnemyHitbox.SetDeferred("disabled", true);
             _movementReference.ShouldMove = false;
             _squishSoundReference.Play();
         }
@@ -66,7 +66,7 @@ namespace Game.Enemies
             EnemyVisualReference.FlipV = true;
             _movementReference.Speed = 0.0f;
             _movementReference.Velocity = new Vector2(0.0f, _deathBounceForce);
-            _burnSoundReference.Play();
+            _deathSoundReference.Play();
         }
 
         public override void OnBodyEntered(Node body)
@@ -107,7 +107,11 @@ namespace Game.Enemies
         {
             if (playerNode is Vito vito)
             {
-                if (vito.IsHittingEnemyAbove())
+                if (vito.IsInvincible)
+                {
+                    Perish();
+                }
+                else if (vito.IsHittingEnemyAbove())
                 {
                     Squish(vito);
                 }

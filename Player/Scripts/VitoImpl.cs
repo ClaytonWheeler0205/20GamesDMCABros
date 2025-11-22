@@ -328,9 +328,15 @@ namespace Game.Player
 
         public void OnStarCollected()
         {
+            IsInvincible = true;
             PaletteAnimatorReference.PlaybackSpeed = 2.0f;
             PaletteAnimatorReference.Play("invincibility_flash");
             StarComponentReference.StartTimers();
+        }
+
+        public void OnInvincibilityTimeTimeout()
+        {
+            IsInvincible = false;
         }
 
         public override Vector2 GetVelocityVector()

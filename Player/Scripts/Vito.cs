@@ -94,6 +94,12 @@ namespace Game.Player
         {
             get { return _enemyDetectorsReference; }
         }
+        private bool _isInvincible = false;
+        public bool IsInvincible
+        {
+            get { return _isInvincible; }
+            protected set { _isInvincible = value; }
+        }
 
         public override void _Ready()
         {

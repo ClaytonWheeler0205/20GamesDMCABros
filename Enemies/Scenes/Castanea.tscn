@@ -44,7 +44,7 @@ _movementPath = NodePath("BasicMovement")
 _hitboxPath = NodePath("EnemyHitbox/HitboxCollision")
 _physicalHitboxPath = NodePath("PhysicalCollision")
 _squishSoundPath = NodePath("SquishSoundPlayer")
-_burnSoundPath = NodePath("BurnSoundPlayer")
+_deathSoundPath = NodePath("DeathSoundPlayer")
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
@@ -85,7 +85,7 @@ scale = Vector2( 0.8, 0.8 )
 [node name="SquishSoundPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 
-[node name="BurnSoundPlayer" type="AudioStreamPlayer" parent="."]
+[node name="DeathSoundPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="OnAnimationFinished"]
