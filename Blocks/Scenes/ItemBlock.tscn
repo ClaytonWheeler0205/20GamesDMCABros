@@ -67,7 +67,8 @@ extents = Vector2( 8, 4 )
 
 [node name="ItemBlock" type="StaticBody2D"]
 z_index = 1
-collision_mask = 2
+collision_layer = 8
+collision_mask = 34
 script = ExtResource( 5 )
 _hitboxPath = NodePath("HitboxComponent")
 _bounceAnimationPath = NodePath("BounceAnimation")
@@ -104,7 +105,9 @@ anims/bounce = SubResource( 4 )
 [node name="BrickHitPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 
-[node name="DamageComponent" type="Area2D" parent="." groups=["BlockDamage"]]
+[node name="DamageComponent" type="Area2D" parent="." groups=["block_damage"]]
+collision_layer = 64
+collision_mask = 32
 
 [node name="BlockDamageCollision" type="CollisionShape2D" parent="DamageComponent"]
 position = Vector2( 0, -12 )

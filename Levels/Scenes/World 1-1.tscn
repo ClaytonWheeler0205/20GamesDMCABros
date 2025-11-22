@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Levels/Art/OverworldTiles.png" type="Texture" id=1]
 [ext_resource path="res://Blocks/Scenes/Brick.tscn" type="PackedScene" id=2]
@@ -116,6 +116,12 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 2/z_index = 0
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 16, 16 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 24, 16 )
 
 [node name="World 1-1" type="TileMap"]
 z_index = 1
@@ -491,3 +497,18 @@ position = Vector2( 2792, 328 )
 
 [node name="Castanea16" parent="Enemies" instance=ExtResource( 6 )]
 position = Vector2( 2816, 328 )
+
+[node name="DeathPits" type="Area2D" parent="." groups=["death_pit"]]
+collision_mask = 34
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathPits"]
+position = Vector2( 1120, 392 )
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="DeathPits"]
+position = Vector2( 2464, 392 )
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="DeathPits"]
+position = Vector2( 1400, 392 )
+shape = SubResource( 11 )

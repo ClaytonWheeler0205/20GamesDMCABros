@@ -14,6 +14,17 @@ namespace Game
     {
         [Export]
         private float _speed = 90.0f;
+        public float Speed
+        {
+            set
+            {
+                if (value <= 0.0f)
+                {
+                    return;
+                }
+                _speed = value;
+            }
+        }
         [Export]
         private NodePath _wallDetectorPath;
         private RayCast2D _wallDetectorReference;
@@ -23,10 +34,10 @@ namespace Game
         }
         [Export]
         private Direction _movementDirection = Direction.Right;
-        protected Direction MovementDirection
+        public Direction MovementDirection
         {
             get { return _movementDirection; }
-            set { _movementDirection = value; }
+            protected set { _movementDirection = value; }
         }
         private KinematicBody2D _bodyToMove;
         public KinematicBody2D BodyToMove
@@ -46,9 +57,9 @@ namespace Game
             set { _shouldMove = value; }
         }
         private Vector2 _velocity = new Vector2();
-        protected Vector2 Velocity
+        public Vector2 Velocity
         {
-            get { return _velocity; }
+            protected get { return _velocity; }
             set { _velocity = value; }
         }
 

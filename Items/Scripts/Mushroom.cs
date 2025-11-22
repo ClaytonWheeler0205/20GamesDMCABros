@@ -57,7 +57,7 @@ namespace Game.Items
 
         public override void OnAreaEntered(Area2D area)
         {
-            if (!area.IsInGroup("BlockDamage"))
+            if (!area.IsInGroup("block_damage"))
             {
                 return;
             }

@@ -1,12 +1,18 @@
 using Game.Player;
+using Game.Projectiles;
 using Godot;
 using Util.ExtensionMethods;
 
 namespace Game.Enemies
 {
 
-    public class Castanea : Enemy, Jumpable
+    public class Castanea : Enemy, Jumpable, Burnable, Perishable
     {
+        public CollisionShape2D EnemyHitbox
+        {
+            get { return _hitboxReference; }
+        }
+
         [Export]
         private NodePath _movementPath;
         private BasicMovement _movementReference;
@@ -14,8 +20,15 @@ namespace Game.Enemies
         private NodePath _hitboxPath;
         private CollisionShape2D _hitboxReference;
         [Export]
+        private NodePath _physicalHitboxPath;
+        private CollisionShape2D _physicalHitboxReference;
+        [Export]
         private NodePath _squishSoundPath;
         private AudioStreamPlayer _squishSoundReference;
+        [Export]
+        private NodePath _burnSoundPath;
+        private AudioStreamPlayer _burnSoundReference;
+        private float _deathBounceForce = -250.0f;
 
         public override void _Ready()
         {
@@ -29,6 +42,8 @@ namespace Game.Enemies
             _movementReference = GetNode<BasicMovement>(_movementPath);
             _hitboxReference = GetNode<CollisionShape2D>(_hitboxPath);
             _squishSoundReference = GetNode<AudioStreamPlayer>(_squishSoundPath);
+            _physicalHitboxReference = GetNode<CollisionShape2D>(_physicalHitboxPath);
+            _burnSoundReference = GetNode<AudioStreamPlayer>(_burnSoundPath);
         }
 
         public void Squish(Vito jumpingPlayer)
@@ -39,22 +54,54 @@ namespace Game.Enemies
             _movementReference.ShouldMove = false;
             _squishSoundReference.Play();
         }
+        public void Burn()
+        {
+            Perish();
+        }
+
+        public void Perish()
+        {
+            EnemyHitbox.SetDeferred("disabled", true);
+            _physicalHitboxReference.SetDeferred("disabled", true);
+            EnemyVisualReference.FlipV = true;
+            _movementReference.Speed = 0.0f;
+            _movementReference.Velocity = new Vector2(0.0f, _deathBounceForce);
+            _burnSoundReference.Play();
+        }
 
         public override void OnBodyEntered(Node body)
         {
+            if (!EnemyScreenDetectorReference.IsOnScreen())
+            {
+                return;
+            }
             if (body.IsInGroup("player"))
             {
                 HandlePlayerCollision(body);
-            }
-            else if (body.IsInGroup("fire"))
-            {
-                GD.Print("Burned!");
             }
             else if (body.IsInGroup("ice"))
             {
                 GD.Print("Frozen!");
             }
+            else if (body is Fireball fireball)
+            {
+                fireball.DestroyFireball();
+                Burn();
+            }
         }
+
+        public override void OnAreaEntered(Area2D area)
+        {
+            if (area.IsInGroup("block_damage"))
+            {
+                Perish();
+            }
+            else if (area.IsInGroup("death_pit"))
+            {
+                this.SafeQueueFree();
+            }
+        }
+
 
         private void HandlePlayerCollision(Node playerNode)
         {
@@ -79,6 +126,10 @@ namespace Game.Enemies
 
         public override void OnScreenExited()
         {
+            if (_movementReference.MovementDirection == Direction.Left)
+            {
+                return;
+            }
             this.SafeQueueFree();
         }
 

@@ -47,6 +47,7 @@ extents = Vector2( 8, 4 )
 
 [node name="Brick" type="StaticBody2D"]
 z_index = 1
+collision_layer = 8
 collision_mask = 2
 script = ExtResource( 4 )
 _hitboxPath = NodePath("HitboxComponent")
@@ -83,7 +84,9 @@ stream = ExtResource( 3 )
 [node name="BrickBreakPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 
-[node name="DamageComponent" type="Area2D" parent="." groups=["BlockDamage"]]
+[node name="DamageComponent" type="Area2D" parent="." groups=["block_damage"]]
+collision_layer = 64
+collision_mask = 32
 
 [node name="BlockDamageCollision" type="CollisionShape2D" parent="DamageComponent"]
 position = Vector2( 0, -12 )

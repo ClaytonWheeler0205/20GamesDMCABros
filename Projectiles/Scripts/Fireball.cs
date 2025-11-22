@@ -12,9 +12,6 @@ namespace Game.Projectiles
 
     public abstract class Fireball : KinematicBody2D
     {
-        [Signal]
-        public delegate void FireballDestroyed();
-
         [Export]
         private NodePath _movementPath;
         private BouncyMovement _movementReference;
@@ -42,6 +39,13 @@ namespace Game.Projectiles
         protected RayCast2D BottomWallDetectorReference
         {
             get { return _bottomWallDetectorReference; }
+        }
+        [Export]
+        private NodePath _physicalHitboxPath;
+        private CollisionShape2D _physicalHitboxReference;
+        protected CollisionShape2D PhysicalHitboxReference
+        {
+            get { return _physicalHitboxReference; }
         }
         [Export]
         private NodePath _hitboxPath;
@@ -96,6 +100,7 @@ namespace Game.Projectiles
             _topWallDetectorReference = GetNode<RayCast2D>(_topWallDetectorPath);
             _bottomWallDetectorReference = GetNode<RayCast2D>(_bottomWallDetectorPath);
             _hitboxReference = GetNode<CollisionShape2D>(_hitboxPath);
+            _physicalHitboxReference = GetNode<CollisionShape2D>(_physicalHitboxPath);
             _fireballSoundReference = GetNode<AudioStreamPlayer>(_fireballSoundPath);
         }
 
@@ -138,9 +143,13 @@ namespace Game.Projectiles
             _visualReference.FlipH = _movementDirection == Direction.Left;
         }
 
-        protected void DestroyFireball()
+        public void DestroyFireball()
         {
             _movementReference.CanMove = false;
+            _hitboxReference.SetDeferred("disabled", true);
+            _physicalHitboxReference.SetDeferred("disabled", true);
+            _topWallDetectorReference.Enabled = false;
+            _bottomWallDetectorReference.Enabled = true;
             _visualReference.Play("explosion");
         }
 

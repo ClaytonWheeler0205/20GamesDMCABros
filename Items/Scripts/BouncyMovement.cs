@@ -52,14 +52,15 @@ namespace Game.Items
 
         public override void _PhysicsProcess(float delta)
         {
-            if (_canMove)
+            if (!_canMove)
             {
-                _velocity.y += GlobalWorldData.GRAVITY * delta;
-                KinematicCollision2D collision = _bodyToMove.MoveAndCollide(delta * _velocity);
-                if (collision.IsValid())
-                {
-                    HandleCollision(collision);
-                }
+                return;
+            }
+            _velocity.y += GlobalWorldData.GRAVITY * delta;
+            KinematicCollision2D collision = _bodyToMove.MoveAndCollide(delta * _velocity);
+            if (collision.IsValid())
+            {
+                HandleCollision(collision);
             }
         }
 
