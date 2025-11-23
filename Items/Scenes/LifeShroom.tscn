@@ -73,7 +73,8 @@ disabled = true
 
 [node name="LifeText" type="Sprite" parent="."]
 visible = false
-z_index = 2
+z_index = 1
+z_as_relative = false
 texture = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

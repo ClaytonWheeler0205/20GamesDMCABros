@@ -243,6 +243,7 @@ namespace Game.Player
 
         public override void ShootFireball()
         {
+            //TODO: fix the bug with the fireball factory where its position can be above or below the usual position
             if (!HasFlower || !CanThrow)
             {
                 return;

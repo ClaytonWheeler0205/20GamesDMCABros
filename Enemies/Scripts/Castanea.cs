@@ -1,3 +1,4 @@
+using Game.Buses;
 using Game.Player;
 using Game.Projectiles;
 using Godot;
@@ -11,6 +12,10 @@ namespace Game.Enemies
         public CollisionShape2D EnemyHitbox
         {
             get { return _hitboxReference; }
+        }
+        public int PerishPoints
+        {
+            get { return _perishPoints; }
         }
 
         [Export]
@@ -29,6 +34,8 @@ namespace Game.Enemies
         private NodePath _deathSoundPath;
         private AudioStreamPlayer _deathSoundReference;
         private float _deathBounceForce = -250.0f;
+        [Export]
+        private int _perishPoints = 100;
 
         public override void _Ready()
         {
@@ -61,6 +68,8 @@ namespace Game.Enemies
 
         public void Perish()
         {
+            PointsEventBus.Instance.EmitSignal("PointsGained", _perishPoints);
+            PointsTextFactory.CreatePointTextFromEnemy(_perishPoints, GlobalPosition);
             EnemyHitbox.SetDeferred("disabled", true);
             _physicalHitboxReference.SetDeferred("disabled", true);
             EnemyVisualReference.FlipV = true;

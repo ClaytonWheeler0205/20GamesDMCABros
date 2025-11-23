@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Game/Scripts/PointText.cs" type="Script" id=1]
+
+[sub_resource type="Animation" id=1]
+resource_name = "point_float"
+length = 0.57
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.57 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -16 ) ]
+}
+
+[node name="PointText" type="Node2D"]
+z_index = 1
+z_as_relative = false
+script = ExtResource( 1 )
+_pointVisualPath = NodePath("PointText")
+
+[node name="PointText" type="Sprite" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../PointText")
+autoplay = "point_float"
+anims/point_float = SubResource( 1 )
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

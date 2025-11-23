@@ -82,6 +82,8 @@ speed_scale = 2.5
 [node name="PointTextSprite" type="Sprite" parent="."]
 visible = false
 position = Vector2( 0, -48 )
+z_index = 1
+z_as_relative = false
 texture = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
