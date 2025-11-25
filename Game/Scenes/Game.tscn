@@ -18,7 +18,8 @@ _playerPath = NodePath("Vito")
 [node name="PlayerController" parent="." instance=ExtResource( 2 )]
 
 [node name="Vito" parent="." instance=ExtResource( 1 )]
-position = Vector2( 128, 329 )
+position = Vector2( 128, 328 )
+z_index = 1
 
 [node name="Camera" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, 233 )

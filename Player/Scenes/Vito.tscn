@@ -203,19 +203,19 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=21]
-extents = Vector2( 7.5, 13.5 )
+extents = Vector2( 6, 12 )
 
 [sub_resource type="RectangleShape2D" id=23]
-extents = Vector2( 7.5, 8.5 )
+extents = Vector2( 6, 6 )
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 4.5, 1.5 )
 
 [sub_resource type="RectangleShape2D" id=22]
-extents = Vector2( 5.5, 2.5 )
+extents = Vector2( 6, 4 )
 
 [sub_resource type="RectangleShape2D" id=24]
-extents = Vector2( 5.5, 2.5 )
+extents = Vector2( 6, 5 )
 
 [sub_resource type="Animation" id=29]
 resource_name = "fire_transform"
@@ -370,13 +370,13 @@ animation = "idle"
 
 [node name="SuperPhysicalCollision" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 0.5, -5.5 )
+position = Vector2( 0, -4 )
 shape = SubResource( 21 )
 disabled = true
 
 [node name="CrouchedPhysicalCollision" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 0.5, -0.5 )
+position = Vector2( 0, 2 )
 shape = SubResource( 23 )
 disabled = true
 
@@ -427,13 +427,13 @@ shape = SubResource( 6 )
 
 [node name="SuperCollisionShape" type="CollisionShape2D" parent="JumpInteraction"]
 visible = false
-position = Vector2( 0.5, -21.5 )
+position = Vector2( 0, -20 )
 shape = SubResource( 22 )
 disabled = true
 
 [node name="CrouchedCollisionShape" type="CollisionShape2D" parent="JumpInteraction"]
 visible = false
-position = Vector2( 1.5, -11.5 )
+position = Vector2( 0, -9 )
 shape = SubResource( 24 )
 disabled = true
 
@@ -447,15 +447,22 @@ margin_top = -40.0
 margin_right = 40.0
 script = ExtResource( 22 )
 _directionDisplayPath = NodePath("VitoProperties/DirectionLabel")
+_groundDisplayPath = NodePath("VitoProperties/GroundLabel")
 
 [node name="VitoProperties" type="VBoxContainer" parent="DebugWindow/Control"]
 margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="DirectionLabel" type="Label" parent="DebugWindow/Control/VitoProperties"]
-margin_right = 75.0
+margin_right = 78.0
 margin_bottom = 14.0
 text = "Direction: 0"
+
+[node name="GroundLabel" type="Label" parent="DebugWindow/Control/VitoProperties"]
+margin_top = 18.0
+margin_right = 78.0
+margin_bottom = 32.0
+text = "On Ground: "
 
 [node name="FireballFactory" type="Position2D" parent="."]
 position = Vector2( 7, -10 )
@@ -492,12 +499,21 @@ one_shot = true
 
 [node name="EnemyDetector" type="RayCast2D" parent="EnemyDetectors"]
 position = Vector2( -5, 8 )
+cast_to = Vector2( 0, 16 )
+collision_mask = 32
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="EnemyDetector3" type="RayCast2D" parent="EnemyDetectors"]
+position = Vector2( 0.5, 8 )
+cast_to = Vector2( 0, 16 )
 collision_mask = 32
 collide_with_areas = true
 collide_with_bodies = false
 
 [node name="EnemyDetector2" type="RayCast2D" parent="EnemyDetectors"]
 position = Vector2( 6, 8 )
+cast_to = Vector2( 0, 16 )
 collision_mask = 32
 collide_with_areas = true
 collide_with_bodies = false

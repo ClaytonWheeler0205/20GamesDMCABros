@@ -26,6 +26,7 @@ script = ExtResource( 1 )
 _pointVisualPath = NodePath("PointText")
 
 [node name="PointText" type="Sprite" parent="."]
+z_index = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../PointText")

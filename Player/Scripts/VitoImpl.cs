@@ -3,7 +3,7 @@ using Game.Debug;
 using Game.Projectiles;
 using Godot;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+using Game.Enemies;
 
 namespace Game.Player
 {
@@ -127,6 +127,11 @@ namespace Game.Player
             {
                 JumpHitDataReference.HasHitBlock = false;
             }
+            if (!IsHittingEnemyAbove() && IsOnFloor())
+            {
+                JumpChainCount = 0;
+            }
+            _debug.DisplayGround(IsOnFloor());
             if (_velocity.y >= 0)
             {
                 EnableEnemyRays();
@@ -156,9 +161,21 @@ namespace Game.Player
             }
         }
 
+        public override bool IsHittingEnemyAbove()
+        {
+            foreach (RayCast2D ray in _enemyRayCasts)
+            {
+                if (ray.IsColliding())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void EnableEnemyRays()
         {
-            foreach(RayCast2D ray in _enemyRayCasts)
+            foreach (RayCast2D ray in _enemyRayCasts)
             {
                 ray.Enabled = true;
             }
@@ -166,7 +183,7 @@ namespace Game.Player
 
         private void DisableEnemyRays()
         {
-            foreach(RayCast2D ray in _enemyRayCasts)
+            foreach (RayCast2D ray in _enemyRayCasts)
             {
                 ray.Enabled = false;
             }
@@ -354,21 +371,33 @@ namespace Game.Player
             }
         }
 
-        public override bool IsHittingEnemyAbove()
-        {
-            foreach (RayCast2D ray in _enemyRayCasts)
-            {
-                if (ray.IsColliding())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public override void Bounce()
+        public override void Bounce(Area2D enemyBouncedOnHitbox)
         {
             _velocity.y = JumpComponentReference.BouncePower;
+            JumpChainCount++;
+            if (enemyBouncedOnHitbox.IsInGroup("castanea"))
+            {
+                CheckForMultipleCastaneaStomps(enemyBouncedOnHitbox);
+            }
+        }
+
+        private void CheckForMultipleCastaneaStomps(Area2D currentEnemyArea)
+        {
+            foreach(RayCast2D ray in _enemyRayCasts)
+            {
+                if (ray.GetCollider() is Area2D enemyArea)
+                {
+                    if (IsValidForExtraJumpPoints(currentEnemyArea, enemyArea))
+                    {
+                        JumpChainCount++;
+                    }
+                }
+            }
+        }
+        
+        private bool IsValidForExtraJumpPoints(Area2D currentEnemyArea, Area2D otherEnemyArea)
+        {
+            return otherEnemyArea.IsInGroup("castanea") && currentEnemyArea != otherEnemyArea && JumpChainCount < 3;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Game.Enemies;
 using Game.Projectiles;
 using Godot;
 
@@ -100,6 +101,19 @@ namespace Game.Player
             get { return _isInvincible; }
             protected set { _isInvincible = value; }
         }
+        private int _jumpChainCount = 0;
+        public int JumpChainCount
+        {
+            get { return _jumpChainCount; }
+            protected set
+            {
+                if (value < 0)
+                {
+                    return;
+                }
+                _jumpChainCount = value;
+            }
+        }
 
         public override void _Ready()
         {
@@ -154,6 +168,6 @@ namespace Game.Player
         public abstract Vector2 GetVelocityVector();
         public abstract void SetMovementDirection(float newDirection);
         public abstract bool IsHittingEnemyAbove();
-        public abstract void Bounce();
+        public abstract void Bounce(Area2D enemyBouncedOnHitbox);
     }
 }

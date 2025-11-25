@@ -1,6 +1,4 @@
-using System.Xml.Serialization;
 using Game.Buses;
-using Game.Player;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -37,7 +35,7 @@ namespace Game.Blocks
         {
             BounceBrick();
         }
-        
+
         public void OnBlockHitByBigPlayer()
         {
             BreakBrick();
@@ -53,7 +51,6 @@ namespace Game.Blocks
         private async void BreakBrick()
         {
             InteractionHitBoxReference.SetDeferred("disabled", true);
-            _physicalHitBoxReference.SetDeferred("disabled", true);
             BlockVisualReference.Visible = false;
             _brickBreakSoundReference.Play();
             PackedScene particleScene = GD.Load<PackedScene>("res://Blocks/Scenes/BrickParticle.tscn");
@@ -63,6 +60,7 @@ namespace Game.Blocks
             PointsEventBus.Instance.EmitSignal("PointsGained", BRICK_POINT_VALUE);
             BlockDamageReference.SetDeferred("disabled", false);
             await ToSignal(GetTree().CreateTimer(0.25f), "timeout");
+            _physicalHitBoxReference.SetDeferred("disabled", true);
             BlockDamageReference.SetDeferred("disabled", true);
         }
 

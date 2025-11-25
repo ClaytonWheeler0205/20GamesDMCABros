@@ -36,6 +36,8 @@ namespace Game.Enemies
         private float _deathBounceForce = -250.0f;
         [Export]
         private int _perishPoints = 100;
+        [Export]
+        private int[] _pointsChain;
 
         public override void _Ready()
         {
@@ -55,12 +57,24 @@ namespace Game.Enemies
 
         public void Squish(Vito jumpingPlayer)
         {
-            jumpingPlayer.Bounce();
+            AwardJumpingPoints(jumpingPlayer);
+            jumpingPlayer.Bounce(EnemyHitboxAreaReference);
             EnemyVisualReference.Play("squish");
             EnemyHitbox.SetDeferred("disabled", true);
             _movementReference.ShouldMove = false;
             _squishSoundReference.Play();
         }
+
+        public void AwardJumpingPoints(Vito jumpingPlayer)
+        {
+            if (jumpingPlayer.JumpChainCount >= _pointsChain.Length)
+            {
+                PointsTextFactory.CreatePointTextFromEnemy(0, GlobalPosition);
+                return;
+            }
+            PointsTextFactory.CreatePointTextFromEnemy(_pointsChain[jumpingPlayer.JumpChainCount], GlobalPosition);
+        }
+
         public void Burn()
         {
             Perish();
@@ -120,7 +134,7 @@ namespace Game.Enemies
                 {
                     Perish();
                 }
-                else if (vito.IsHittingEnemyAbove())
+                else if (vito.GetVelocityVector().y > 0 || vito.IsHittingEnemyAbove())
                 {
                     Squish(vito);
                 }

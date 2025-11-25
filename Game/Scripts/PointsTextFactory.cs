@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 using System.Collections.Generic;
 using Util.ExtensionMethods;
@@ -48,7 +49,10 @@ namespace Game
                 OneShotAudio _lifeSound = _lifeSoundScene.Instance<OneShotAudio>();
                 _lifeSound.Stream = _lifeSoundStream;
                 _instance.AddChild(_lifeSound);
+                LivesEventBus.Instance.EmitSignal("LifeGained");
+                return;
             }
+            PointsEventBus.Instance.EmitSignal("PointsGained", pointValue);
         }
     }
 }
