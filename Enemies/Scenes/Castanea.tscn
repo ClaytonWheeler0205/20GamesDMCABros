@@ -36,7 +36,7 @@ extents = Vector2( 5.5, 3.5 )
 
 [node name="Castanea" type="KinematicBody2D" groups=["castanea", "enemy"]]
 collision_layer = 32
-collision_mask = 73
+collision_mask = 41
 script = ExtResource( 4 )
 _enemyVisualPath = NodePath("AnimatedSprite")
 _enemyScreenDetectorPath = NodePath("VisibilityNotifier2D")
@@ -58,7 +58,7 @@ shape = SubResource( 4 )
 
 [node name="EnemyHitbox" type="Area2D" parent="." groups=["castanea", "enemy"]]
 collision_layer = 32
-collision_mask = 18
+collision_mask = 82
 
 [node name="HitboxCollision" type="CollisionShape2D" parent="EnemyHitbox"]
 position = Vector2( 0.5, 0.5 )
