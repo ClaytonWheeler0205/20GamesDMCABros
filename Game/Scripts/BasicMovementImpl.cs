@@ -16,6 +16,7 @@ public class BasicMovementImpl : BasicMovement
                 break;
         }
         WallDetectorReference.CastTo = -1 * WallDetectorReference.CastTo;
+        EmitSignal("DirectionFlipped");
     }
 
 }

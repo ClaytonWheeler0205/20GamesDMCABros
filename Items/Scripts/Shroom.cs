@@ -55,6 +55,7 @@ namespace Game.Items
                 _physicalCollisionReference.SetDeferred("disabled", false);
                 _interactionCollisionReference.SetDeferred("disabled", false);
                 _movementReference.ShouldMove = true;
+                _movementReference.ShouldFall = true;
             }
         }
 

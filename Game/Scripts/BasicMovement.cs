@@ -12,6 +12,9 @@ namespace Game
 
     public abstract class BasicMovement : Node2D
     {
+        [Signal]
+        public delegate void DirectionFlipped();
+
         [Export]
         private float _speed = 90.0f;
         public float Speed
@@ -54,7 +57,28 @@ namespace Game
         private bool _shouldMove = false;
         public bool ShouldMove
         {
-            set { _shouldMove = value; }
+            get { return _shouldMove; }
+            set
+            {
+                if (!value)
+                {
+                    _velocity.x = 0.0f;
+                }
+                _shouldMove = value;
+            }
+        }
+        private bool _shouldFall = false;
+        public bool ShouldFall
+        {
+            get { return _shouldFall; }
+            set
+            {
+                if (!value)
+                {
+                    _velocity.y = 0.0f;
+                }
+                _shouldFall = value;
+            }
         }
         private Vector2 _velocity = new Vector2();
         public Vector2 Velocity
@@ -74,16 +98,23 @@ namespace Game
             _wallDetectorReference = GetNode<RayCast2D>(_wallDetectorPath);
         }
 
-        public override void _Process(float delta)
+        public override void _PhysicsProcess(float delta)
         {
             if (_shouldMove)
             {
                 _velocity.x = (int)_movementDirection * _speed;
+
+            }
+            if (_shouldFall)
+            {
                 _velocity.y += GlobalWorldData.GRAVITY * delta;
                 if (_velocity.y > GlobalWorldData.TERMINAL_VELOCITY)
                 {
                     _velocity.y = GlobalWorldData.TERMINAL_VELOCITY;
                 }
+            }
+            if (_shouldMove || _shouldFall)
+            {
                 _velocity = _bodyToMove.MoveAndSlide(_velocity, Vector2.Up);
                 CheckForDirectionChange();
             }

@@ -4,6 +4,7 @@ using Game.Projectiles;
 using Godot;
 using System.Collections.Generic;
 using Game.Enemies;
+using System.Runtime.Serialization.Formatters;
 
 namespace Game.Player
 {
@@ -119,6 +120,10 @@ namespace Game.Player
                 _velocity.y = JumpComponentReference.TerminalVelocity;
             }
             _velocity.x = MovementComponentReference.GetMovementSpeed(_velocity.x);
+            if (Mathf.Abs(_velocity.x) < 0.5f)
+            {
+                _velocity.x = 0.0f;
+            }
             AttemptCornerCorrection(3);
             _velocity = MoveAndSlide(_velocity, Vector2.Up);
             JumpHitDataReference.VerticalVelocity = _velocity.y;

@@ -36,7 +36,7 @@ extents = Vector2( 5.5, 3.5 )
 
 [node name="Castanea" type="KinematicBody2D" groups=["castanea", "enemy"]]
 collision_layer = 32
-collision_mask = 41
+collision_mask = 9
 script = ExtResource( 4 )
 _enemyVisualPath = NodePath("AnimatedSprite")
 _enemyScreenDetectorPath = NodePath("VisibilityNotifier2D")
@@ -70,15 +70,14 @@ script = ExtResource( 2 )
 _speed = 45.0
 _wallDetectorPath = NodePath("WallDetector")
 _movementDirection = 9223372036854775807
-_rightRayLocation = Vector2( 7.25, 7 )
-_leftRayLocation = Vector2( -7.25, 7 )
+_rightRayLocation = Vector2( 8, 8.5 )
+_leftRayLocation = Vector2( -8, 8.5 )
 
 [node name="WallDetector" type="RayCast2D" parent="BasicMovement"]
-position = Vector2( 7.25, 7 )
+position = Vector2( 8, 8.5 )
 enabled = true
 cast_to = Vector2( 3, 0 )
 collision_mask = 41
-collide_with_areas = true
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 position = Vector2( 4.76837e-07, -4.76837e-07 )

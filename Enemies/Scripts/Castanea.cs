@@ -77,13 +77,13 @@ namespace Game.Enemies
 
         public void Burn()
         {
+            PointsTextFactory.CreatePointTextFromEnemy(_perishPoints, GlobalPosition);
             Perish();
         }
 
         public void Perish()
         {
             PointsEventBus.Instance.EmitSignal("PointsGained", _perishPoints);
-            PointsTextFactory.CreatePointTextFromEnemy(_perishPoints, GlobalPosition);
             EnemyHitbox.SetDeferred("disabled", true);
             _physicalHitboxReference.SetDeferred("disabled", true);
             EnemyVisualReference.FlipV = true;
@@ -117,6 +117,7 @@ namespace Game.Enemies
         {
             if (area.IsInGroup("block_damage"))
             {
+                PointsTextFactory.CreatePointTextFromEnemy(_perishPoints, GlobalPosition);
                 Perish();
             }
             else if (area.IsInGroup("death_pit"))
@@ -132,6 +133,7 @@ namespace Game.Enemies
             {
                 if (vito.IsInvincible)
                 {
+                    PointsTextFactory.CreatePointTextFromEnemy(_perishPoints, GlobalPosition);
                     Perish();
                 }
                 else if (vito.GetVelocityVector().y > 0 || vito.IsHittingEnemyAbove())
@@ -148,12 +150,13 @@ namespace Game.Enemies
         public override void OnScreenEntered()
         {
             _movementReference.ShouldMove = true;
+            _movementReference.ShouldFall = true;
             EnemyVisualReference.Play("walk");
         }
 
         public override void OnScreenExited()
         {
-            if (_movementReference.MovementDirection == Direction.Left)
+            if (_movementReference.MovementDirection == Direction.Right)
             {
                 return;
             }
