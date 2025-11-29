@@ -105,7 +105,7 @@ namespace Game.Player
         public int JumpChainCount
         {
             get { return _jumpChainCount; }
-            protected set
+            set
             {
                 if (value < 0)
                 {

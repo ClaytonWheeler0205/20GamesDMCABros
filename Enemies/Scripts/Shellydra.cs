@@ -57,6 +57,7 @@ namespace Game.Enemies
         [Export]
         private int[] _shellPointsChain;
         private int _shellChainCount = 0;
+        private const int SHELL_JUMP_CHAIN_MINIMUM = 3;
         [Export]
         private int _shellKickPoints = 400;
 
@@ -84,13 +85,15 @@ namespace Game.Enemies
 
         public void Squish(Vito jumpingPlayer)
         {
-            AwardJumpingPoints(jumpingPlayer);
-            jumpingPlayer.Bounce(EnemyHitboxAreaReference);
             if (_inShell)
             {
+                HandleShellJumpPoints(jumpingPlayer);
                 HandleShellJump(jumpingPlayer.GlobalPosition.x);
+                jumpingPlayer.Bounce(EnemyHitboxAreaReference);
                 return;
             }
+            AwardJumpingPoints(jumpingPlayer);
+            jumpingPlayer.Bounce(EnemyHitboxAreaReference);
             HideInShell();
             _squishSoundReference.Play();
         }
@@ -105,6 +108,23 @@ namespace Game.Enemies
             _hitboxReference.SetDeferred("disabled", true);
             await ToSignal(GetTree().CreateTimer(0.25f), "timeout");
             _shellHitboxReference.SetDeferred("disabled", false);
+        }
+
+        private void HandleShellJumpPoints(Vito jumpingPlayer)
+        {
+            if (jumpingPlayer.JumpChainCount == 0)
+            {
+                PointsTextFactory.CreatePointTextFromEnemy(_shellKickPoints, GlobalPosition);
+            }
+            else if (jumpingPlayer.JumpChainCount <= SHELL_JUMP_CHAIN_MINIMUM)
+            {
+                PointsTextFactory.CreatePointTextFromEnemy(_pointsChain[SHELL_JUMP_CHAIN_MINIMUM], GlobalPosition);
+                jumpingPlayer.JumpChainCount = SHELL_JUMP_CHAIN_MINIMUM;
+            }
+            else
+            {
+                AwardJumpingPoints(jumpingPlayer);
+            }
         }
 
         private void HandleShellJump(float jumpingPlayerXPosition)
