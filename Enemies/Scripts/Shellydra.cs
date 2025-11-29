@@ -95,6 +95,10 @@ namespace Game.Enemies
             AwardJumpingPoints(jumpingPlayer);
             jumpingPlayer.Bounce(EnemyHitboxAreaReference);
             HideInShell();
+            if (!IsOnFloor())
+            {
+                EnemyVisualReference.FlipV = true;
+            }
             _squishSoundReference.Play();
         }
 
@@ -166,7 +170,10 @@ namespace Game.Enemies
             EnemyVisualReference.FlipV = true;
             _movementReference.Speed = 0.0f;
             _movementReference.Velocity = new Vector2(0.0f, _deathBounceForce);
-            _movementReference.ShouldMove = true;
+            _movementReference.ShouldMove = false;
+            _movementReference.ShouldFall = true;
+            _shellMovementReference.ShouldMove = false;
+            _shellMovementReference.ShouldFall = false;
             _deathSoundReference.Play();
         }
 
@@ -240,7 +247,9 @@ namespace Game.Enemies
         {
             if (area.IsInGroup("block_damage"))
             {
-                Perish();
+                HideInShell();
+                _movementReference.Velocity = new Vector2(0, _deathBounceForce);
+                EnemyVisualReference.FlipV = true;
             }
             else if (area.IsInGroup("death_pit"))
             {
@@ -294,7 +303,7 @@ namespace Game.Enemies
 
         private bool ShouldStayInLevel()
         {
-            return (_movementReference.MovementDirection == Direction.Right && _movementReference.ShouldMove) || (_shellMovementReference.MovementDirection == Direction.Right && _shellMovementReference.ShouldMove) || !_inShell;
+            return ((_movementReference.MovementDirection == Direction.Right && _movementReference.ShouldMove) || (_shellMovementReference.MovementDirection == Direction.Right && _shellMovementReference.ShouldMove)) && !_inShell;
         }
 
         public void OnDirectionFlipped()

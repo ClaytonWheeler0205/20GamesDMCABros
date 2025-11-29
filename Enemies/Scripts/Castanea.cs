@@ -89,6 +89,7 @@ namespace Game.Enemies
             EnemyVisualReference.FlipV = true;
             _movementReference.Speed = 0.0f;
             _movementReference.Velocity = new Vector2(0.0f, _deathBounceForce);
+            _movementReference.ShouldMove = false;
             _deathSoundReference.Play();
         }
 
