@@ -108,6 +108,7 @@ collision_mask = 41
 script = ExtResource( 9 )
 _speed = 175.0
 _wallDetectorPath = NodePath("WallDetector")
+_movementDirection = 9223372036854775807
 _rightRayLocation = Vector2( 8.5, 10 )
 _leftRayLocation = Vector2( -8.5, 10 )
 _shellBounceSoundPath = NodePath("ShellBounceSoundPlayer")
@@ -135,9 +136,11 @@ stream = ExtResource( 5 )
 stream = ExtResource( 6 )
 
 [node name="ShellHideTimer" type="Timer" parent="."]
+wait_time = 4.0
 one_shot = true
 
 [node name="ShellShakingTimer" type="Timer" parent="."]
+wait_time = 3.0
 one_shot = true
 
 [connection signal="area_entered" from="EnemyHitbox" to="." method="OnAreaEntered"]
@@ -145,3 +148,5 @@ one_shot = true
 [connection signal="DirectionFlipped" from="BasicMovement" to="." method="OnDirectionFlipped"]
 [connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="OnScreenEntered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="OnScreenExited"]
+[connection signal="timeout" from="ShellHideTimer" to="." method="OnShellHideTimeout"]
+[connection signal="timeout" from="ShellShakingTimer" to="." method="OnShellShakeTimeout"]

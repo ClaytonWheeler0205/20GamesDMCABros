@@ -107,9 +107,13 @@ namespace Game.Enemies
             EnemyVisualReference.Stop();
             EnemyVisualReference.Animation = "shell";
             EnemyVisualReference.Offset = new Vector2(0, 5);
-            _inShell = true;
             _movementReference.ShouldMove = false;
+            _movementReference.ShouldFall = false;
+            _shellMovementReference.ShouldFall = true;
             _hitboxReference.SetDeferred("disabled", true);
+            _shellHideTimerReference.Start();
+            _shellShakeTimerReference.Start();
+            _inShell = true;
             await ToSignal(GetTree().CreateTimer(0.25f), "timeout");
             _shellHitboxReference.SetDeferred("disabled", false);
         }
@@ -135,6 +139,8 @@ namespace Game.Enemies
         {
             if (_shellMovementReference.ShouldMove)
             {
+                _shellHideTimerReference.Start();
+                _shellShakeTimerReference.Start();
                 _shellMovementReference.ShouldMove = false;
                 _squishSoundReference.Play();
             }
@@ -164,11 +170,12 @@ namespace Game.Enemies
             PointsEventBus.Instance.EmitSignal("PointsGained", _perishPoints);
             PointsTextFactory.CreatePointTextFromEnemy(_perishPoints, GlobalPosition);
             EnemyHitbox.SetDeferred("disabled", true);
+            _shellHitboxReference.SetDeferred("disabled", true);
             _physicalHitboxReference.SetDeferred("disabled", true);
             EnemyVisualReference.Stop();
+            EnemyVisualReference.Frame = 0;
             EnemyVisualReference.Animation = "shell";
             EnemyVisualReference.FlipV = true;
-            _movementReference.Speed = 0.0f;
             _movementReference.Velocity = new Vector2(0.0f, _deathBounceForce);
             _movementReference.ShouldMove = false;
             _movementReference.ShouldFall = true;
@@ -221,14 +228,21 @@ namespace Game.Enemies
 
         private void KickShell(float playerXPosition)
         {
-            if (playerXPosition > GlobalPosition.x)
+            if (ShouldFlipDirection(playerXPosition))
             {
                 _shellMovementReference.FlipDirection();
             }
-            _movementReference.ShouldFall = false;
             _shellMovementReference.ShouldMove = true;
-            _shellMovementReference.ShouldFall = true;
             _kickSoundReference.Play();
+            EnemyVisualReference.Stop();
+            EnemyVisualReference.Frame = 0;
+            _shellHideTimerReference.Stop();
+            _shellShakeTimerReference.Stop();
+        }
+
+        private bool ShouldFlipDirection(float playerXPosition)
+        {
+            return (playerXPosition > GlobalPosition.x && _shellMovementReference.MovementDirection == Direction.Right) || (playerXPosition <= GlobalPosition.x && _shellMovementReference.MovementDirection == Direction.Left);
         }
 
         private void HandleFireballCollision(Fireball fireball)
@@ -309,6 +323,28 @@ namespace Game.Enemies
         public void OnDirectionFlipped()
         {
             EnemyVisualReference.FlipH = !EnemyVisualReference.FlipH;
+        }
+
+        public void OnShellHideTimeout()
+        {
+
+            _shellMovementReference.ShouldMove = false;
+            _shellMovementReference.ShouldFall = false;
+            _movementReference.ShouldMove = true;
+            _movementReference.ShouldFall = true;
+            if (_movementReference.MovementDirection != _shellMovementReference.MovementDirection)
+            {
+                _movementReference.FlipDirection();
+            }
+            EnemyVisualReference.FlipV = false;
+            EnemyVisualReference.Offset = Vector2.Zero;
+            EnemyVisualReference.Play("walk");
+            _inShell = false;
+        }
+
+        public void OnShellShakeTimeout()
+        {
+            EnemyVisualReference.Play("shell");
         }
     }
 }
