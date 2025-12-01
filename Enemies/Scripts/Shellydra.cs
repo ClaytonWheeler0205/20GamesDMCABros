@@ -221,7 +221,11 @@ namespace Game.Enemies
                         KickShell(vito.GlobalPosition.x);
                         return;
                     }
-                    GD.Print("Took damage!");
+                    if (!vito.Damageable)
+                    {
+                        return;
+                    }
+                    vito.TakeDamage();
                 }
             }
         }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=67 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -28,6 +28,21 @@
 [ext_resource path="res://Player/Materials/vito_palette_material.tres" type="Material" id=26]
 [ext_resource path="res://Player/Scripts/VitoPaletteComponentImpl.cs" type="Script" id=27]
 [ext_resource path="res://Player/Scripts/StarComponentImpl.cs" type="Script" id=28]
+[ext_resource path="res://Player/Art/VitoShrink.png" type="Texture" id=29]
+[ext_resource path="res://Player/Audio/shrink.wav" type="AudioStream" id=30]
+[ext_resource path="res://Player/Art/VitoDeath.png" type="Texture" id=31]
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 29 )
+region = Rect2( 0, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 29 )
+region = Rect2( 16, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 29 )
+region = Rect2( 32, 0, 16, 32 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 8 )
@@ -43,6 +58,11 @@ region = Rect2( 32, 0, 16, 16 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
+"frames": [ ExtResource( 31 ) ],
+"loop": true,
+"name": "death",
+"speed": 5.0
+}, {
 "frames": [ ExtResource( 1 ) ],
 "loop": false,
 "name": "idle",
@@ -52,6 +72,11 @@ animations = [ {
 "loop": false,
 "name": "jump",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 32 ), SubResource( 33 ), SubResource( 32 ), SubResource( 33 ), SubResource( 32 ), SubResource( 33 ), SubResource( 32 ), SubResource( 33 ) ],
+"loop": false,
+"name": "shrink",
+"speed": 12.0
 }, {
 "frames": [ ExtResource( 9 ) ],
 "loop": false,
@@ -322,6 +347,38 @@ tracks/0/keys = {
 } ]
 }
 
+[sub_resource type="Animation" id=34]
+resource_name = "invincibility_flash"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[sub_resource type="Animation" id=35]
+resource_name = "death"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("SmallVisualComponent:offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -48 ), Vector2( 0, 240 ) ]
+}
+
 [node name="Vito" type="KinematicBody2D" groups=["player"]]
 material = ExtResource( 26 )
 collision_layer = 2
@@ -337,19 +394,26 @@ _paletteComponentPath = NodePath("PaletteComponent")
 _paletteAnimatorPath = NodePath("PaletteAnimationPlayer")
 _starComponentPath = NodePath("StarComponent")
 _enemyDetectorsPath = NodePath("EnemyDetectors")
+_shrinkSoundPlayerPath = NodePath("ShrinkSoundPlayer")
+_invincibilityFlashPlayerPath = NodePath("InvincibilityFlashPlayer")
+_invincibilityFlashTimerPath = NodePath("InvincibilityTimer")
+_deathAnimationPlayerPath = NodePath("DeathAnimationPlayer")
 _debugPath = NodePath("DebugWindow/Control")
 
 [node name="SmallVisualComponent" type="AnimatedSprite" parent="."]
+pause_mode = 1
 use_parent_material = true
 frames = SubResource( 2 )
 animation = "idle"
 script = ExtResource( 7 )
 
 [node name="SmallPhysicalCollision" type="CollisionShape2D" parent="."]
+pause_mode = 1
 position = Vector2( 0.5, 1.5 )
 shape = SubResource( 1 )
 
 [node name="SuperVisualComponent" type="Node2D" parent="."]
+pause_mode = 1
 visible = false
 use_parent_material = true
 script = ExtResource( 19 )
@@ -369,18 +433,21 @@ frames = SubResource( 10 )
 animation = "idle"
 
 [node name="SuperPhysicalCollision" type="CollisionShape2D" parent="."]
+pause_mode = 1
 visible = false
 position = Vector2( 0, -4 )
 shape = SubResource( 21 )
 disabled = true
 
 [node name="CrouchedPhysicalCollision" type="CollisionShape2D" parent="."]
+pause_mode = 1
 visible = false
 position = Vector2( 0, 2 )
 shape = SubResource( 23 )
 disabled = true
 
 [node name="JumpComponent" type="Node" parent="."]
+pause_mode = 1
 script = ExtResource( 3 )
 _jumpPower = -410.0
 _bouncePower = -225.0
@@ -401,6 +468,7 @@ one_shot = true
 stream = ExtResource( 5 )
 
 [node name="MovementComponent" type="Node" parent="."]
+pause_mode = 1
 script = ExtResource( 4 )
 _walkSpeed = 90.0
 _skiddingDeceleration = 0.1
@@ -417,6 +485,7 @@ process_mode = 0
 one_shot = true
 
 [node name="JumpInteraction" type="Area2D" parent="." groups=["player"]]
+pause_mode = 1
 collision_layer = 2
 collision_mask = 8
 script = ExtResource( 10 )
@@ -438,6 +507,7 @@ shape = SubResource( 24 )
 disabled = true
 
 [node name="DebugWindow" type="CanvasLayer" parent="."]
+pause_mode = 1
 visible = false
 
 [node name="Control" type="Control" parent="DebugWindow"]
@@ -465,11 +535,12 @@ margin_bottom = 32.0
 text = "On Ground: "
 
 [node name="FireballFactory" type="Position2D" parent="."]
+pause_mode = 1
 position = Vector2( 7, -10 )
 script = ExtResource( 25 )
 
 [node name="PaletteComponent" type="Node" parent="."]
-pause_mode = 2
+pause_mode = 1
 script = ExtResource( 27 )
 
 [node name="PaletteAnimationPlayer" type="AnimationPlayer" parent="."]
@@ -478,6 +549,7 @@ anims/fire_transform = SubResource( 29 )
 anims/invincibility_flash = SubResource( 30 )
 
 [node name="StarComponent" type="Node" parent="."]
+pause_mode = 1
 script = ExtResource( 28 )
 _invincibilityTimePath = NodePath("InvincibilityTimer")
 _musicTimePath = NodePath("MusicTimer")
@@ -496,6 +568,7 @@ wait_time = 11.0
 one_shot = true
 
 [node name="EnemyDetectors" type="Node2D" parent="."]
+pause_mode = 1
 
 [node name="EnemyDetector" type="RayCast2D" parent="EnemyDetectors"]
 position = Vector2( -5, 8 )
@@ -518,6 +591,23 @@ collision_mask = 32
 collide_with_areas = true
 collide_with_bodies = false
 
+[node name="ShrinkSoundPlayer" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 30 )
+
+[node name="InvincibilityFlashPlayer" type="AnimationPlayer" parent="."]
+pause_mode = 2
+playback_speed = 6.6
+anims/invincibility_flash = SubResource( 34 )
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+pause_mode = 1
+wait_time = 2.0
+
+[node name="DeathAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/death = SubResource( 35 )
+
+[connection signal="animation_finished" from="SmallVisualComponent" to="SmallVisualComponent" method="OnAnimationFinished"]
 [connection signal="animation_finished" from="SuperVisualComponent/BottomVisual" to="SuperVisualComponent" method="OnAnimationFinished"]
 [connection signal="timeout" from="JumpComponent/JumpBufferTimer" to="JumpComponent" method="OnBufferTimerTimeout"]
 [connection signal="timeout" from="JumpComponent/CoyoteTimer" to="JumpComponent" method="OnCoyoteTimerTimeout"]
@@ -526,3 +616,4 @@ collide_with_bodies = false
 [connection signal="timeout" from="StarComponent/InvincibilityTimer" to="." method="OnInvincibilityTimeTimeout"]
 [connection signal="timeout" from="StarComponent/InvincibilityTimer" to="StarComponent" method="OnInvincibilityTimeTimeout"]
 [connection signal="timeout" from="StarComponent/FastFlashTimer" to="StarComponent" method="OnFastFlashTimeTimeout"]
+[connection signal="timeout" from="InvincibilityTimer" to="." method="OnInvincibilityFlashTimeTimeout"]

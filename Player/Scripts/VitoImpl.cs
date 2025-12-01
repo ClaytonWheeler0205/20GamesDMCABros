@@ -19,6 +19,8 @@ namespace Game.Player
         [Export]
         private NodePath _debugPath;
         private VitoDebug _debug;
+        private bool _shouldMove = true;
+        private float _deathBounceForce = -100.0f;
 
         public override void _Ready()
         {
@@ -114,20 +116,15 @@ namespace Game.Player
 
         public override void _PhysicsProcess(float delta)
         {
-            _velocity.y += JumpComponentReference.GetGravity(_velocity.y) * delta;
-            if (_velocity.y > JumpComponentReference.TerminalVelocity)
+            if (_shouldMove)
             {
-                _velocity.y = JumpComponentReference.TerminalVelocity;
+                ApplyVerticalForce(delta);
+                ApplyHorizontalForce();
+                AttemptCornerCorrection(3);
+                _velocity = MoveAndSlide(_velocity, Vector2.Up);
+                JumpHitDataReference.VerticalVelocity = _velocity.y;
+                JumpHitDataReference.YPosition = GlobalPosition.y;
             }
-            _velocity.x = MovementComponentReference.GetMovementSpeed(_velocity.x);
-            if (Mathf.Abs(_velocity.x) < 0.5f)
-            {
-                _velocity.x = 0.0f;
-            }
-            AttemptCornerCorrection(3);
-            _velocity = MoveAndSlide(_velocity, Vector2.Up);
-            JumpHitDataReference.VerticalVelocity = _velocity.y;
-            JumpHitDataReference.YPosition = GlobalPosition.y;
             if (IsOnFloor())
             {
                 JumpHitDataReference.HasHitBlock = false;
@@ -163,6 +160,24 @@ namespace Game.Player
                         }
                     }
                 }
+            }
+        }
+
+        private void ApplyVerticalForce(float delta)
+        {
+            _velocity.y += JumpComponentReference.GetGravity(_velocity.y) * delta;
+            if (_velocity.y > JumpComponentReference.TerminalVelocity)
+            {
+                _velocity.y = JumpComponentReference.TerminalVelocity;
+            }
+        }
+
+        private void ApplyHorizontalForce()
+        {
+            _velocity.x = MovementComponentReference.GetMovementSpeed(_velocity.x);
+            if (Mathf.Abs(_velocity.x) < 10.0f)
+            {
+                _velocity.x = 0.0f;
             }
         }
 
@@ -388,7 +403,7 @@ namespace Game.Player
 
         private void CheckForMultipleCastaneaStomps(Area2D currentEnemyArea)
         {
-            foreach(RayCast2D ray in _enemyRayCasts)
+            foreach (RayCast2D ray in _enemyRayCasts)
             {
                 if (ray.GetCollider() is Area2D enemyArea)
                 {
@@ -399,10 +414,59 @@ namespace Game.Player
                 }
             }
         }
-        
+
         private bool IsValidForExtraJumpPoints(Area2D currentEnemyArea, Area2D otherEnemyArea)
         {
             return otherEnemyArea.IsInGroup("castanea") && currentEnemyArea != otherEnemyArea && JumpChainCount < 3;
+        }
+
+        public override void TakeDamage()
+        {
+            if (GlobalPlayerData.PlayerSize == Size.Big)
+            {
+                Shrink();
+            }
+            else
+            {
+                Die();
+            }
+        }
+
+        private void Shrink()
+        {
+            Damageable = false;
+            HasFlower = false;
+            GlobalPlayerData.PlayerSize = Size.Small;
+            PaletteComponentReference.SetPlayerColor(0);
+            SuperPlayerVisualReference.ToggleAnimation();
+            SmallPlayerVisualReference.ToggleAnimation();
+            _physicalCollisions["small"].SetDeferred("disabled", false);
+            _physicalCollisions["super"].SetDeferred("disabled", true);
+            _physicalCollisions["crouched"].SetDeferred("disabled", true);
+            _jumpInteractionCollisions["small"].SetDeferred("disabled", false);
+            _jumpInteractionCollisions["super"].SetDeferred("disabled", true);
+            _jumpInteractionCollisions["crouched"].SetDeferred("disabled", true);
+            ShrinkSoundPlayerReference.Play();
+            InvincibilityFlashPlayerReference.Play("invincibility_flash");
+            IncinvibilityFlashTimerReference.Start();
+            PlayerEventBus.Instance.EmitSignal("DamageTaken");
+        }
+
+        private async void Die()
+        {
+            PauseMode = PauseModeEnum.Process;
+            _shouldMove = false;
+            PlayerEventBus.Instance.EmitSignal("PlayerDied");
+            _physicalCollisions["small"].SetDeferred("disabled", true);
+            await ToSignal(GetTree().CreateTimer(0.7f), "timeout");
+            DeathAnimationPlayerReference.Play("death");
+        }
+
+        public override void OnInvincibilityFlashTimeTimeout()
+        {
+            InvincibilityFlashPlayerReference.Stop();
+            Visible = true;
+            Damageable = true;
         }
     }
 }

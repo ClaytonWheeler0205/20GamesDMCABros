@@ -17,8 +17,8 @@ namespace Game.Player
         [Export]
         private NodePath _bottomPartToAnimatePath;
         private AnimatedSprite _bottomPartToAnimateReference;
-        private Vector2 _growShrinkSpriteOffset = new Vector2(0, -12);
-        private bool _isGrowingOrShrinking = false;
+        private Vector2 _growSpriteOffset = new Vector2(0, -12);
+        private bool _isGrowing = false;
 
         public override void _Ready()
         {
@@ -40,7 +40,7 @@ namespace Game.Player
 
         public override void _Process(float delta)
         {
-            if (!Visible || _isGrowingOrShrinking)
+            if (!Visible || _isGrowing)
             {
                 return;
             }
@@ -141,9 +141,11 @@ namespace Game.Player
 
         public void OnMushroomCollected()
         {
+            _topPartToAnimateReference.SpeedScale = 1.0f;
+            _bottomPartToAnimateReference.SpeedScale = 1.0f;
             PauseMode = PauseModeEnum.Process;
-            _isGrowingOrShrinking = true;
-            _bottomPartToAnimateReference.Offset = _growShrinkSpriteOffset;
+            _isGrowing = true;
+            _bottomPartToAnimateReference.Offset = _growSpriteOffset;
             _bottomPartToAnimateReference.Play("grow");
             _topPartToAnimateReference.Visible = false;
             FlipToCurrentDirection();
@@ -173,7 +175,7 @@ namespace Game.Player
 
         private void CleanupGrowAnimation()
         {
-            _isGrowingOrShrinking = false;
+            _isGrowing = false;
             _bottomPartToAnimateReference.Offset = Vector2.Zero;
             _topPartToAnimateReference.Visible = true;
             PauseMode = PauseModeEnum.Stop;

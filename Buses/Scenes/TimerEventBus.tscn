@@ -3,4 +3,5 @@
 [ext_resource path="res://Buses/Scripts/TimerEventBus.cs" type="Script" id=1]
 
 [node name="TimerEventBus" type="Node"]
+pause_mode = 2
 script = ExtResource( 1 )

@@ -141,9 +141,9 @@ namespace Game.Enemies
                 {
                     Squish(vito);
                 }
-                else
+                else if (vito.Damageable)
                 {
-                    GD.Print("Took damage!");
+                    vito.TakeDamage();
                 }
             }
         }

@@ -8,6 +8,10 @@ namespace Game.Buses
     {
         [Signal]
         public delegate void FireballThrown();
+        [Signal]
+        public delegate void DamageTaken();
+        [Signal]
+        public delegate void PlayerDied();
 
         private static PlayerEventBus _instance;
         public static PlayerEventBus Instance

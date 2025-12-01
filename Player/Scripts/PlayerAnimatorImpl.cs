@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 
 namespace Game.Player
@@ -9,10 +10,23 @@ namespace Game.Player
         public MovementComponent PlayerMovement { get; set; }
         [Export]
         private float _minimumSpeedForMovement = 10.0f;
+        private Vector2 _shrinkSpriteOffset = new Vector2(0, -8);
+        private bool _isShrinking = false;
+
+        public override void _Ready()
+        {
+            SetNodeConnections();
+        }
+
+        private void SetNodeConnections()
+        {
+            PlayerEventBus.Instance.Connect("DamageTaken", this, nameof(OnDamageTaken));
+            PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
+        }
 
         public override void _Process(float delta)
         {
-            if (!Visible)
+            if (!Visible || _isShrinking)
             {
                 return;
             }
@@ -74,6 +88,40 @@ namespace Game.Player
             {
                 Stop();
             }
+        }
+
+        public void OnDamageTaken()
+        {
+            SpeedScale = 1.0f;
+            PauseMode = PauseModeEnum.Process;
+            _isShrinking = true;
+            Offset = _shrinkSpriteOffset;
+            Play("shrink");
+            FlipToCurrentDirection();
+            GetTree().Paused = true;
+        }
+
+        public void  OnAnimationFinished()
+        {
+            if (Animation != "shrink")
+            {
+                return;
+            }
+            CleanupShrinkAnimation();
+        }
+
+        private void CleanupShrinkAnimation()
+        {
+            _isShrinking = false;
+            Offset = Vector2.Zero;
+            PauseMode = PauseModeEnum.Stop;
+            GetTree().Paused = false;
+        }
+
+        public void OnPlayerDied()
+        {
+            Play("death");
+            GetTree().Paused = true;
         }
     }
 }

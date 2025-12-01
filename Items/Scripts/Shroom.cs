@@ -45,6 +45,7 @@ namespace Game.Items
             _shroomVisualReference.Visible = false;
             _interactionCollisionReference.SetDeferred("disabled", true);
             _movementReference.ShouldMove = false;
+            _movementReference.ShouldFall = false;
             _shroomGetSoundReference.Play();
         }
 

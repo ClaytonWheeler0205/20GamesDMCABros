@@ -74,6 +74,10 @@ namespace Game.Player
         [Export]
         private NodePath _paletteComponentPath;
         private VitoPaletteComponent _paletteComponentReference;
+        protected VitoPaletteComponent PaletteComponentReference
+        {
+            get { return _paletteComponentReference; }
+        }
         [Export]
         private NodePath _paletteAnimatorPath;
         private AnimationPlayer _paletteAnimatorReference;
@@ -114,6 +118,40 @@ namespace Game.Player
                 _jumpChainCount = value;
             }
         }
+        private bool _damageable = true;
+        public bool Damageable
+        {
+            get { return _damageable; }
+            protected set { _damageable = value; }
+        }
+        [Export]
+        private NodePath _shrinkSoundPlayerPath;
+        private AudioStreamPlayer _shrinkSoundPlayerReference;
+        protected AudioStreamPlayer ShrinkSoundPlayerReference
+        {
+            get { return _shrinkSoundPlayerReference; }
+        }
+        [Export]
+        private NodePath _invincibilityFlashPlayerPath;
+        private AnimationPlayer _invincibilityFlashPlayerReference;
+        protected AnimationPlayer InvincibilityFlashPlayerReference
+        {
+            get { return _invincibilityFlashPlayerReference; }
+        }
+        [Export]
+        private NodePath _invincibilityFlashTimerPath;
+        private Timer _invincibilityFlashTimerReference;
+        protected Timer IncinvibilityFlashTimerReference
+        {
+            get { return _invincibilityFlashTimerReference; }
+        }
+        [Export]
+        private NodePath _deathAnimationPlayerPath;
+        private AnimationPlayer _deathAnimationPlayerReference;
+        protected AnimationPlayer DeathAnimationPlayerReference
+        {
+            get { return _deathAnimationPlayerReference; }
+        }
 
         public override void _Ready()
         {
@@ -140,6 +178,10 @@ namespace Game.Player
             _paletteAnimatorReference = GetNode<AnimationPlayer>(_paletteAnimatorPath);
             _starComponentReference = GetNode<StarComponent>(_starComponentPath);
             _enemyDetectorsReference = GetNode<Node>(_enemyDetectorsPath);
+            _shrinkSoundPlayerReference = GetNode<AudioStreamPlayer>(_shrinkSoundPlayerPath);
+            _invincibilityFlashPlayerReference = GetNode<AnimationPlayer>(_invincibilityFlashPlayerPath);
+            _invincibilityFlashTimerReference = GetNode<Timer>(_invincibilityFlashTimerPath);
+            _deathAnimationPlayerReference = GetNode<AnimationPlayer>(_deathAnimationPlayerPath);
         }
 
         private void SetNodeConnections()
@@ -169,5 +211,7 @@ namespace Game.Player
         public abstract void SetMovementDirection(float newDirection);
         public abstract bool IsHittingEnemyAbove();
         public abstract void Bounce(Area2D enemyBouncedOnHitbox);
+        public abstract void TakeDamage();
+        public abstract void OnInvincibilityFlashTimeTimeout();
     }
 }
