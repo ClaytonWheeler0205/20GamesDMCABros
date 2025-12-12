@@ -458,7 +458,8 @@ namespace Game.Player
             _shouldMove = false;
             PlayerEventBus.Instance.EmitSignal("PlayerDied");
             _physicalCollisions["small"].SetDeferred("disabled", true);
-            await ToSignal(GetTree().CreateTimer(0.7f), "timeout");
+            MusicPlayer.Instance.PlayJingle(Jingle.Death);
+            await ToSignal(GetTree().CreateTimer(0.6f), "timeout");
             DeathAnimationPlayerReference.Play("death");
         }
 
