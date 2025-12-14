@@ -93,6 +93,7 @@ namespace Game.Player
 
         public abstract void StartTimers();
         public abstract void OnInvincibilityTimeTimeout();
+        public abstract void OnMusicTimeTimeout();
         public abstract void OnFastFlashTimeTimeout();
     }
 }

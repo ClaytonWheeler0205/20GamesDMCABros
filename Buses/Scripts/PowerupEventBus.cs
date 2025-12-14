@@ -12,6 +12,8 @@ namespace Game.Buses
         public delegate void FlowerCollected();
         [Signal]
         public delegate void StarCollected();
+        [Signal]
+        public delegate void StarEnding();
 
         private static PowerupEventBus _instance;
         public static PowerupEventBus Instance

@@ -1,3 +1,5 @@
+using Game.Buses;
+
 namespace Game.Player
 {
 
@@ -15,6 +17,12 @@ namespace Game.Player
             PaletteAnimatior.PlaybackSpeed = 1.0f;
             PaletteAnimatior.Stop();
             PlayerPalette.SetPlayerColor(-1);
+        }
+
+        public override void OnMusicTimeTimeout()
+        {
+            PowerupEventBus.Instance.EmitSignal("StarEnding");
+            JinglePlayer.Instance.StopJingle();
         }
 
         public override void OnFastFlashTimeTimeout()

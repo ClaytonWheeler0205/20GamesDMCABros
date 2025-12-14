@@ -72,15 +72,21 @@ namespace Game.Items
         {
             if (body.IsInGroup("player"))
             {
-                _starVisualReference.Visible = false;
-                _scoreTextVisualReference.Visible = true;
-                _movementReference.CanMove = false;
-                _interactionCollisionReference.SetDeferred("disabled", true);
-                _powerupGetSoundReference.Play();
-                _starAnimationReference.Play("score_float");
-                PointsEventBus.Instance.EmitSignal("PointsGained", STAR_POINT_VALUE);
-                PowerupEventBus.Instance.EmitSignal("StarCollected");
+                CollectStar();
             }
+        }
+
+        private void CollectStar()
+        {
+            _starVisualReference.Visible = false;
+            _scoreTextVisualReference.Visible = true;
+            _movementReference.CanMove = false;
+            _interactionCollisionReference.SetDeferred("disabled", true);
+            _powerupGetSoundReference.Play();
+            _starAnimationReference.Play("score_float");
+            PointsEventBus.Instance.EmitSignal("PointsGained", STAR_POINT_VALUE);
+            PowerupEventBus.Instance.EmitSignal("StarCollected");
+            JinglePlayer.Instance.PlayJingle(JingleType.Starman);
         }
     }
 }

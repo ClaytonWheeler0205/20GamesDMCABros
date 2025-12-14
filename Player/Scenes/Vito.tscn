@@ -615,5 +615,6 @@ anims/death = SubResource( 35 )
 [connection signal="animation_finished" from="PaletteAnimationPlayer" to="PaletteComponent" method="OnAnimationFinished"]
 [connection signal="timeout" from="StarComponent/InvincibilityTimer" to="." method="OnInvincibilityTimeTimeout"]
 [connection signal="timeout" from="StarComponent/InvincibilityTimer" to="StarComponent" method="OnInvincibilityTimeTimeout"]
+[connection signal="timeout" from="StarComponent/MusicTimer" to="StarComponent" method="OnMusicTimeTimeout"]
 [connection signal="timeout" from="StarComponent/FastFlashTimer" to="StarComponent" method="OnFastFlashTimeTimeout"]
 [connection signal="timeout" from="InvincibilityTimer" to="." method="OnInvincibilityFlashTimeTimeout"]
