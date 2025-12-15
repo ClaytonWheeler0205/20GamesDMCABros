@@ -18,6 +18,7 @@ namespace Game.Player
         private NodePath _debugPath;
         private VitoDebug _debug;
         private bool _shouldMove = true;
+        private bool _shouldSeek = false;
 
         public override void _Ready()
         {
@@ -451,13 +452,19 @@ namespace Game.Player
 
         private async void Die()
         {
+            _shouldSeek = true;
+            Fall();
+            await ToSignal(GetTree().CreateTimer(0.6f), "timeout");
+            DeathAnimationPlayerReference.Play("death");
+        }
+
+        public override void Fall()
+        {
             PauseMode = PauseModeEnum.Process;
             _shouldMove = false;
             Damageable = false;
             PlayerEventBus.Instance.EmitSignal("PlayerDied");
             _physicalCollisions["small"].SetDeferred("disabled", true);
-            await ToSignal(GetTree().CreateTimer(0.6f), "timeout");
-            DeathAnimationPlayerReference.Play("death");
         }
 
         public override void ResetPlayer()
@@ -466,7 +473,11 @@ namespace Game.Player
             _velocity = Vector2.Zero;
             _shouldMove = true;
             _physicalCollisions["small"].SetDeferred("disabled", false);
-            DeathAnimationPlayerReference.Seek(0.0f, update:true);
+            if (_shouldSeek)
+            {
+                DeathAnimationPlayerReference.Seek(0.0f, update: true);
+                _shouldSeek = false;
+            }
             PlayerEventBus.Instance.EmitSignal("PlayerReset");
             PauseMode = PauseModeEnum.Inherit;
         }

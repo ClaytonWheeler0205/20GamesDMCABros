@@ -212,6 +212,7 @@ namespace Game.Player
         public abstract bool IsHittingEnemyAbove();
         public abstract void Bounce(Area2D enemyBouncedOnHitbox);
         public abstract void TakeDamage();
+        public abstract void Fall();
         public abstract void ResetPlayer();
         public abstract void OnInvincibilityFlashTimeTimeout();
     }

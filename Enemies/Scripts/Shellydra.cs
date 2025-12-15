@@ -2,25 +2,27 @@ using Game.Buses;
 using Game.Player;
 using Game.Projectiles;
 using Godot;
-using Util.ExtensionMethods;
 
 namespace Game.Enemies
 {
 
     public class Shellydra : Enemy, Jumpable, Burnable, Perishable
     {
-        public CollisionShape2D EnemyHitbox
-        {
-            get { return _hitboxReference; }
-        }
         public int PerishPoints
         {
             get { return _perishPoints; }
         }
 
-        [Export]
-        private NodePath _hitboxPath;
-        private CollisionShape2D _hitboxReference;
+        public AudioStreamPlayer SquishSoundPlayerReference
+        {
+            get { return _squishSoundReference; }
+        }
+
+        public AudioStreamPlayer DeathSoundPlayerReference
+        {
+            get { return _deathSoundReference; }
+        }
+
         [Export]
         private NodePath _shellHitBoxPath;
         private CollisionShape2D _shellHitboxReference;
@@ -30,9 +32,6 @@ namespace Game.Enemies
         [Export]
         private NodePath _shellMovementPath;
         private BasicMovement _shellMovementReference;
-        [Export]
-        private NodePath _physicalHitboxPath;
-        private CollisionShape2D _physicalHitboxReference;
         [Export]
         private NodePath _squishSoundPath;
         private AudioStreamPlayer _squishSoundReference;
@@ -58,8 +57,7 @@ namespace Game.Enemies
         private int[] _shellPointsChain;
         private int _shellChainCount = 0;
         private const int SHELL_JUMP_CHAIN_MINIMUM = 3;
-        [Export]
-        private int _shellKickPoints = 400;
+        private const int SHELL_KICK_POINTS = 400;
 
         public override void _Ready()
         {
@@ -71,11 +69,9 @@ namespace Game.Enemies
 
         private void SetNodeReferences()
         {
-            _hitboxReference = GetNode<CollisionShape2D>(_hitboxPath);
             _shellHitboxReference = GetNode<CollisionShape2D>(_shellHitBoxPath);
             _movementReference = GetNode<BasicMovement>(_movementPath);
             _shellMovementReference = GetNode<BasicMovement>(_shellMovementPath);
-            _physicalHitboxReference = GetNode<CollisionShape2D>(_physicalHitboxPath);
             _squishSoundReference = GetNode<AudioStreamPlayer>(_squishSoundPath);
             _deathSoundReference = GetNode<AudioStreamPlayer>(_deathSoundPath);
             _kickSoundReference = GetNode<AudioStreamPlayer>(_kickSoundPath);
@@ -99,7 +95,7 @@ namespace Game.Enemies
             {
                 EnemyVisualReference.FlipV = true;
             }
-            _squishSoundReference.Play();
+            SquishSoundPlayerReference.Play();
         }
 
         private async void HideInShell()
@@ -110,7 +106,7 @@ namespace Game.Enemies
             _movementReference.ShouldMove = false;
             _movementReference.ShouldFall = false;
             _shellMovementReference.ShouldFall = true;
-            _hitboxReference.SetDeferred("disabled", true);
+            EnemyHitboxReference.SetDeferred("disabled", true);
             _shellHideTimerReference.Start();
             _shellShakeTimerReference.Start();
             _inShell = true;
@@ -122,7 +118,7 @@ namespace Game.Enemies
         {
             if (jumpingPlayer.JumpChainCount == 0)
             {
-                PointsTextFactory.CreatePointTextFromEnemy(_shellKickPoints, GlobalPosition);
+                PointsTextFactory.CreatePointTextFromEnemy(SHELL_KICK_POINTS, GlobalPosition);
             }
             else if (jumpingPlayer.JumpChainCount <= SHELL_JUMP_CHAIN_MINIMUM)
             {
@@ -169,9 +165,9 @@ namespace Game.Enemies
         {
             PointsEventBus.Instance.EmitSignal("PointsGained", _perishPoints);
             PointsTextFactory.CreatePointTextFromEnemy(_perishPoints, GlobalPosition);
-            EnemyHitbox.SetDeferred("disabled", true);
+            EnemyHitboxReference.SetDeferred("disabled", true);
             _shellHitboxReference.SetDeferred("disabled", true);
-            _physicalHitboxReference.SetDeferred("disabled", true);
+            PhysicalHitboxReference.SetDeferred("disabled", true);
             EnemyVisualReference.Stop();
             EnemyVisualReference.Frame = 0;
             EnemyVisualReference.Animation = "shell";
@@ -181,7 +177,14 @@ namespace Game.Enemies
             _movementReference.ShouldFall = true;
             _shellMovementReference.ShouldMove = false;
             _shellMovementReference.ShouldFall = false;
-            _deathSoundReference.Play();
+            DeathSoundPlayerReference.Play();
+        }
+
+        public override void EnableEnemy()
+        {
+            Show();
+            EnemyHitboxReference.SetDeferred("disabled", false);
+            PhysicalHitboxReference.SetDeferred("disabled", false);
         }
 
         public override void OnBodyEntered(Node body)
@@ -217,7 +220,7 @@ namespace Game.Enemies
                 {
                     if (_inShell && !_shellMovementReference.ShouldMove)
                     {
-                        PointsTextFactory.CreatePointTextFromEnemy(_shellKickPoints, GlobalPosition);
+                        PointsTextFactory.CreatePointTextFromEnemy(SHELL_KICK_POINTS, GlobalPosition);
                         KickShell(vito.GlobalPosition.x);
                         return;
                     }
@@ -271,12 +274,31 @@ namespace Game.Enemies
             }
             else if (area.IsInGroup("death_pit"))
             {
-                this.SafeQueueFree();
+                DisableEnemy();
             }
             else if (area.IsInGroup("enemy"))
             {
                 HandleEnemyCollision(area);
             }
+        }
+
+        public override void DisableEnemy()
+        {
+            _movementReference.ShouldMove = false;
+            _movementReference.ShouldFall = false;
+            if (_movementReference.MovementDirection == Direction.Right)
+            {
+                _movementReference.FlipDirection();
+            }
+            if (_shellMovementReference.MovementDirection == Direction.Right)
+            {
+                _shellMovementReference.FlipDirection();
+            }
+            EnemyVisualReference.Stop();
+            EnemyVisualReference.FlipH = false;
+            Hide();
+            EnemyHitboxAreaReference.SetDeferred("disabled", true);
+            PhysicalHitboxReference.SetDeferred("disabled", true);
         }
 
         private void HandleEnemyCollision(Node enemyNode)
@@ -316,7 +338,7 @@ namespace Game.Enemies
             {
                 return;
             }
-            this.SafeQueueFree();
+            DisableEnemy();
         }
 
         private bool ShouldStayInLevel()
@@ -339,6 +361,14 @@ namespace Game.Enemies
             if (_movementReference.MovementDirection != _shellMovementReference.MovementDirection)
             {
                 _movementReference.FlipDirection();
+            }
+            if (_movementReference.MovementDirection == Direction.Left)
+            {
+                EnemyVisualReference.FlipH = false;
+            }
+            else
+            {
+                EnemyVisualReference.FlipH = true;
             }
             EnemyVisualReference.FlipV = false;
             EnemyVisualReference.Offset = Vector2.Zero;

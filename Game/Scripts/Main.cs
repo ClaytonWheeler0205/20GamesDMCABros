@@ -60,6 +60,8 @@ namespace Game
             GetTree().Paused = false;
             _player.Damageable = true;
             _currentLevel.Start();
+            await ToSignal(GetTree().CreateTimer(0.01f), "timeout");
+            _player.ResetPlayer();
         }
 
         public async void OnLifeLostUpdated()
@@ -79,7 +81,7 @@ namespace Game
             _camera.GlobalPosition = new Vector2(_currentLevel.GetPlayerSpawnPoint().x, _camera.GlobalPosition.y);
             _camera.ApplyCameraPosition();
             _player.GlobalPosition = _currentLevel.GetPlayerSpawnPoint();
-            _player.ResetPlayer();
+            _currentLevel.ResetLevel();
             _levelStartScreen.Visible = true;
             StartGame();
         }

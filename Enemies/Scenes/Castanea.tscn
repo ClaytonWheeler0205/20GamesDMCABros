@@ -40,12 +40,12 @@ collision_mask = 9
 script = ExtResource( 4 )
 _enemyVisualPath = NodePath("AnimatedSprite")
 _enemyScreenDetectorPath = NodePath("VisibilityNotifier2D")
-_enemyHitboxAreaPath = NodePath("EnemyHitbox")
-_movementPath = NodePath("BasicMovement")
-_hitboxPath = NodePath("EnemyHitbox/HitboxCollision")
 _physicalHitboxPath = NodePath("PhysicalCollision")
-_squishSoundPath = NodePath("SquishSoundPlayer")
-_deathSoundPath = NodePath("DeathSoundPlayer")
+_enemyHitboxAreaPath = NodePath("EnemyHitbox")
+_enemyHitboxPath = NodePath("EnemyHitbox/HitboxCollision")
+_movementPath = NodePath("BasicMovement")
+_squishSoundPlayerPath = NodePath("SquishSoundPlayer")
+_deathSoundPlayerPath = NodePath("DeathSoundPlayer")
 _pointsChain = PoolIntArray( 100, 200, 400, 500, 800, 1000, 2000, 4000, 5000, 8000 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

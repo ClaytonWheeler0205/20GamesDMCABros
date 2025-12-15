@@ -1,3 +1,4 @@
+using Game.Enemies;
 using Godot;
 
 namespace Game.Levels
@@ -7,6 +8,13 @@ namespace Game.Levels
     {
         public override void Start()
         {
+            foreach (Node node in EnemyContainerReference.GetChildren())
+            {
+                if (node is Enemy enemy)
+                {
+                    enemy.EnableEnemy();
+                }
+            }
             MusicPlayerReference.StartLevelMusic();
         }
 
@@ -14,9 +22,22 @@ namespace Game.Levels
         {
             return StartingPointReference.GlobalPosition;
         }
-        public override void ResetEnemies()
+
+        public override void ResetLevel()
         {
-            throw new System.NotImplementedException();
+            ResetEnemies();
+        }
+
+        private void ResetEnemies()
+        {
+            foreach (Node node in EnemyContainerReference.GetChildren())
+            {
+                if (node is Enemy enemy)
+                {
+                    enemy.DisableEnemy();
+                    enemy.GlobalPosition = enemy.StartingPosition;
+                }
+            }
         }
     }
 }
