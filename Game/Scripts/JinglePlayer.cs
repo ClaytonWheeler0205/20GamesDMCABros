@@ -15,8 +15,6 @@ namespace Game
 
     public abstract class JinglePlayer : AudioStreamPlayer
     {
-        [Signal]
-        public delegate void DeathJingleFinished();
 
         private static JinglePlayer _instance;
         public static JinglePlayer Instance

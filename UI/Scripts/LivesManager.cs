@@ -34,9 +34,12 @@ namespace Game.UI
             if (_lives == 0)
             {
                 LivesEventBus.Instance.EmitSignal("GameOver");
-                return;
             }
-            UpdateLifeText();
+            else
+            {
+                UpdateLifeText();
+            }
+            LivesEventBus.Instance.EmitSignal("LifeLostUpdated");
         }
 
         public void OnLifeGained()
@@ -44,7 +47,7 @@ namespace Game.UI
             _lives++;
             UpdateLifeText();
         }
-        
+
         private void UpdateLifeText()
         {
             _livesTextReference.Text = $"  x   {_lives}";

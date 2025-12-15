@@ -9,6 +9,8 @@ namespace Game.Buses
         [Signal]
         public delegate void LifeLost();
         [Signal]
+        public delegate void LifeLostUpdated();
+        [Signal]
         public delegate void LifeGained();
         [Signal]
         public delegate void GameOver();

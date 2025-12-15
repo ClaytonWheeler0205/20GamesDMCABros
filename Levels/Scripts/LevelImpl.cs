@@ -9,5 +9,14 @@ namespace Game.Levels
         {
             MusicPlayerReference.StartLevelMusic();
         }
+
+        public override Vector2 GetPlayerSpawnPoint()
+        {
+            return StartingPointReference.GlobalPosition;
+        }
+        public override void ResetEnemies()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

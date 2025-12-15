@@ -122,7 +122,7 @@ namespace Game.Player
         public bool Damageable
         {
             get { return _damageable; }
-            protected set { _damageable = value; }
+            set { _damageable = value; }
         }
         [Export]
         private NodePath _shrinkSoundPlayerPath;
@@ -212,6 +212,7 @@ namespace Game.Player
         public abstract bool IsHittingEnemyAbove();
         public abstract void Bounce(Area2D enemyBouncedOnHitbox);
         public abstract void TakeDamage();
+        public abstract void ResetPlayer();
         public abstract void OnInvincibilityFlashTimeTimeout();
     }
 }

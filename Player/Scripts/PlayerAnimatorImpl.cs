@@ -22,6 +22,7 @@ namespace Game.Player
         {
             PlayerEventBus.Instance.Connect("DamageTaken", this, nameof(OnDamageTaken));
             PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
+            PlayerEventBus.Instance.Connect("PlayerReset", this, nameof(OnPlayerReset));
         }
 
         public override void _Process(float delta)
@@ -122,6 +123,12 @@ namespace Game.Player
         {
             Play("death");
             GetTree().Paused = true;
+        }
+
+        public void OnPlayerReset()
+        {
+            Play("idle");
+            FlipH = false;
         }
     }
 }

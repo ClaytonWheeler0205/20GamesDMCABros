@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Buses;
 using Godot;
 
 namespace Game
@@ -43,6 +44,9 @@ namespace Game
                     Stream = _jingles[JingleType.Death];
                     break;
                 case JingleType.GameOver:
+                    LoadGameOverJingle();
+                    _currentJingle = JingleType.GameOver;
+                    Stream = _jingles[JingleType.GameOver];
                     break;
             }
             Play();
@@ -66,6 +70,15 @@ namespace Game
             _jingles[JingleType.Death] = GD.Load<AudioStream>("res://Game/Audio/death.wav");
         }
 
+        private void LoadGameOverJingle()
+        {
+            if (_jingles[JingleType.GameOver] != null)
+            {
+                return;
+            }
+            _jingles[JingleType.GameOver] = GD.Load<AudioStream>("res://Game/Audio/game_over.wav");
+        }
+
         public override void StopJingle()
         {
             Stop();
@@ -73,7 +86,10 @@ namespace Game
 
         public override void OnJingleFinished()
         {
-            throw new System.NotImplementedException();
+            if (_currentJingle == JingleType.Death)
+            {
+                LivesEventBus.Instance.EmitSignal("LifeLost");
+            }
         }
     }
 }

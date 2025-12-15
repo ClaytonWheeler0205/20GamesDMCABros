@@ -3,8 +3,6 @@ using Game.Debug;
 using Game.Projectiles;
 using Godot;
 using System.Collections.Generic;
-using Game.Enemies;
-using System.Runtime.Serialization.Formatters;
 
 namespace Game.Player
 {
@@ -20,7 +18,6 @@ namespace Game.Player
         private NodePath _debugPath;
         private VitoDebug _debug;
         private bool _shouldMove = true;
-        private float _deathBounceForce = -100.0f;
 
         public override void _Ready()
         {
@@ -456,10 +453,22 @@ namespace Game.Player
         {
             PauseMode = PauseModeEnum.Process;
             _shouldMove = false;
+            Damageable = false;
             PlayerEventBus.Instance.EmitSignal("PlayerDied");
             _physicalCollisions["small"].SetDeferred("disabled", true);
             await ToSignal(GetTree().CreateTimer(0.6f), "timeout");
             DeathAnimationPlayerReference.Play("death");
+        }
+
+        public override void ResetPlayer()
+        {
+            SetMovementDirection(0.0f);
+            _velocity = Vector2.Zero;
+            _shouldMove = true;
+            _physicalCollisions["small"].SetDeferred("disabled", false);
+            DeathAnimationPlayerReference.Seek(0.0f, update:true);
+            PlayerEventBus.Instance.EmitSignal("PlayerReset");
+            PauseMode = PauseModeEnum.Inherit;
         }
 
         public override void OnInvincibilityFlashTimeTimeout()

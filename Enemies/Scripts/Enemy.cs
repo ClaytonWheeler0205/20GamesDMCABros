@@ -5,6 +5,7 @@ namespace Game.Enemies
 
     public abstract class Enemy : KinematicBody2D
     {
+
         [Export]
         private NodePath _enemyVisualPath;
         private AnimatedSprite _enemyVisualReference;
@@ -26,9 +27,15 @@ namespace Game.Enemies
         {
             get { return _enemyHitboxAreaReference; }
         }
+        private Vector2 _startingPosition;
+        public Vector2 StartingPosition
+        {
+            get { return _startingPosition; }
+        }
 
         public override void _Ready()
         {
+            _startingPosition = GlobalPosition;
             SetNodeReferences();
         }
 

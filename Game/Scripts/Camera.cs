@@ -20,7 +20,7 @@ namespace Game
             ApplyCameraPosition();
         }
 
-        private void ApplyCameraPosition()
+        public void ApplyCameraPosition()
         {
             Transform2D transform = _cameraViewport.CanvasTransform;
             transform.origin = -Position + (_screenSize / 2);
@@ -56,13 +56,13 @@ namespace Game
             }
             else
             {
-                Assigntarget(vito);
+                AssignTarget(vito);
             }
 
             _shouldScroll = true;
         }
 
-        private void Assigntarget(Vito target)
+        private void AssignTarget(Vito target)
         {
             if (_followTarget.IsValid())
             {

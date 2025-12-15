@@ -13,6 +13,13 @@ namespace Game.Levels
         {
             get { return _musicPlayerReference; }
         }
+        [Export]
+        private NodePath _startingPointPath;
+        private Position2D _startingPointReference;
+        public Position2D StartingPointReference
+        {
+            get { return _startingPointReference; }
+        }
 
         public override void _Ready()
         {
@@ -22,8 +29,11 @@ namespace Game.Levels
         private void SetNodeReferences()
         {
             _musicPlayerReference = GetNode<LevelMusicPlayer>(_musicPlayerPath);
+            _startingPointReference = GetNode<Position2D>(_startingPointPath);
         }
 
         public abstract void Start();
+        public abstract Vector2 GetPlayerSpawnPoint();
+        public abstract void ResetEnemies();
     }
 }
