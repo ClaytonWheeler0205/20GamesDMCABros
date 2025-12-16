@@ -2,6 +2,7 @@ using Game.Blocks;
 using Game.Enemies;
 using Game.Items;
 using Godot;
+using Util.ExtensionMethods;
 
 namespace Game.Levels
 {
@@ -47,7 +48,9 @@ namespace Game.Levels
             if (StartingPointReference.GlobalPosition.x < enemyToEnable.GlobalPosition.x)
             {
                 enemyToEnable.EnableEnemy();
+                return;
             }
+            enemyToEnable.SafeQueueFree();
         }
 
         private void EnableBlockIfNecessary(Block blockToEnable)
@@ -86,6 +89,11 @@ namespace Game.Levels
                     enemy.GlobalPosition = enemy.StartingPosition;
                 }
             }
+        }
+
+        public override void OnPlayerReachedCheckpoint(Vector2 checkpointPosition)
+        {
+            StartingPointReference.GlobalPosition = checkpointPosition;
         }
     }
 }

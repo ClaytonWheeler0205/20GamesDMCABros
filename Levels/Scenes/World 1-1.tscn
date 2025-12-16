@@ -20,6 +20,7 @@
 [ext_resource path="res://Levels/Scripts/LevelMusicPlayerImpl.cs" type="Script" id=18]
 [ext_resource path="res://Levels/Scripts/LevelImpl.cs" type="Script" id=19]
 [ext_resource path="res://Levels/Scripts/DeathPit.cs" type="Script" id=20]
+[ext_resource path="res://Levels/Scenes/Checkpoint.tscn" type="PackedScene" id=21]
 
 [sub_resource type="ConvexPolygonShape2D" id=8]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -145,9 +146,6 @@ shader_param/precision = 0.1
 shader_param/palette_code = 1
 shader_param/palette = ExtResource( 15 )
 
-[sub_resource type="RectangleShape2D" id=13]
-extents = Vector2( 8.5, 88 )
-
 [node name="World 1-1" type="TileMap"]
 z_index = 1
 tile_set = SubResource( 1 )
@@ -160,6 +158,7 @@ _musicPlayerPath = NodePath("LevelMusicPlayer")
 _enemyContainerPath = NodePath("Enemies")
 _blockContainerPath = NodePath("Blocks")
 _coinContainerPath = NodePath("Coins")
+_checkpointContainerPath = NodePath("Checkpoints")
 _deathPitsPath = NodePath("DeathPits")
 _startingPointPath = NodePath("StartingPosition")
 
@@ -774,14 +773,7 @@ flip_h = true
 
 [node name="Checkpoints" type="Node2D" parent="."]
 
-[node name="Checkpoint" type="Area2D" parent="Checkpoints"]
-position = Vector2( -9, 328 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint"]
-position = Vector2( 0.5, -80 )
-shape = SubResource( 13 )
-
-[node name="Position2D" type="Position2D" parent="Checkpoints/Checkpoint"]
+[node name="Checkpoint" parent="Checkpoints" instance=ExtResource( 21 )]
 
 [node name="CastleExit" type="Sprite" parent="."]
 position = Vector2( 3272, 296 )

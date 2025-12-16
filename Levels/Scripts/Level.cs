@@ -35,6 +35,9 @@ namespace Game.Levels
             get { return _coinContainerReference; }
         }
         [Export]
+        private NodePath _checkpointContainerPath;
+        private Node _checkpointContainerReference;
+        [Export]
         private NodePath _deathPitsPath;
         private Node _deathPitsReference;
         protected Node DeathPitsReference
@@ -52,6 +55,7 @@ namespace Game.Levels
         public override void _Ready()
         {
             SetNodeReferences();
+            SetNodeConnections();
         }
 
         private void SetNodeReferences()
@@ -60,12 +64,30 @@ namespace Game.Levels
             _enemyContainerReference = GetNode<Node>(_enemyContainerPath);
             _blockContainerReference = GetNode<Node>(_blockContainerPath);
             _coinContainerReference = GetNode<Node>(_coinContainerPath);
+            _checkpointContainerReference = GetNode<Node>(_checkpointContainerPath);
             _deathPitsReference = GetNode<Node>(_deathPitsPath);
             _startingPointReference = GetNode<Position2D>(_startingPointPath);
+        }
+
+        private void SetNodeConnections()
+        {
+            SetCheckpointConnections();
+        }
+
+        private void SetCheckpointConnections()
+        {
+            foreach (Node node in _checkpointContainerReference.GetChildren())
+            {
+                if (node.IsInGroup("checkpoint"))
+                {
+                    node.Connect("PlayerReachedCheckpoint", this, nameof(OnPlayerReachedCheckpoint));
+                }
+            }
         }
 
         public abstract void Start(bool firstLoad);
         public abstract Vector2 GetPlayerSpawnPoint();
         public abstract void ResetLevel();
+        public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition);
     }
 }
