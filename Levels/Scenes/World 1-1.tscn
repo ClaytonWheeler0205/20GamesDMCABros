@@ -132,10 +132,10 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 2/z_index = 0
 
 [sub_resource type="RectangleShape2D" id=10]
-extents = Vector2( 16, 16 )
+extents = Vector2( 23, 16 )
 
 [sub_resource type="RectangleShape2D" id=11]
-extents = Vector2( 24, 16 )
+extents = Vector2( 30.5, 16 )
 
 [sub_resource type="ShaderMaterial" id=12]
 shader = ExtResource( 14 )
@@ -158,6 +158,8 @@ tile_data = PoolIntArray( 852156, 1, 0, 852157, 1, 0, 917691, 1, 0, 917692, 1, 0
 script = ExtResource( 19 )
 _musicPlayerPath = NodePath("LevelMusicPlayer")
 _enemyContainerPath = NodePath("Enemies")
+_blockContainerPath = NodePath("Blocks")
+_coinContainerPath = NodePath("Coins")
 _deathPitsPath = NodePath("DeathPits")
 _startingPointPath = NodePath("StartingPosition")
 
@@ -537,15 +539,15 @@ collision_mask = 34
 script = ExtResource( 20 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathPits"]
-position = Vector2( 1120, 392 )
+position = Vector2( 1120, 397 )
 shape = SubResource( 10 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="DeathPits"]
-position = Vector2( 2464, 392 )
+position = Vector2( 2464, 397 )
 shape = SubResource( 10 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="DeathPits"]
-position = Vector2( 1400, 392 )
+position = Vector2( 1401.5, 397 )
 shape = SubResource( 11 )
 
 [node name="Background" type="Node2D" parent="."]

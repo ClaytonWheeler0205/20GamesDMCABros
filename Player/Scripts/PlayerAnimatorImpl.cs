@@ -121,6 +121,7 @@ namespace Game.Player
 
         public void OnPlayerDied()
         {
+            Visible = true;
             Play("death");
             GetTree().Paused = true;
         }

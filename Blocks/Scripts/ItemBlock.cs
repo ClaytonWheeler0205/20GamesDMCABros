@@ -109,6 +109,21 @@ namespace Game.Blocks
             AddChild(_coinsTimer);
         }
 
+        public override void EnableBlock()
+        {
+            _hitBlockVisualReference.Visible = false;
+            InteractionHitBoxReference.SetDeferred("disabled", false);
+            if (_invisible)
+            {
+                _physicalHitboxReference.SetDeferred("one_way_collision", true);
+
+            }
+            else
+            {
+                BlockVisualReference.Visible = true;
+            }
+        }
+
         public void OnBlockHitByPlayer()
         {
             BlockDamageReference.SetDeferred("disabled", false);

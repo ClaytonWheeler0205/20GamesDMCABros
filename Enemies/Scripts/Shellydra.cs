@@ -182,7 +182,8 @@ namespace Game.Enemies
 
         public override void EnableEnemy()
         {
-            Show();
+            EnemyVisualReference.FlipV = false;
+            EnemyVisualReference.Show();
             EnemyHitboxReference.SetDeferred("disabled", false);
             PhysicalHitboxReference.SetDeferred("disabled", false);
         }
@@ -296,7 +297,7 @@ namespace Game.Enemies
             }
             EnemyVisualReference.Stop();
             EnemyVisualReference.FlipH = false;
-            Hide();
+            EnemyVisualReference.Hide();
             EnemyHitboxAreaReference.SetDeferred("disabled", true);
             PhysicalHitboxReference.SetDeferred("disabled", true);
         }

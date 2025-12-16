@@ -438,16 +438,21 @@ namespace Game.Player
             PaletteComponentReference.SetPlayerColor(0);
             SuperPlayerVisualReference.ToggleAnimation();
             SmallPlayerVisualReference.ToggleAnimation();
+            SetSmallCollisions();
+            ShrinkSoundPlayerReference.Play();
+            InvincibilityFlashPlayerReference.Play("invincibility_flash");
+            IncinvibilityFlashTimerReference.Start();
+            PlayerEventBus.Instance.EmitSignal("DamageTaken");
+        }
+
+        private void SetSmallCollisions()
+        {
             _physicalCollisions["small"].SetDeferred("disabled", false);
             _physicalCollisions["super"].SetDeferred("disabled", true);
             _physicalCollisions["crouched"].SetDeferred("disabled", true);
             _jumpInteractionCollisions["small"].SetDeferred("disabled", false);
             _jumpInteractionCollisions["super"].SetDeferred("disabled", true);
             _jumpInteractionCollisions["crouched"].SetDeferred("disabled", true);
-            ShrinkSoundPlayerReference.Play();
-            InvincibilityFlashPlayerReference.Play("invincibility_flash");
-            IncinvibilityFlashTimerReference.Start();
-            PlayerEventBus.Instance.EmitSignal("DamageTaken");
         }
 
         private async void Die()
@@ -463,6 +468,10 @@ namespace Game.Player
             PauseMode = PauseModeEnum.Process;
             _shouldMove = false;
             Damageable = false;
+            HasFlower = false;
+            GlobalPlayerData.PlayerSize = Size.Small;
+            SetSmallCollisions();
+            PaletteComponentReference.SetPlayerColor(0);
             PlayerEventBus.Instance.EmitSignal("PlayerDied");
             _physicalCollisions["small"].SetDeferred("disabled", true);
         }

@@ -55,7 +55,6 @@ namespace Game.Blocks
             _brickBreakSoundReference.Play();
             PackedScene particleScene = GD.Load<PackedScene>("res://Blocks/Scenes/BrickParticle.tscn");
             OneShotParticle brickParticle = particleScene.Instance<OneShotParticle>();
-            brickParticle.Connect("ParticleFinished", this, nameof(OnParticleFinished));
             AddChild(brickParticle);
             PointsEventBus.Instance.EmitSignal("PointsGained", BRICK_POINT_VALUE);
             BlockDamageReference.SetDeferred("disabled", false);
@@ -64,9 +63,11 @@ namespace Game.Blocks
             BlockDamageReference.SetDeferred("disabled", true);
         }
 
-        public void OnParticleFinished()
+        public override void EnableBlock()
         {
-            this.SafeQueueFree();
+            InteractionHitBoxReference.SetDeferred("disabled", false);
+            BlockVisualReference.Show();
+            _physicalHitBoxReference.SetDeferred("disabled", false);
         }
 
         public override void OnAnimationFinished(string anim_name)

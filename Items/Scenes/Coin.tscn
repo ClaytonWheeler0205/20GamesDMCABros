@@ -46,4 +46,3 @@ stream = ExtResource( 2 )
 volume_db = -10.0
 
 [connection signal="body_entered" from="." to="." method="OnBodyEntered"]
-[connection signal="finished" from="AudioStreamPlayer" to="." method="OnSoundFinished"]

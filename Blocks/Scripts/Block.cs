@@ -54,6 +54,8 @@ namespace Game.Blocks
             _blockDamageReference = GetNode<CollisionShape2D>(_blockDamagePath);
         }
 
+        public abstract void EnableBlock();
+
         public abstract void OnAnimationFinished(string anim_name);
     }
 }

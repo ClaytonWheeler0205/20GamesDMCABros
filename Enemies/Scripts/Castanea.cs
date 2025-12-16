@@ -53,7 +53,8 @@ namespace Game.Enemies
 
         public override void EnableEnemy()
         {
-            Show();
+            EnemyVisualReference.FlipV = false;
+            EnemyVisualReference.Show();
             EnemyHitboxReference.SetDeferred("disabled", false);
             PhysicalHitboxReference.SetDeferred("disabled", false);
         }
@@ -139,7 +140,7 @@ namespace Game.Enemies
                 _movementReference.FlipDirection();
             }
             EnemyVisualReference.Stop();
-            Hide();
+            EnemyVisualReference.Hide();
             EnemyHitboxReference.SetDeferred("disabled", true);
             PhysicalHitboxReference.SetDeferred("disabled", true);
         }

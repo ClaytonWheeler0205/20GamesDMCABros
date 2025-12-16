@@ -21,6 +21,20 @@ namespace Game.Levels
             get { return _enemyContainerReference; }
         }
         [Export]
+        private NodePath _blockContainerPath;
+        private Node _blockContainerReference;
+        protected Node BlockContainerReference
+        {
+            get { return _blockContainerReference; }
+        }
+        [Export]
+        private NodePath _coinContainerPath;
+        private Node _coinContainerReference;
+        protected Node CoinContainerReference
+        {
+            get { return _coinContainerReference; }
+        }
+        [Export]
         private NodePath _deathPitsPath;
         private Node _deathPitsReference;
         protected Node DeathPitsReference
@@ -44,11 +58,13 @@ namespace Game.Levels
         {
             _musicPlayerReference = GetNode<LevelMusicPlayer>(_musicPlayerPath);
             _enemyContainerReference = GetNode<Node>(_enemyContainerPath);
+            _blockContainerReference = GetNode<Node>(_blockContainerPath);
+            _coinContainerReference = GetNode<Node>(_coinContainerPath);
             _deathPitsReference = GetNode<Node>(_deathPitsPath);
             _startingPointReference = GetNode<Position2D>(_startingPointPath);
         }
 
-        public abstract void Start();
+        public abstract void Start(bool firstLoad);
         public abstract Vector2 GetPlayerSpawnPoint();
         public abstract void ResetLevel();
     }

@@ -36,6 +36,7 @@ namespace Game.Player
         {
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
             PlayerEventBus.Instance.Connect("FireballThrown", this, nameof(OnFireballThrown));
+            PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
         }
 
         public override void _Process(float delta)
@@ -190,6 +191,13 @@ namespace Game.Player
                 _bottomPartToAnimateReference.Animation = "idle";
             }
             AnimatePlayer();
+        }
+
+        public void OnPlayerDied()
+        {
+            Hide();
+            _topPartToAnimateReference.Stop();
+            _bottomPartToAnimateReference.Stop();
         }
     }
 }

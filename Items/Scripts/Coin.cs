@@ -5,7 +5,7 @@ using Util.ExtensionMethods;
 namespace Game.Items
 {
 
-    public class Coin : Node
+    public class Coin : Node2D
     {
         [Export]
         private NodePath _coinVisualPath;
@@ -31,21 +31,22 @@ namespace Game.Items
             _coinCollectSoundReference = GetNode<AudioStreamPlayer>(_coinCollectSoundPath);
         }
 
+        public void EnableCoin()
+        {
+            _coinVisualReference.Show();
+            _coinCollisionReference.SetDeferred("disabled", false);
+        }
+
         public void OnBodyEntered(Node body)
         {
             if (body.IsInGroup("player"))
             {
-                _coinVisualReference.Visible = false;
+                _coinVisualReference.Hide();
                 _coinCollisionReference.SetDeferred("disabled", true);
                 _coinCollectSoundReference.Play();
                 CoinEventBus.Instance.EmitSignal("CoinCollected");
                 PointsEventBus.Instance.EmitSignal("PointsGained", COIN_POINT_VALUE);
             }
-        }
-
-        public void OnSoundFinished()
-        {
-            this.SafeQueueFree();
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Game
         [Export]
         private NodePath _currentLevelPath;
         private Level _currentLevel;
+        private bool _newLevel = true;
         [Export]
         private NodePath _levelStartScreenPath;
         private CanvasItem _levelStartScreen;
@@ -59,7 +60,8 @@ namespace Game
             _levelStartScreen.Visible = false;
             GetTree().Paused = false;
             _player.Damageable = true;
-            _currentLevel.Start();
+            _currentLevel.Start(_newLevel);
+            _newLevel = false;
             await ToSignal(GetTree().CreateTimer(0.01f), "timeout");
             _player.ResetPlayer();
         }
