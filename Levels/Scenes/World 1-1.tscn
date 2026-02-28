@@ -794,6 +794,6 @@ stream = ExtResource( 17 )
 volume_db = -10.0
 
 [node name="StartingPosition" type="Position2D" parent="."]
-position = Vector2( 128, 328 )
+position = Vector2( 58, 328 )
 
 [connection signal="body_entered" from="DeathPits" to="DeathPits" method="OnBodyEntered"]

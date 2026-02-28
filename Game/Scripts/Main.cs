@@ -80,7 +80,7 @@ namespace Game
 
         private void ResetGame()
         {
-            _camera.GlobalPosition = new Vector2(_currentLevel.GetPlayerSpawnPoint().x, _camera.GlobalPosition.y);
+            _camera.GlobalPosition = new Vector2(_currentLevel.GetPlayerSpawnPoint().x + 70.0f, _camera.GlobalPosition.y);
             _camera.ApplyCameraPosition();
             _player.GlobalPosition = _currentLevel.GetPlayerSpawnPoint();
             _currentLevel.ResetLevel();
