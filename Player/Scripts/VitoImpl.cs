@@ -469,8 +469,10 @@ namespace Game.Player
             _shouldMove = false;
             Damageable = false;
             HasFlower = false;
+            IsInvincible = false;
             GlobalPlayerData.PlayerSize = Size.Small;
             SetSmallCollisions();
+            StarComponentReference.ForceStopinvincibility();
             PaletteComponentReference.SetPlayerColor(0);
             PlayerEventBus.Instance.EmitSignal("PlayerDied");
             _physicalCollisions["small"].SetDeferred("disabled", true);

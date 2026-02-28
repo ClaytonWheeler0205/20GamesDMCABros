@@ -12,6 +12,15 @@ namespace Game.Player
             FastFlashTimeReference.Start(FastFlashTime);
         }
 
+        public override void ForceStopinvincibility()
+        {
+            InvincibilityTimeReference.Stop();
+            MusicTimeReference.Stop();
+            FastFlashTimeReference.Stop();
+            PaletteAnimatior.PlaybackSpeed = 1.0f;
+            PaletteAnimatior.Stop();
+        }
+
         public override void OnInvincibilityTimeTimeout()
         {
             PaletteAnimatior.PlaybackSpeed = 1.0f;
