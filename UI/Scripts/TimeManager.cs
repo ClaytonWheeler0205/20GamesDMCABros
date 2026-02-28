@@ -19,7 +19,7 @@ namespace Game.UI
         {
             get { return _timeTextReference; }
         }
-        private int _timeLeft = 400;
+        private int _timeLeft = 20;
         public int TimeLeft
         {
             protected get { return _timeLeft; }

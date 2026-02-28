@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player/Scenes/Vito.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Scenes/PlayerController.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://UI/Scenes/ScoreBoard.tscn" type="PackedScene" id=6]
 [ext_resource path="res://UI/Scenes/LevelStartUI.tscn" type="PackedScene" id=7]
 [ext_resource path="res://UI/Scenes/GameOverScreen.tscn" type="PackedScene" id=8]
+[ext_resource path="res://UI/Scenes/TimeUpScreen.tscn" type="PackedScene" id=9]
 
 [node name="Game" type="Node"]
 script = ExtResource( 4 )
@@ -17,6 +18,7 @@ _cameraPath = NodePath("Camera")
 _currentLevelPath = NodePath("World 1-1")
 _levelStartScreenPath = NodePath("GUI/LevelStartUI")
 _gameOverScreenPath = NodePath("GUI/GameOverScreen")
+_timeUpScreenPath = NodePath("GUI/TimeUpScreen")
 
 [node name="World 1-1" parent="." instance=ExtResource( 3 )]
 
@@ -33,7 +35,10 @@ position = Vector2( 128, 233 )
 
 [node name="LevelStartUI" parent="GUI" instance=ExtResource( 7 )]
 
-[node name="ScoreBoard" parent="GUI" instance=ExtResource( 6 )]
+[node name="TimeUpScreen" parent="GUI" instance=ExtResource( 9 )]
+visible = false
 
 [node name="GameOverScreen" parent="GUI" instance=ExtResource( 8 )]
 visible = false
+
+[node name="ScoreBoard" parent="GUI" instance=ExtResource( 6 )]

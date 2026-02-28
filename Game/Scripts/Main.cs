@@ -27,7 +27,11 @@ namespace Game
         [Export]
         private NodePath _gameOverScreenPath;
         private CanvasItem _gameOverScreen;
+        [Export]
+        private NodePath _timeUpScreenPath;
+        private CanvasItem _timeUpScreen;
         private bool _gameOver = false;
+        private bool _timeUp = false;
 
         public override void _Ready()
         {
@@ -46,12 +50,14 @@ namespace Game
             _currentLevel = GetNode<Level>(_currentLevelPath);
             _levelStartScreen = GetNode<CanvasItem>(_levelStartScreenPath);
             _gameOverScreen = GetNode<CanvasItem>(_gameOverScreenPath);
+            _timeUpScreen = GetNode<CanvasItem>(_timeUpScreenPath);
         }
 
         private void SetNodeConnections()
         {
             LivesEventBus.Instance.Connect("LifeLostUpdated", this, nameof(OnLifeLostUpdated));
             LivesEventBus.Instance.Connect("GameOver", this, nameof(OnGameOver));
+            TimerEventBus.Instance.Connect("TimeUp", this, nameof(OnTimeUp));
         }
 
         private async void StartGame()
@@ -69,6 +75,13 @@ namespace Game
         public async void OnLifeLostUpdated()
         {
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+            if (_timeUp)
+            {
+                _timeUpScreen.Visible = true;
+                await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
+                _timeUpScreen.Visible = false;
+                _timeUp = false;
+            }
             if (_gameOver)
             {
                 _gameOverScreen.Visible = true;
@@ -91,6 +104,11 @@ namespace Game
         public void OnGameOver()
         {
             _gameOver = true;
+        }
+
+        public void OnTimeUp()
+        {
+            _timeUp = true;
         }
     }
 }

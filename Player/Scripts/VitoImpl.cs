@@ -98,6 +98,7 @@ namespace Game.Player
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
             PowerupEventBus.Instance.Connect("FlowerCollected", this, nameof(OnFlowerCollected));
             PowerupEventBus.Instance.Connect("StarCollected", this, nameof(OnStarCollected));
+            TimerEventBus.Instance.Connect("TimeUp", this, nameof(OnTimeUp));
         }
 
         public override void _Process(float delta)
@@ -498,6 +499,11 @@ namespace Game.Player
             InvincibilityFlashPlayerReference.Stop();
             Visible = true;
             Damageable = true;
+        }
+
+        public void OnTimeUp()
+        {
+            Die();
         }
     }
 }
