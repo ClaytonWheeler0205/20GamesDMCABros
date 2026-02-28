@@ -19,6 +19,7 @@ _currentLevelPath = NodePath("World 1-1")
 _levelStartScreenPath = NodePath("GUI/LevelStartUI")
 _gameOverScreenPath = NodePath("GUI/GameOverScreen")
 _timeUpScreenPath = NodePath("GUI/TimeUpScreen")
+_scoreboardPath = NodePath("GUI/ScoreBoard")
 
 [node name="World 1-1" parent="." instance=ExtResource( 3 )]
 

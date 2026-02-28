@@ -1,6 +1,7 @@
 using Game.Buses;
 using Game.Levels;
 using Game.Player;
+using Game.UI;
 using Godot;
 
 namespace Game
@@ -30,6 +31,9 @@ namespace Game
         [Export]
         private NodePath _timeUpScreenPath;
         private CanvasItem _timeUpScreen;
+        [Export]
+        private NodePath _scoreboardPath;
+        private Scoreboard _scoreboardReference;
         private bool _gameOver = false;
         private bool _timeUp = false;
 
@@ -51,6 +55,7 @@ namespace Game
             _levelStartScreen = GetNode<CanvasItem>(_levelStartScreenPath);
             _gameOverScreen = GetNode<CanvasItem>(_gameOverScreenPath);
             _timeUpScreen = GetNode<CanvasItem>(_timeUpScreenPath);
+            _scoreboardReference = GetNode<Scoreboard>(_scoreboardPath);
         }
 
         private void SetNodeConnections()
@@ -64,6 +69,8 @@ namespace Game
         {
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
             _levelStartScreen.Visible = false;
+            _scoreboardReference.TimeUIReference.ResetTimer();
+            _scoreboardReference.TimeUIReference.ShowTimer();
             GetTree().Paused = false;
             _player.Damageable = true;
             _currentLevel.Start(_newLevel);
@@ -75,11 +82,13 @@ namespace Game
         public async void OnLifeLostUpdated()
         {
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
+            _scoreboardReference.TimeUIReference.HideTimer();
             if (_timeUp)
             {
                 _timeUpScreen.Visible = true;
                 await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
                 _timeUpScreen.Visible = false;
+                _currentLevel.ResetPlayerSpawnPoint();
                 _timeUp = false;
             }
             if (_gameOver)

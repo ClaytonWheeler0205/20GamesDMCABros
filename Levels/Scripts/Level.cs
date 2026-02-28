@@ -51,6 +51,11 @@ namespace Game.Levels
         {
             get { return _startingPointReference; }
         }
+        private Vector2 _levelStartPosition;
+        protected Vector2 LevelStartPosition
+        {
+            get { return _levelStartPosition; }
+        }
 
         public override void _Ready()
         {
@@ -67,6 +72,7 @@ namespace Game.Levels
             _checkpointContainerReference = GetNode<Node>(_checkpointContainerPath);
             _deathPitsReference = GetNode<Node>(_deathPitsPath);
             _startingPointReference = GetNode<Position2D>(_startingPointPath);
+            _levelStartPosition = _startingPointReference.GlobalPosition;
         }
 
         private void SetNodeConnections()
@@ -85,8 +91,10 @@ namespace Game.Levels
             }
         }
 
+        // TODO: Remove the bool parameter. Split these into two different method calls
         public abstract void Start(bool firstLoad);
         public abstract Vector2 GetPlayerSpawnPoint();
+        public abstract void ResetPlayerSpawnPoint();
         public abstract void ResetLevel();
         public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition);
     }

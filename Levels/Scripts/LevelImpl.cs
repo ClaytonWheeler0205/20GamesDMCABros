@@ -74,6 +74,11 @@ namespace Game.Levels
             return StartingPointReference.GlobalPosition;
         }
 
+        public override void ResetPlayerSpawnPoint()
+        {
+            StartingPointReference.GlobalPosition = LevelStartPosition;
+        }
+
         public override void ResetLevel()
         {
             ResetEnemies();

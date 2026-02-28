@@ -21,6 +21,12 @@ namespace Game.UI
             TimeTextReference.Visible = false;
         }
 
+        public override void ResetTimer()
+        {
+            TimeLeft = 400;
+            UpdateTimerText();
+        }
+
         public override void ShowTimer()
         {
             TimeTextReference.Visible = true;

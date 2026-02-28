@@ -19,7 +19,7 @@ namespace Game.UI
         {
             get { return _timeTextReference; }
         }
-        private int _timeLeft = 20;
+        private int _timeLeft = 400;
         public int TimeLeft
         {
             protected get { return _timeLeft; }
@@ -48,6 +48,7 @@ namespace Game.UI
         public abstract void StartTimer();
 
         public abstract void StopTimer();
+        public abstract void ResetTimer();
 
         public abstract void HideTimer();
 
