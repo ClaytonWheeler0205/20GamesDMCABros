@@ -6,6 +6,7 @@ namespace Game
     public enum JingleType
     {
         Starman,
+        StarmanFast,
         CourseClear,
         CastleClear,
         Ending,
@@ -21,6 +22,12 @@ namespace Game
         public static JinglePlayer Instance
         {
             get { return _instance; }
+        }
+        private bool _hurryJinglePlayed;
+        protected bool HurryJinglePlayed
+        {
+            get { return _hurryJinglePlayed; }
+            set { _hurryJinglePlayed = value; }
         }
 
         public override void _Ready()

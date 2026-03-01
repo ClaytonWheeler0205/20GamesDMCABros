@@ -64,11 +64,13 @@ namespace Game.Levels
         public override void OnStarCollected()
         {
             StopMusic();
+            ShouldStarmanThemePlay = true;
         }
 
         public override void OnStarEnding()
         {
             StartLevelMusic();
+            ShouldStarmanThemePlay = false;
         }
 
         public override void OnTimeLow()
@@ -80,6 +82,11 @@ namespace Game.Levels
 
         public override void OnHurryJingleFinished()
         {
+            if (ShouldStarmanThemePlay)
+            {
+                JinglePlayer.Instance.PlayJingle(JingleType.Starman);
+                return;
+            }
             StartLevelMusic();
         }
     }

@@ -23,7 +23,7 @@ namespace Game.UI
 
         public override void ResetTimer()
         {
-            TimeLeft = 105;
+            TimeLeft = 150;
             UpdateTimerText();
         }
 

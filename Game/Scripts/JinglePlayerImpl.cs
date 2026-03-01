@@ -10,6 +10,7 @@ namespace Game
         private Dictionary<JingleType, AudioStream> _jingles = new Dictionary<JingleType, AudioStream>()
         {
             {JingleType.Starman, null},
+            {JingleType.StarmanFast, null},
             {JingleType.CourseClear, null},
             {JingleType.CastleClear, null},
             {JingleType.Ending, null},
@@ -30,12 +31,12 @@ namespace Game
             {
                 case JingleType.Starman:
                     LoadStarmanTheme();
-                    _currentJingle = JingleType.Starman;
-                    Stream = _jingles[JingleType.Starman];
                     break;
                 case JingleType.CourseClear:
+                    HurryJinglePlayed = false;
                     break;
                 case JingleType.CastleClear:
+                    HurryJinglePlayed = false;
                     break;
                 case JingleType.Ending:
                     break;
@@ -43,6 +44,7 @@ namespace Game
                     LoadDeathJingle();
                     _currentJingle = JingleType.Death;
                     Stream = _jingles[JingleType.Death];
+                    HurryJinglePlayed = false;
                     break;
                 case JingleType.GameOver:
                     LoadGameOverJingle();
@@ -53,6 +55,7 @@ namespace Game
                     LoadHurryJingle();
                     _currentJingle = JingleType.Hurry;
                     Stream = _jingles[JingleType.Hurry];
+                    HurryJinglePlayed = true;
                     break;
             }
             Play();
@@ -60,11 +63,36 @@ namespace Game
 
         private void LoadStarmanTheme()
         {
+            if (HurryJinglePlayed)
+            {
+                LoadFastStarmanTheme();
+                return;
+            }
+            LoadStandardStarmanTheme();
+        }
+
+        private void LoadStandardStarmanTheme()
+        {
             if (_jingles[JingleType.Starman] != null)
             {
+                _currentJingle = JingleType.Starman;
+                Stream = _jingles[JingleType.Starman];
                 return;
             }
             _jingles[JingleType.Starman] = GD.Load<AudioStream>("res://Items/Audio/starman.wav");
+            _currentJingle = JingleType.Starman;
+            Stream = _jingles[JingleType.Starman];
+        }
+
+        private void LoadFastStarmanTheme()
+        {
+            if (_jingles[JingleType.StarmanFast] != null)
+            {
+                return;
+            }
+            _jingles[JingleType.StarmanFast] = GD.Load<AudioStream>("res://Items/Audio/starman_low_time.wav");
+            _currentJingle = JingleType.StarmanFast;
+            Stream = _jingles[JingleType.StarmanFast];
         }
 
         private void LoadDeathJingle()

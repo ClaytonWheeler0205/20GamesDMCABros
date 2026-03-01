@@ -46,6 +46,12 @@ namespace Game.Levels
             protected get { return _isLowTime; }
             set { _isLowTime = value; }
         }
+        private bool _shouldStarmanThemePlay;
+        protected bool ShouldStarmanThemePlay
+        {
+            get { return _shouldStarmanThemePlay; }
+            set { _shouldStarmanThemePlay = value; }
+        }
 
         public override void _Ready()
         {
