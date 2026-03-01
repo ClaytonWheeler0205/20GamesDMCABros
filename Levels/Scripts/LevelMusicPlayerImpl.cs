@@ -7,11 +7,11 @@ namespace Game.Levels
         {
             if (InSubworld)
             {
-                SubworldMusicPlayerReference.Play();
+                PlaySubworldMusic();
             }
             else
             {
-                WorldMusicPlayerReference.Play();
+                PlayWorldMusic();
             }
         }
 
@@ -19,18 +19,40 @@ namespace Game.Levels
         {
             if (InSubworld)
             {
-                WorldMusicPlayerReference.Play();
+                PlayWorldMusic();
             }
             else
             {
-                SubworldMusicPlayerReference.Play();
+                PlaySubworldMusic();
             }
+        }
+
+        private void PlayWorldMusic()
+        {
+            if (IsLowTime)
+            {
+                FastWorldMusicPlayerReference.Play();
+                return;
+            }
+            WorldMusicPlayerReference.Play();
+        }
+
+        private void PlaySubworldMusic()
+        {
+            if (IsLowTime)
+            {
+                FastSubworldMusicPlayerReference.Play();
+                return;
+            }
+            SubworldMusicPlayerReference.Play();
         }
 
         public override void StopMusic()
         {
             WorldMusicPlayerReference.Stop();
+            FastWorldMusicPlayerReference.Stop();
             SubworldMusicPlayerReference.Stop();
+            FastSubworldMusicPlayerReference.Stop();
         }
 
         public override void OnPlayerDied()
@@ -45,6 +67,18 @@ namespace Game.Levels
         }
 
         public override void OnStarEnding()
+        {
+            StartLevelMusic();
+        }
+
+        public override void OnTimeLow()
+        {
+            StopMusic();
+            JinglePlayer.Instance.PlayJingle(JingleType.Hurry);
+            IsLowTime = true;
+        }
+
+        public override void OnHurryJingleFinished()
         {
             StartLevelMusic();
         }

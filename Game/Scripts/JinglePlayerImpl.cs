@@ -14,7 +14,8 @@ namespace Game
             {JingleType.CastleClear, null},
             {JingleType.Ending, null},
             {JingleType.Death, null},
-            {JingleType.GameOver, null}
+            {JingleType.GameOver, null},
+            {JingleType.Hurry, null}
         };
         private JingleType _currentJingle = JingleType.Ending;
 
@@ -48,6 +49,11 @@ namespace Game
                     _currentJingle = JingleType.GameOver;
                     Stream = _jingles[JingleType.GameOver];
                     break;
+                case JingleType.Hurry:
+                    LoadHurryJingle();
+                    _currentJingle = JingleType.Hurry;
+                    Stream = _jingles[JingleType.Hurry];
+                    break;
             }
             Play();
         }
@@ -79,6 +85,15 @@ namespace Game
             _jingles[JingleType.GameOver] = GD.Load<AudioStream>("res://Game/Audio/game_over.wav");
         }
 
+        private void LoadHurryJingle()
+        {
+            if (_jingles[JingleType.Hurry] != null)
+            {
+                return;
+            }
+            _jingles[JingleType.Hurry] = GD.Load<AudioStream>("res://Game/Audio/hurry.wav");
+        }
+
         public override void StopJingle()
         {
             Stop();
@@ -89,6 +104,10 @@ namespace Game
             if (_currentJingle == JingleType.Death)
             {
                 LivesEventBus.Instance.EmitSignal("LifeLost");
+            }
+            else if (_currentJingle == JingleType.Hurry)
+            {
+                LevelEventBus.Instance.EmitSignal("HurryJingleFinished");
             }
         }
     }

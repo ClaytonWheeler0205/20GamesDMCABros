@@ -23,7 +23,7 @@ namespace Game.UI
 
         public override void ResetTimer()
         {
-            TimeLeft = 400;
+            TimeLeft = 105;
             UpdateTimerText();
         }
 
@@ -40,7 +40,6 @@ namespace Game.UI
             {
                 StopTimer();
                 TimerEventBus.Instance.EmitSignal("TimeUp");
-                GD.Print("Times up!!!");
             }
             else if (TimeLeft == 100)
             {

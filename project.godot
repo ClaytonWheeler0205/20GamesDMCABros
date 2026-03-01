@@ -23,6 +23,7 @@ TimerEventBus="*res://Buses/Scenes/TimerEventBus.tscn"
 PowerupEventBus="*res://Buses/Scenes/PowerupEventBus.tscn"
 PlayerEventBus="*res://Buses/Scenes/PlayerEventBus.tscn"
 PointTextFactory="*res://Game/Scenes/PointTextFactory.tscn"
+LevelEventBus="*res://Buses/Scenes/LevelEventBus.tscn"
 JinglePlayer="*res://Game/Scenes/JinglePlayer.tscn"
 
 [display]

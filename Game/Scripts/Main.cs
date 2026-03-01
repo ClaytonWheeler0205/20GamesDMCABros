@@ -89,6 +89,7 @@ namespace Game
                 await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
                 _timeUpScreen.Visible = false;
                 _currentLevel.ResetPlayerSpawnPoint();
+                _scoreboardReference.TimeUIReference.StartTimer();
                 _timeUp = false;
             }
             if (_gameOver)

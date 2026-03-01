@@ -10,7 +10,8 @@ namespace Game
         CastleClear,
         Ending,
         Death,
-        GameOver
+        GameOver,
+        Hurry
     }
 
     public abstract class JinglePlayer : AudioStreamPlayer

@@ -82,6 +82,7 @@ namespace Game.Levels
         public override void ResetLevel()
         {
             ResetEnemies();
+            MusicPlayerReference.IsLowTime = false;
         }
 
         private void ResetEnemies()
