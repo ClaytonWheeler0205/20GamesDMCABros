@@ -44,7 +44,6 @@ namespace Game.UI
             else if (TimeLeft == 100)
             {
                 TimerEventBus.Instance.EmitSignal("TimeLow");
-                GD.Print("Time low!!!");
             }
         }
 

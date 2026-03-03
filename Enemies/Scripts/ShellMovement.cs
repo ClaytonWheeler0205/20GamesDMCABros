@@ -23,7 +23,8 @@ namespace Game.Enemies
         public override void FlipDirection()
         {
             base.FlipDirection();
-            _shellBounceSoundReference.Play();
+            if (ShouldMove)
+                _shellBounceSoundReference.Play();
         }
 
     }

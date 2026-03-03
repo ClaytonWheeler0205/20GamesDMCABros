@@ -1,7 +1,7 @@
-using Game.Buses;
-using Game.Player;
-using Game.Projectiles;
 using Godot;
+using Game.Player;
+using Game.Buses;
+using Game.Projectiles;
 
 namespace Game.Enemies
 {
@@ -287,6 +287,9 @@ namespace Game.Enemies
         {
             _movementReference.ShouldMove = false;
             _movementReference.ShouldFall = false;
+            _shellMovementReference.ShouldMove = false;
+            _shellMovementReference.ShouldFall = false;
+            _inShell = false;
             if (_movementReference.MovementDirection == Direction.Right)
             {
                 _movementReference.FlipDirection();
@@ -297,8 +300,11 @@ namespace Game.Enemies
             }
             EnemyVisualReference.Stop();
             EnemyVisualReference.FlipH = false;
+            EnemyVisualReference.FlipV = false;
             EnemyVisualReference.Hide();
+            EnemyVisualReference.Offset = Vector2.Zero;
             EnemyHitboxAreaReference.SetDeferred("disabled", true);
+            _shellHitboxReference.SetDeferred("disabled", true);
             PhysicalHitboxReference.SetDeferred("disabled", true);
         }
 
@@ -344,7 +350,7 @@ namespace Game.Enemies
 
         private bool ShouldStayInLevel()
         {
-            return ((_movementReference.MovementDirection == Direction.Right && _movementReference.ShouldMove) || (_shellMovementReference.MovementDirection == Direction.Right && _shellMovementReference.ShouldMove)) && !_inShell;
+            return _movementReference.MovementDirection == Direction.Right && _movementReference.ShouldMove;
         }
 
         public void OnDirectionFlipped()
