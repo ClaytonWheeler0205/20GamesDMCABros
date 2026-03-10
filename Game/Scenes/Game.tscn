@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Player/Scenes/Vito.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Scenes/PlayerController.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://UI/Scenes/LevelStartUI.tscn" type="PackedScene" id=7]
 [ext_resource path="res://UI/Scenes/GameOverScreen.tscn" type="PackedScene" id=8]
 [ext_resource path="res://UI/Scenes/TimeUpScreen.tscn" type="PackedScene" id=9]
+[ext_resource path="res://UI/Scripts/BlackoutScreen.cs" type="Script" id=10]
 
 [node name="Game" type="Node"]
 script = ExtResource( 4 )
@@ -27,7 +28,6 @@ _scoreboardPath = NodePath("GUI/ScoreBoard")
 
 [node name="Vito" parent="." instance=ExtResource( 1 )]
 position = Vector2( 58, 328 )
-z_index = 1
 
 [node name="Camera" parent="." instance=ExtResource( 5 )]
 position = Vector2( 128, 233 )
@@ -43,3 +43,10 @@ visible = false
 visible = false
 
 [node name="ScoreBoard" parent="GUI" instance=ExtResource( 6 )]
+
+[node name="BlackoutScreen" type="ColorRect" parent="GUI"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 10 )

@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -23,5 +24,17 @@ namespace Game.Player
                 }
             }
         }
+
+        public override void _Ready()
+        {
+            SetNodeConnections();
+        }
+
+        private void SetNodeConnections()
+        {
+            PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
+        }
+
+        public abstract void OnPipeEntered();
     }
 }

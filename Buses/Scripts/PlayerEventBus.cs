@@ -14,6 +14,8 @@ namespace Game.Buses
         public delegate void PlayerDied();
         [Signal]
         public delegate void PlayerReset();
+        [Signal]
+        public delegate void PipeEntered();
 
         private static PlayerEventBus _instance;
         public static PlayerEventBus Instance

@@ -7,6 +7,10 @@ namespace Game.Player
     {
         public override void _Process(float delta)
         {
+            if (!IsControllerActive)
+            {
+                return;
+            }
             CharacterToControl.SetMovementDirection(Input.GetAxis("move_left", "move_right"));
             if (Input.IsActionPressed("crouch"))
             {
@@ -20,6 +24,10 @@ namespace Game.Player
 
         public override void _UnhandledInput(InputEvent @event)
         {
+            if (!IsControllerActive)
+            {
+                return;
+            }
             if (@event.IsActionPressed("jump"))
             {
                 CharacterToControl.Jump();
@@ -39,5 +47,9 @@ namespace Game.Player
             }
         }
 
+        public override void OnPipeEntered()
+        {
+            IsControllerActive = false;
+        }
     }
 }

@@ -89,5 +89,10 @@ namespace Game.Levels
             }
             StartLevelMusic();
         }
+
+        public override void OnPipeEntranceFinished()
+        {
+            StopMusic();
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 
 namespace Game.UI
@@ -36,7 +37,13 @@ namespace Game.UI
         public override void _Ready()
         {
             SetNodeReferences();
+            SetNodeConnections();
             StartTimer();
+        }
+
+        private void SetNodeConnections()
+        {
+            PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
         }
 
         private void SetNodeReferences()
@@ -55,5 +62,6 @@ namespace Game.UI
         public abstract void ShowTimer();
 
         public abstract void OnLevelTimerTimeout();
+        public abstract void OnPipeEntered();
     }
 }

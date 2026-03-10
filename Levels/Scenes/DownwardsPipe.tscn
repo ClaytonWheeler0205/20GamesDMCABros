@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Levels/Audio/pipe_enter.wav" type="AudioStream" id=1]
+[ext_resource path="res://Levels/Scripts/DownwardsPipe.cs" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 2 )
+
+[node name="DownwardsPipe" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 2 )
+_pipeSoundPlayerPath = NodePath("PipeSoundPlayer")
+_rayCastPaths = [ NodePath("RayCast2D"), NodePath("RayCast2D2") ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -2 )
+shape = SubResource( 1 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( -1, 0 )
+enabled = true
+cast_to = Vector2( 0, -4 )
+collision_mask = 2
+
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+position = Vector2( 2, 0 )
+enabled = true
+cast_to = Vector2( 0, -4 )
+collision_mask = 2
+
+[node name="PipeSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="." to="." method="OnBodyExited"]
+[connection signal="finished" from="PipeSoundPlayer" to="." method="OnPipeSoundFinished"]

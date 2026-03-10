@@ -62,5 +62,10 @@ namespace Game.UI
                 TimeTextReference.Text = $"00{TimeLeft}";
             }
         }
+
+        public override void OnPipeEntered()
+        {
+            StopTimer();
+        }
     }
 }

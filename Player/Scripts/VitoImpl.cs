@@ -258,6 +258,13 @@ namespace Game.Player
                         CanThrow = false;
                     }
                 }
+                if (OverlappedPipe != null && OverlappedPipe.CanEnterPipe())
+                {
+                    PlayerEventBus.Instance.EmitSignal("PipeEntered");
+                    OverlappedPipe.PlayPipeSound();
+                    _shouldMove = false;
+                    PipeAnimationPlayerReference.Play("pipe_down");
+                }
             }
         }
 
@@ -504,6 +511,11 @@ namespace Game.Player
         public void OnTimeUp()
         {
             Die();
+        }
+
+        public override void OnPipeEntranceFinished()
+        {
+            GlobalPosition = OverlappedPipe.PipeExitPoint;
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Game.Player
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
             PlayerEventBus.Instance.Connect("FireballThrown", this, nameof(OnFireballThrown));
             PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
+            LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
         }
 
         public override void _Process(float delta)
@@ -198,6 +199,12 @@ namespace Game.Player
             Hide();
             _topPartToAnimateReference.Stop();
             _bottomPartToAnimateReference.Stop();
+        }
+
+        public void OnPipeEntranceFinished()
+        {
+            _topPartToAnimateReference.Offset = Vector2.Zero;
+            _bottomPartToAnimateReference.Offset = Vector2.Zero;
         }
     }
 }

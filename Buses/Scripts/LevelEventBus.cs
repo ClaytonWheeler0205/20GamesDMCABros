@@ -5,6 +5,8 @@ public class LevelEventBus : Node
 {
     [Signal]
     public delegate void HurryJingleFinished();
+    [Signal]
+    public delegate void PipeEntranceFinished();
 
     private static LevelEventBus _instance;
     public static LevelEventBus Instance

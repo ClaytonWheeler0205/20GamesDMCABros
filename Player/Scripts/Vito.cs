@@ -1,6 +1,8 @@
 using Game.Enemies;
+using Game.Levels;
 using Game.Projectiles;
 using Godot;
+using Util.ExtensionMethods;
 
 namespace Game.Player
 {
@@ -152,6 +154,26 @@ namespace Game.Player
         {
             get { return _deathAnimationPlayerReference; }
         }
+        private Pipe _overlappedPipe = null;
+        public Pipe OverlappedPipe
+        {
+            protected get { return _overlappedPipe; }
+            set
+            {
+                if (!value.IsValid())
+                {
+                    return;
+                }
+                _overlappedPipe = value;
+            }
+        }
+        [Export]
+        private NodePath _pipeAnimationPlayerPath;
+        private AnimationPlayer _pipeAnimationPlayerReference;
+        protected AnimationPlayer PipeAnimationPlayerReference
+        {
+            get { return _pipeAnimationPlayerReference; }
+        }
 
         public override void _Ready()
         {
@@ -182,6 +204,7 @@ namespace Game.Player
             _invincibilityFlashPlayerReference = GetNode<AnimationPlayer>(_invincibilityFlashPlayerPath);
             _invincibilityFlashTimerReference = GetNode<Timer>(_invincibilityFlashTimerPath);
             _deathAnimationPlayerReference = GetNode<AnimationPlayer>(_deathAnimationPlayerPath);
+            _pipeAnimationPlayerReference = GetNode<AnimationPlayer>(_pipeAnimationPlayerPath);
         }
 
         private void SetNodeConnections()
@@ -215,5 +238,6 @@ namespace Game.Player
         public abstract void Fall();
         public abstract void ResetPlayer();
         public abstract void OnInvincibilityFlashTimeTimeout();
+        public abstract void OnPipeEntranceFinished();
     }
 }

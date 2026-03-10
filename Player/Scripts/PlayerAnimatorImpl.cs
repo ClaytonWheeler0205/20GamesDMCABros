@@ -23,6 +23,7 @@ namespace Game.Player
             PlayerEventBus.Instance.Connect("DamageTaken", this, nameof(OnDamageTaken));
             PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
             PlayerEventBus.Instance.Connect("PlayerReset", this, nameof(OnPlayerReset));
+            LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
         }
 
         public override void _Process(float delta)
@@ -130,6 +131,11 @@ namespace Game.Player
         {
             Play("idle");
             FlipH = false;
+        }
+
+        public void OnPipeEntranceFinished()
+        {
+            Offset = Vector2.Zero;
         }
     }
 }
