@@ -23,6 +23,7 @@ namespace Game.Player
             PlayerEventBus.Instance.Connect("DamageTaken", this, nameof(OnDamageTaken));
             PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
             PlayerEventBus.Instance.Connect("PlayerReset", this, nameof(OnPlayerReset));
+            PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
             LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
         }
 
@@ -133,9 +134,18 @@ namespace Game.Player
             FlipH = false;
         }
 
+        public void OnPipeEntered()
+        {
+            if (Visible)
+            {
+                Play("idle");
+            }
+        }
+
         public void OnPipeEntranceFinished()
         {
             Offset = Vector2.Zero;
+            FlipH = false;
         }
     }
 }

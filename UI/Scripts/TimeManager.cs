@@ -44,6 +44,7 @@ namespace Game.UI
         private void SetNodeConnections()
         {
             PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
+            LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
         }
 
         private void SetNodeReferences()
@@ -63,5 +64,6 @@ namespace Game.UI
 
         public abstract void OnLevelTimerTimeout();
         public abstract void OnPipeEntered();
+        public abstract void OnPipeTransitionFinished();
     }
 }

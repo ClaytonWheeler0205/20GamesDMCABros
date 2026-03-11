@@ -94,5 +94,11 @@ namespace Game.Levels
         {
             StopMusic();
         }
+
+        public override void OnPipeTransitionFinished()
+        {
+            SwitchMusic();
+            InSubworld = !InSubworld;
+        }
     }
 }

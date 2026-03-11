@@ -16,6 +16,8 @@ namespace Game.Buses
         public delegate void PlayerReset();
         [Signal]
         public delegate void PipeEntered();
+        [Signal]
+        public delegate void PlayerTeleported(Vector2 newCameraPosition);
 
         private static PlayerEventBus _instance;
         public static PlayerEventBus Instance

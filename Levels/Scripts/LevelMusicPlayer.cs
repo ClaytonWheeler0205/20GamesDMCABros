@@ -75,6 +75,7 @@ namespace Game.Levels
             TimerEventBus.Instance.Connect("TimeLow", this, nameof(OnTimeLow));
             LevelEventBus.Instance.Connect("HurryJingleFinished", this, nameof(OnHurryJingleFinished));
             LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
+            LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
         }
 
         public abstract void StartLevelMusic();
@@ -86,5 +87,6 @@ namespace Game.Levels
         public abstract void OnTimeLow();
         public abstract void OnHurryJingleFinished();
         public abstract void OnPipeEntranceFinished();
+        public abstract void OnPipeTransitionFinished();
     }
 }

@@ -1,3 +1,4 @@
+using Game.Buses;
 using Game.Player;
 using Godot;
 using Util.ExtensionMethods;
@@ -11,13 +12,20 @@ namespace Game
         private Vector2 _screenSize;
         private float _scrollSpeed;
         private bool _shouldScroll = false;
+        private bool _cameraLocked = false;
         private Vito _followTarget;
 
         public override void _Ready()
         {
+            SetNodeConnections();
             _cameraViewport = GetViewport();
             _screenSize = GetViewportRect().Size;
             ApplyCameraPosition();
+        }
+
+        private void SetNodeConnections()
+        {
+            PlayerEventBus.Instance.Connect("PlayerTeleported", this, nameof(OnPlayerTeleported));
         }
 
         public void ApplyCameraPosition()
@@ -29,7 +37,7 @@ namespace Game
 
         public override void _PhysicsProcess(float delta)
         {
-            if (!_shouldScroll)
+            if (!_shouldScroll || _cameraLocked)
             {
                 return;
             }
@@ -81,5 +89,28 @@ namespace Game
             _shouldScroll = false;
         }
 
+        public void OnPlayerTeleported(Vector2 newCameraPosition)
+        {
+            GlobalPosition = newCameraPosition;
+            ApplyCameraPosition();
+        }
+
+        public void OnAreaEntered(Area2D area)
+        {
+            if (!area.IsInGroup("camera_blocker"))
+            {
+                return;
+            }
+            _cameraLocked = true;
+        }
+
+        public void OnAreaExited(Area2D area)
+        {
+            if (!area.IsInGroup("camera_blocker"))
+            {
+                return;
+            }
+            _cameraLocked = false;
+        }
     }
 }

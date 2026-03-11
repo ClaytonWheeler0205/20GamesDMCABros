@@ -7,7 +7,7 @@ namespace Game.Levels
     public abstract class Pipe : Area2D
     {
 
-        private Position2D _pipeExitPointReference;
+        private LevelMarker _pipeExitPointReference;
         private Vector2 _pipeExitPoint = Vector2.Zero;
         [Export]
         public Vector2 PipeExitPoint
@@ -19,6 +19,21 @@ namespace Game.Levels
                 if (_pipeExitPointReference.IsValid())
                 {
                     _pipeExitPointReference.Position = _pipeExitPoint;
+                }
+            }
+        }
+        private LevelMarker _cameraExitPointReference;
+        private Vector2 _cameraExitPoint = Vector2.Zero;
+        [Export]
+        public Vector2 CameraExitPoint
+        {
+            get { return _cameraExitPoint; }
+            set
+            {
+                _cameraExitPoint = value;
+                if (_cameraExitPointReference.IsValid())
+                {
+                    _cameraExitPointReference.Position = _cameraExitPoint;
                 }
             }
         }
@@ -34,9 +49,15 @@ namespace Game.Levels
         {
             if (Engine.EditorHint)
             {
-                _pipeExitPointReference = new Position2D();
+                PackedScene levelMarkerScene = GD.Load<PackedScene>("res://Levels/Scenes/LevelMarker.tscn");
+                _pipeExitPointReference = levelMarkerScene.Instance<LevelMarker>();
                 _pipeExitPointReference.Position = _pipeExitPoint;
                 AddChild(_pipeExitPointReference);
+                _pipeExitPointReference.MarkerIconReference.Texture = GD.Load<Texture>("res://Player/Art/VitoIdle.png");
+                _cameraExitPointReference = levelMarkerScene.Instance<LevelMarker>();
+                _cameraExitPointReference.Position = _cameraExitPoint;
+                AddChild(_cameraExitPointReference);
+                _cameraExitPointReference.MarkerIconReference.Texture = GD.Load<Texture>("res://Levels/Art/CameraIcon.png");
                 return;
             }
             SetNodeConnections();

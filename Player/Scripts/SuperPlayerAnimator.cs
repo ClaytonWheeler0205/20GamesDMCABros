@@ -7,6 +7,7 @@ namespace Game.Player
     public class SuperPlayerAnimator : Node2D, PlayerAnimator
     {
         // TODO: eliminate circular dependency (Vito and PlayerAnimator) by creating a class that stores player data
+        // TODO: fix the bug where the grow animation doesn't face the direction the player was facing.
         public Vito PlayerToAnimate { get; set; }
         public MovementComponent PlayerMovement { get; set; }
         [Export]
@@ -37,7 +38,9 @@ namespace Game.Player
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
             PlayerEventBus.Instance.Connect("FireballThrown", this, nameof(OnFireballThrown));
             PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
+            PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
             LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
+            LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
         }
 
         public override void _Process(float delta)
@@ -201,10 +204,24 @@ namespace Game.Player
             _bottomPartToAnimateReference.Stop();
         }
 
+        public void OnPipeEntered()
+        {
+            _topPartToAnimateReference.Play("crouch");
+            _bottomPartToAnimateReference.Play("crouch");
+        }
+
         public void OnPipeEntranceFinished()
         {
             _topPartToAnimateReference.Offset = Vector2.Zero;
+            _topPartToAnimateReference.FlipH = false;
             _bottomPartToAnimateReference.Offset = Vector2.Zero;
+            _bottomPartToAnimateReference.FlipH = false;
+        }
+
+        public void OnPipeTransitionFinished()
+        {
+            _topPartToAnimateReference.Play("idle");
+            _bottomPartToAnimateReference.Play("idle");
         }
     }
 }

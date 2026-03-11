@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Godot;
 
 namespace Game.Player
@@ -50,6 +51,11 @@ namespace Game.Player
         public override void OnPipeEntered()
         {
             IsControllerActive = false;
+        }
+
+        public override void OnPipeTransitionFinished()
+        {
+            IsControllerActive = true;
         }
     }
 }

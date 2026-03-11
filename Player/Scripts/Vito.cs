@@ -211,6 +211,8 @@ namespace Game.Player
         {
             _jumpComponentReference.Connect("SuccessfulJump", this, nameof(OnSuccessfulJump));
             _jumpComponentReference.Connect("JumpReleased", this, nameof(OnJumpReleased));
+            LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
+            LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
         }
 
         private void SetupPlayerVisuals()
@@ -239,5 +241,6 @@ namespace Game.Player
         public abstract void ResetPlayer();
         public abstract void OnInvincibilityFlashTimeTimeout();
         public abstract void OnPipeEntranceFinished();
+        public abstract void OnPipeTransitionFinished();
     }
 }

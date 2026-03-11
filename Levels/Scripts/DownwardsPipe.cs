@@ -5,6 +5,7 @@ using Godot.Collections;
 namespace Game.Levels
 {
 
+    [Tool]
     public class DownwardsPipe : Pipe
     {
         [Export]

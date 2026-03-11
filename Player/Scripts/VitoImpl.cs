@@ -260,28 +260,38 @@ namespace Game.Player
                 }
                 if (OverlappedPipe != null && OverlappedPipe.CanEnterPipe())
                 {
-                    PlayerEventBus.Instance.EmitSignal("PipeEntered");
-                    OverlappedPipe.PlayPipeSound();
-                    _shouldMove = false;
-                    PipeAnimationPlayerReference.Play("pipe_down");
+                    GoDownPipe();
                 }
             }
+        }
+
+        private void GoDownPipe()
+        {
+            PlayerEventBus.Instance.EmitSignal("PipeEntered");
+            OverlappedPipe.PlayPipeSound();
+            _shouldMove = false;
+            _velocity = Vector2.Zero;
+            SetMovementDirection(0.0f);
+            PipeAnimationPlayerReference.Play("pipe_down");
         }
 
         public override void StopCrouching()
         {
             MovementComponentReference.StopCrouching();
-            if (GlobalPlayerData.PlayerSize == Size.Big)
-            {
-                if (_physicalCollisions["super"].Disabled)
-                {
-                    _physicalCollisions["super"].SetDeferred("disabled", false);
-                    _physicalCollisions["crouched"].SetDeferred("disabled", true);
-                    _jumpInteractionCollisions["super"].SetDeferred("disabled", false);
-                    _jumpInteractionCollisions["crouched"].SetDeferred("disabled", true);
-                }
-            }
+            DisableCrouchingCollision();
             CanThrow = true;
+        }
+
+        private void DisableCrouchingCollision()
+        {
+            if (GlobalPlayerData.PlayerSize == Size.Big && _physicalCollisions["super"].Disabled)
+            {
+                _physicalCollisions["super"].SetDeferred("disabled", false);
+                _physicalCollisions["crouched"].SetDeferred("disabled", true);
+                _jumpInteractionCollisions["super"].SetDeferred("disabled", false);
+                _jumpInteractionCollisions["crouched"].SetDeferred("disabled", true);
+
+            }
         }
 
         public override void ShootFireball()
@@ -491,6 +501,8 @@ namespace Game.Player
             SetMovementDirection(0.0f);
             _velocity = Vector2.Zero;
             _shouldMove = true;
+            MovementComponentReference.StopCrouching();
+            MovementComponentReference.StopRunning();
             _physicalCollisions["small"].SetDeferred("disabled", false);
             if (_shouldSeek)
             {
@@ -515,7 +527,15 @@ namespace Game.Player
 
         public override void OnPipeEntranceFinished()
         {
-            GlobalPosition = OverlappedPipe.PipeExitPoint;
+            PlayerEventBus.Instance.EmitSignal("PlayerTeleported", OverlappedPipe.ToGlobal(OverlappedPipe.CameraExitPoint));
+            GlobalPosition = OverlappedPipe.ToGlobal(OverlappedPipe.PipeExitPoint);
+        }
+
+        public override void OnPipeTransitionFinished()
+        {
+            _shouldMove = true;
+            StopCrouching();
+            StopRunning();
         }
     }
 }

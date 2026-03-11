@@ -33,8 +33,10 @@ namespace Game.Player
         private void SetNodeConnections()
         {
             PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
+            LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
         }
 
         public abstract void OnPipeEntered();
+        public abstract void OnPipeTransitionFinished();
     }
 }

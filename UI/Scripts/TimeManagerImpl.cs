@@ -67,5 +67,10 @@ namespace Game.UI
         {
             StopTimer();
         }
+
+        public override void OnPipeTransitionFinished()
+        {
+            StartTimer();
+        }
     }
 }
