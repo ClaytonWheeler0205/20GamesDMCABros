@@ -101,5 +101,25 @@ namespace Game.Levels
         {
             StartingPointReference.GlobalPosition = checkpointPosition;
         }
+
+        public override void OnPipeTransitionFinished()
+        {
+            InSubworld = !InSubworld;
+            UpdateLevelPalette();
+        }
+
+        private void UpdateLevelPalette()
+        {
+            if (InSubworld)
+            {
+                PaletteMaterial.SetShaderParam("palette_code", (int)SubworldType);
+                CoinsMaterial.SetShaderParam("palette_code", (int)SubworldType);
+            }
+            else
+            {
+                PaletteMaterial.SetShaderParam("palette_code", (int)WorldType);
+                CoinsMaterial.SetShaderParam("palette_code", (int)WorldType);
+            }
+        }
     }
 }

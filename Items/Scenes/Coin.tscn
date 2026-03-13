@@ -28,6 +28,7 @@ animations = [ {
 extents = Vector2( 8, 8 )
 
 [node name="Coin" type="Area2D"]
+use_parent_material = true
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 3 )
@@ -36,6 +37,7 @@ _coinCollisionPath = NodePath("CollisionShape2D")
 _coinCollectSoundPath = NodePath("AudioStreamPlayer")
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+use_parent_material = true
 frames = SubResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

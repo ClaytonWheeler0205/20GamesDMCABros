@@ -28,23 +28,21 @@
 [ext_resource path="res://Levels/Art/PipeTilesLeft.png" type="Texture" id=26]
 [ext_resource path="res://Levels/Scenes/DownwardsPipe.tscn" type="PackedScene" id=27]
 [ext_resource path="res://Levels/Scenes/CameraBlocker.tscn" type="PackedScene" id=28]
+[ext_resource path="res://Levels/Art/LevelPalette.png" type="Texture" id=29]
+[ext_resource path="res://Items/Art/CoinPalette.png" type="Texture" id=30]
+
+[sub_resource type="ShaderMaterial" id=22]
+shader = ExtResource( 14 )
+shader_param/num_colors = 4
+shader_param/num_palettes = 4
+shader_param/precision = 0.1
+shader_param/palette_code = 0
+shader_param/palette = ExtResource( 29 )
 
 [sub_resource type="ConvexPolygonShape2D" id=8]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=9]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=4]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=5]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=6]
-points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
-
-[sub_resource type="ConvexPolygonShape2D" id=7]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 
 [sub_resource type="TileSet" id=1]
@@ -90,54 +88,6 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 1/z_index = 0
-2/name = "OverworldTiles.png 2"
-2/texture = ExtResource( 1 )
-2/tex_offset = Vector2( 0, 0 )
-2/modulate = Color( 1, 1, 1, 1 )
-2/region = Rect2( 0, 16, 32, 32 )
-2/tile_mode = 1
-2/autotile/bitmask_mode = 0
-2/autotile/bitmask_flags = [ Vector2( 0, 0 ), 256, Vector2( 0, 1 ), 16777220, Vector2( 1, 0 ), 64, Vector2( 1, 1 ), 4194305 ]
-2/autotile/icon_coordinate = Vector2( 1, 1 )
-2/autotile/tile_size = Vector2( 16, 16 )
-2/autotile/spacing = 0
-2/autotile/occluder_map = [  ]
-2/autotile/navpoly_map = [  ]
-2/autotile/priority_map = [  ]
-2/autotile/z_index_map = [  ]
-2/occluder_offset = Vector2( 0, 0 )
-2/navigation_offset = Vector2( 0, 0 )
-2/shape_offset = Vector2( 0, 0 )
-2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-2/shape = SubResource( 4 )
-2/shape_one_way = false
-2/shape_one_way_margin = 1.0
-2/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 4 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-}, {
-"autotile_coord": Vector2( 1, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 5 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-}, {
-"autotile_coord": Vector2( 0, 1 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 6 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-}, {
-"autotile_coord": Vector2( 1, 1 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 7 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-2/z_index = 0
 
 [sub_resource type="ConvexPolygonShape2D" id=14]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -261,6 +211,14 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 } ]
 1/z_index = 0
 
+[sub_resource type="ShaderMaterial" id=23]
+shader = ExtResource( 14 )
+shader_param/num_colors = 5
+shader_param/num_palettes = 4
+shader_param/precision = 0.1
+shader_param/palette_code = 0
+shader_param/palette = ExtResource( 30 )
+
 [sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 23, 16 )
 
@@ -276,6 +234,7 @@ shader_param/palette_code = 1
 shader_param/palette = ExtResource( 15 )
 
 [node name="World 1-1" type="TileMap"]
+material = SubResource( 22 )
 z_index = 1
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
@@ -290,6 +249,7 @@ _coinContainerPath = NodePath("Coins")
 _checkpointContainerPath = NodePath("Checkpoints")
 _deathPitsPath = NodePath("DeathPits")
 _startingPointPath = NodePath("StartingPosition")
+_subworldType = 1
 
 [node name="Pipes" type="TileMap" parent="."]
 tile_set = SubResource( 13 )
@@ -306,7 +266,8 @@ CameraExitPoint = Vector2( -32, 232 )
 position = Vector2( 1012, 576 )
 texture = ExtResource( 25 )
 
-[node name="Blocks" type="Node" parent="."]
+[node name="Blocks" type="Node2D" parent="."]
+use_parent_material = true
 
 [node name="Brick" parent="Blocks" instance=ExtResource( 2 )]
 position = Vector2( 328, 280 )
@@ -564,8 +525,9 @@ ItemInBlock = 1
 position = Vector2( 1624, 280 )
 ItemInBlock = 4
 
-[node name="Coins" type="Node" parent="."]
+[node name="Coins" type="Node2D" parent="."]
 pause_mode = 2
+material = SubResource( 23 )
 
 [node name="Coin" parent="Coins" instance=ExtResource( 5 )]
 position = Vector2( 840, 536 )

@@ -1,10 +1,16 @@
-using Game.Buses;
 using Godot;
 
 namespace Game.Levels
 {
+    public enum LevelType
+    {
+        Overworld = 0,
+        Underground = 1,
+        Castle = 2,
+        Underwater = 3
+    }
 
-    public abstract class Level : Node
+    public abstract class Level : Node2D
     {
         [Export]
         private NodePath _musicPlayerPath;
@@ -29,8 +35,8 @@ namespace Game.Levels
         }
         [Export]
         private NodePath _coinContainerPath;
-        private Node _coinContainerReference;
-        protected Node CoinContainerReference
+        private Node2D _coinContainerReference;
+        protected Node2D CoinContainerReference
         {
             get { return _coinContainerReference; }
         }
@@ -56,11 +62,41 @@ namespace Game.Levels
         {
             get { return _levelStartPosition; }
         }
+        [Export]
+        private LevelType _worldType;
+        protected LevelType WorldType
+        {
+            get { return _worldType; }
+        }
+        [Export]
+        private LevelType _subworldType;
+        protected LevelType SubworldType
+        {
+            get { return _subworldType; }
+        }
+        private bool _inSubworld = false;
+        protected bool InSubworld
+        {
+            get { return _inSubworld; }
+            set { _inSubworld = value; }
+        }
+        private ShaderMaterial _paletteMaterial;
+        protected ShaderMaterial PaletteMaterial
+        {
+            get { return _paletteMaterial; }
+        }
+        private ShaderMaterial _coinsMaterial;
+        protected ShaderMaterial CoinsMaterial
+        {
+            get { return _coinsMaterial; }
+        }
 
         public override void _Ready()
         {
             SetNodeReferences();
             SetNodeConnections();
+            _paletteMaterial = (ShaderMaterial)Material;
+            _coinsMaterial = (ShaderMaterial)_coinContainerReference.Material;
         }
 
         private void SetNodeReferences()
@@ -68,7 +104,7 @@ namespace Game.Levels
             _musicPlayerReference = GetNode<LevelMusicPlayer>(_musicPlayerPath);
             _enemyContainerReference = GetNode<Node>(_enemyContainerPath);
             _blockContainerReference = GetNode<Node>(_blockContainerPath);
-            _coinContainerReference = GetNode<Node>(_coinContainerPath);
+            _coinContainerReference = GetNode<Node2D>(_coinContainerPath);
             _checkpointContainerReference = GetNode<Node>(_checkpointContainerPath);
             _deathPitsReference = GetNode<Node>(_deathPitsPath);
             _startingPointReference = GetNode<Position2D>(_startingPointPath);
@@ -78,6 +114,7 @@ namespace Game.Levels
         private void SetNodeConnections()
         {
             SetCheckpointConnections();
+            LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
         }
 
         private void SetCheckpointConnections()
@@ -97,5 +134,6 @@ namespace Game.Levels
         public abstract void ResetPlayerSpawnPoint();
         public abstract void ResetLevel();
         public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition);
+        public abstract void OnPipeTransitionFinished();
     }
 }

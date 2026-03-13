@@ -4,6 +4,7 @@
 [ext_resource path="res://Game/Scripts/OneShotParticle.cs" type="Script" id=2]
 
 [node name="BrickParticle" type="CPUParticles2D"]
+use_parent_material = true
 emitting = false
 amount = 4
 lifetime = 4.0
