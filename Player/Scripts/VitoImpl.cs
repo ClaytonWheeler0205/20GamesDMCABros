@@ -477,6 +477,7 @@ namespace Game.Player
         {
             _shouldSeek = true;
             Fall();
+            ZIndex = 2;
             await ToSignal(GetTree().CreateTimer(0.6f), "timeout");
             DeathAnimationPlayerReference.Play("death");
         }
@@ -501,6 +502,7 @@ namespace Game.Player
             SetMovementDirection(0.0f);
             _velocity = Vector2.Zero;
             _shouldMove = true;
+            ZIndex = 0;
             MovementComponentReference.StopCrouching();
             MovementComponentReference.StopRunning();
             _physicalCollisions["small"].SetDeferred("disabled", false);

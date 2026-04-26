@@ -235,7 +235,6 @@ shader_param/palette = ExtResource( 15 )
 
 [node name="World 1-1" type="TileMap"]
 material = SubResource( 22 )
-z_index = 1
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 collision_mask = 2
@@ -252,6 +251,7 @@ _startingPointPath = NodePath("StartingPosition")
 _subworldType = 1
 
 [node name="Pipes" type="TileMap" parent="."]
+z_index = 1
 tile_set = SubResource( 13 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -881,6 +881,7 @@ flip_h = true
 
 [node name="Checkpoint" parent="Checkpoints" instance=ExtResource( 21 )]
 position = Vector2( 1328, 328 )
+CameraRespawnPoint = Vector2( 80, -96 )
 
 [node name="CastleExit" type="Sprite" parent="."]
 position = Vector2( 3272, 296 )

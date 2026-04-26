@@ -62,6 +62,17 @@ namespace Game.Levels
         {
             get { return _levelStartPosition; }
         }
+        private Vector2 _cameraPointPosition;
+        public Vector2 CameraPointPosition
+        {
+            get { return _cameraPointPosition; }
+            set { _cameraPointPosition = value; }
+        }
+        private Vector2 _cameraStartPosition;
+        protected Vector2 CameraStartPosition
+        {
+            get { return _cameraStartPosition; }
+        }
         [Export]
         private LevelType _worldType;
         protected LevelType WorldType
@@ -97,6 +108,9 @@ namespace Game.Levels
             SetNodeConnections();
             _paletteMaterial = (ShaderMaterial)Material;
             _coinsMaterial = (ShaderMaterial)_coinContainerReference.Material;
+            _levelStartPosition = _startingPointReference.GlobalPosition;
+            _cameraStartPosition = new Vector2(_startingPointReference.GlobalPosition.x + 70.0f, _startingPointReference.GlobalPosition.y - 96.0f);
+            _cameraPointPosition = _cameraStartPosition;
         }
 
         private void SetNodeReferences()
@@ -108,7 +122,6 @@ namespace Game.Levels
             _checkpointContainerReference = GetNode<Node>(_checkpointContainerPath);
             _deathPitsReference = GetNode<Node>(_deathPitsPath);
             _startingPointReference = GetNode<Position2D>(_startingPointPath);
-            _levelStartPosition = _startingPointReference.GlobalPosition;
         }
 
         private void SetNodeConnections()
@@ -133,7 +146,7 @@ namespace Game.Levels
         public abstract Vector2 GetPlayerSpawnPoint();
         public abstract void ResetPlayerSpawnPoint();
         public abstract void ResetLevel();
-        public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition);
+        public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition);
         public abstract void OnPipeTransitionFinished();
     }
 }

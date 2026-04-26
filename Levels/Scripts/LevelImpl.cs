@@ -77,6 +77,7 @@ namespace Game.Levels
         public override void ResetPlayerSpawnPoint()
         {
             StartingPointReference.GlobalPosition = LevelStartPosition;
+            CameraPointPosition = CameraStartPosition;
         }
 
         public override void ResetLevel()
@@ -97,9 +98,10 @@ namespace Game.Levels
             }
         }
 
-        public override void OnPlayerReachedCheckpoint(Vector2 checkpointPosition)
+        public override void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition)
         {
             StartingPointReference.GlobalPosition = checkpointPosition;
+            CameraPointPosition = cameraPosition;
         }
 
         public override void OnPipeTransitionFinished()
