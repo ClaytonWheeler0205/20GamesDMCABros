@@ -91,6 +91,12 @@ namespace Game.Levels
             get { return _inSubworld; }
             set { _inSubworld = value; }
         }
+        private bool _lastCheckpointInSubworld;
+        protected bool LastCheckpointInSubworld
+        {
+            get { return _lastCheckpointInSubworld; }
+            set { _lastCheckpointInSubworld = value; }
+        }
         private ShaderMaterial _paletteMaterial;
         protected ShaderMaterial PaletteMaterial
         {
@@ -146,7 +152,7 @@ namespace Game.Levels
         public abstract Vector2 GetPlayerSpawnPoint();
         public abstract void ResetPlayerSpawnPoint();
         public abstract void ResetLevel();
-        public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition);
+        public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition, bool lastCheckpointInSubworld);
         public abstract void OnPipeTransitionFinished();
     }
 }

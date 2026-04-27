@@ -83,6 +83,12 @@ namespace Game
         {
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
             _scoreboardReference.TimeUIReference.HideTimer();
+            if (_gameOver)
+            {
+                _gameOverScreen.Visible = true;
+                JinglePlayer.Instance.PlayJingle(JingleType.GameOver);
+                return;
+            }
             if (_timeUp)
             {
                 _timeUpScreen.Visible = true;
@@ -91,12 +97,6 @@ namespace Game
                 _currentLevel.ResetPlayerSpawnPoint();
                 _scoreboardReference.TimeUIReference.StartTimer();
                 _timeUp = false;
-            }
-            if (_gameOver)
-            {
-                _gameOverScreen.Visible = true;
-                JinglePlayer.Instance.PlayJingle(JingleType.GameOver);
-                return;
             }
             ResetGame();
         }

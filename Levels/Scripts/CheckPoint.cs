@@ -8,7 +8,7 @@ namespace Game.Levels
 	public class CheckPoint : Area2D
 	{
 		[Signal]
-		public delegate void PlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition);
+		public delegate void PlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition, bool checkpointInSubwolrd);
 
 		private LevelMarker _playerRespawnPointReference;
 		private Vector2 _playerRespawnPoint = Vector2.Zero;
@@ -40,6 +40,8 @@ namespace Game.Levels
 				}
 			}
 		}
+		[Export]
+		private bool _checkpointInSubworld;
 
 		public override void _Ready()
 		{
@@ -65,7 +67,7 @@ namespace Game.Levels
 			{
 				return;
 			}
-			EmitSignal("PlayerReachedCheckpoint", _playerRespawnPoint + GlobalPosition, _cameraRespawnPoint + GlobalPosition);
+			EmitSignal("PlayerReachedCheckpoint", _playerRespawnPoint + GlobalPosition, _cameraRespawnPoint + GlobalPosition, _checkpointInSubworld);
 		}
 	}
 }

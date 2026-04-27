@@ -78,12 +78,16 @@ namespace Game.Levels
         {
             StartingPointReference.GlobalPosition = LevelStartPosition;
             CameraPointPosition = CameraStartPosition;
+            LastCheckpointInSubworld = false;
         }
 
         public override void ResetLevel()
         {
             ResetEnemies();
             MusicPlayerReference.IsLowTime = false;
+            InSubworld = LastCheckpointInSubworld;
+            MusicPlayerReference.InSubworld = LastCheckpointInSubworld;
+            UpdateLevelPalette();
         }
 
         private void ResetEnemies()
@@ -98,10 +102,11 @@ namespace Game.Levels
             }
         }
 
-        public override void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition)
+        public override void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition, bool lastCheckpointInSubworld)
         {
             StartingPointReference.GlobalPosition = checkpointPosition;
             CameraPointPosition = cameraPosition;
+            LastCheckpointInSubworld = lastCheckpointInSubworld;
         }
 
         public override void OnPipeTransitionFinished()

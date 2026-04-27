@@ -35,9 +35,9 @@ namespace Game.Levels
             get { return _fastSubworldMusicPlayerReference; }
         }
         private bool _inSubworld = false;
-        protected bool InSubworld
+        public bool InSubworld
         {
-            get { return _inSubworld; }
+            protected get { return _inSubworld; }
             set { _inSubworld = value; }
         }
         private bool _isLowTime = false;
