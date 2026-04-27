@@ -93,6 +93,7 @@ namespace Game.Levels
         public override void OnPipeEntranceFinished()
         {
             StopMusic();
+            JinglePlayer.Instance.StreamPaused = true;
         }
 
         public override void OnPipeTransitionFinished()

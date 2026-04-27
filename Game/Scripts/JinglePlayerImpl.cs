@@ -22,6 +22,7 @@ namespace Game
 
         public override void PlayJingle(JingleType jingleToPlay)
         {
+            StreamPaused = false;
             if (_currentJingle == jingleToPlay)
             {
                 Play();
