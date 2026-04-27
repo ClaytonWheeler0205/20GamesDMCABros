@@ -1,5 +1,6 @@
 using Game.Buses;
 using Game.Debug;
+using Game.Levels;
 using Game.Projectiles;
 using Godot;
 using System.Collections.Generic;
@@ -127,6 +128,7 @@ namespace Game.Player
             if (IsOnFloor())
             {
                 JumpHitDataReference.HasHitBlock = false;
+                // TODO: Check if the player can enter a sideways pipe
             }
             if (!IsHittingEnemyAbove() && IsOnFloor())
             {
@@ -258,7 +260,7 @@ namespace Game.Player
                         CanThrow = false;
                     }
                 }
-                if (OverlappedPipe != null && OverlappedPipe.CanEnterPipe())
+                if (OverlappedPipe != null && OverlappedPipe is DownwardsPipe && OverlappedPipe.CanEnterPipe())
                 {
                     GoDownPipe();
                 }
