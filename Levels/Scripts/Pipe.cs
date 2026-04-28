@@ -1,5 +1,7 @@
 using Godot;
+using Godot.Collections;
 using Util.ExtensionMethods;
+using Game.Player;
 
 namespace Game.Levels
 {
@@ -44,6 +46,13 @@ namespace Game.Levels
         {
             get { return _pipeSoundPlayerReference; }
         }
+        [Export]
+        private NodePath[] _rayCastPaths;
+        private Array<RayCast2D> _pipeRayCasts = new Array<RayCast2D>();
+        protected Array<RayCast2D> PipeRayCasts
+        {
+            get { return _pipeRayCasts; }
+        }
 
         public override void _Ready()
         {
@@ -61,6 +70,7 @@ namespace Game.Levels
                 return;
             }
             SetNodeConnections();
+            SetPipeRayCasts();
         }
 
         private void SetNodeConnections()
@@ -68,10 +78,40 @@ namespace Game.Levels
             _pipeSoundPlayerReference = GetNode<AudioStreamPlayer>(_pipeSoundPlayerPath);
         }
 
+        private void SetPipeRayCasts()
+        {
+            foreach (NodePath path in _rayCastPaths)
+            {
+                _pipeRayCasts.Add(GetNode<RayCast2D>(path));
+            }
+        }
+
+        public void PlayPipeSound()
+        {
+            PipeSoundPlayerReference.Play();
+        }
+
+        public void OnBodyEntered(Node2D body)
+        {
+            if (body is Vito vito)
+            {
+                vito.OverlappedPipe = this;
+            }
+        }
+
+        public void OnBodyExited(Node2D body)
+        {
+            if (body is Vito vito)
+            {
+                vito.OverlappedPipe = null;
+            }
+        }
+
+        public void OnPipeSoundFinished()
+        {
+            LevelEventBus.Instance.EmitSignal("PipeEntranceFinished");
+        }
+
         public abstract bool CanEnterPipe();
-        public abstract void PlayPipeSound();
-        public abstract void OnBodyEntered(Node2D body);
-        public abstract void OnBodyExited(Node2D body);
-        public abstract void OnPipeSoundFinished();
     }
 }
