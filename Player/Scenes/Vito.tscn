@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=2]
+[gd_scene load_steps=70 format=2]
 
 [ext_resource path="res://Player/Art/VitoIdle.png" type="Texture" id=1]
 [ext_resource path="res://Player/Scripts/VitoImpl.cs" type="Script" id=2]
@@ -420,6 +420,86 @@ tracks/2/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 25 ) ]
 }
 
+[sub_resource type="Animation" id=38]
+resource_name = "pipe_left"
+length = 0.75
+tracks/0/type = "value"
+tracks/0/path = NodePath("SmallVisualComponent:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.75 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -25, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SuperVisualComponent/TopVisual:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.75 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -25, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("SuperVisualComponent/BottomVisual:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.75 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -25, 0 ) ]
+}
+
+[sub_resource type="Animation" id=37]
+resource_name = "pipe_right"
+length = 0.75
+tracks/0/type = "value"
+tracks/0/path = NodePath("SmallVisualComponent:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.75 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 25, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SuperVisualComponent/TopVisual:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.75 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 25, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("SuperVisualComponent/BottomVisual:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.75 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 25, 0 ) ]
+}
+
 [node name="Vito" type="KinematicBody2D" groups=["player"]]
 material = ExtResource( 26 )
 collision_layer = 2
@@ -651,6 +731,8 @@ anims/death = SubResource( 35 )
 
 [node name="PipeAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/pipe_down = SubResource( 36 )
+anims/pipe_left = SubResource( 38 )
+anims/pipe_right = SubResource( 37 )
 
 [connection signal="animation_finished" from="SmallVisualComponent" to="SmallVisualComponent" method="OnAnimationFinished"]
 [connection signal="animation_finished" from="SuperVisualComponent/BottomVisual" to="SuperVisualComponent" method="OnAnimationFinished"]

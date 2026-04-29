@@ -20,6 +20,7 @@ namespace Game.Player
         private AnimatedSprite _bottomPartToAnimateReference;
         private Vector2 _growSpriteOffset = new Vector2(0, -12);
         private bool _isGrowing = false;
+        private bool _enteringPipe = false;
 
         public override void _Ready()
         {
@@ -38,14 +39,15 @@ namespace Game.Player
             PowerupEventBus.Instance.Connect("MushroomCollected", this, nameof(OnMushroomCollected));
             PlayerEventBus.Instance.Connect("FireballThrown", this, nameof(OnFireballThrown));
             PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
-            PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
+            PlayerEventBus.Instance.Connect("DownPipeEntered", this, nameof(OnDownPipeEntered));
+            PlayerEventBus.Instance.Connect("SidePipeEntered", this, nameof(OnSidePipeEntered));
             LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
             LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
         }
 
         public override void _Process(float delta)
         {
-            if (!Visible || _isGrowing)
+            if (!Visible || _isGrowing || _enteringPipe)
             {
                 return;
             }
@@ -204,10 +206,21 @@ namespace Game.Player
             _bottomPartToAnimateReference.Stop();
         }
 
-        public void OnPipeEntered()
+        public void OnDownPipeEntered()
         {
             _topPartToAnimateReference.Play("crouch");
             _bottomPartToAnimateReference.Play("crouch");
+        }
+
+        public void OnSidePipeEntered()
+        {
+            if (!Visible)
+                return;
+            _topPartToAnimateReference.Play("walk");
+            _topPartToAnimateReference.SpeedScale = 1.0f;
+            _bottomPartToAnimateReference.Play("walk");
+            _bottomPartToAnimateReference.SpeedScale = 1.0f;
+            _enteringPipe = true;
         }
 
         public void OnPipeEntranceFinished()
@@ -216,6 +229,7 @@ namespace Game.Player
             _topPartToAnimateReference.FlipH = false;
             _bottomPartToAnimateReference.Offset = Vector2.Zero;
             _bottomPartToAnimateReference.FlipH = false;
+            _enteringPipe = false;
         }
 
         public void OnPipeTransitionFinished()

@@ -116,19 +116,19 @@ namespace Game.Player
 
         public override void _PhysicsProcess(float delta)
         {
-            if (_shouldMove)
-            {
-                ApplyVerticalForce(delta);
-                ApplyHorizontalForce();
-                AttemptCornerCorrection(3);
-                _velocity = MoveAndSlide(_velocity, Vector2.Up);
-                JumpHitDataReference.VerticalVelocity = _velocity.y;
-                JumpHitDataReference.YPosition = GlobalPosition.y;
-            }
+            if (!_shouldMove)
+                return;
+            ApplyVerticalForce(delta);
+            ApplyHorizontalForce();
+            AttemptCornerCorrection(3);
+            _velocity = MoveAndSlide(_velocity, Vector2.Up);
+            JumpHitDataReference.VerticalVelocity = _velocity.y;
+            JumpHitDataReference.YPosition = GlobalPosition.y;
             if (IsOnFloor())
             {
                 JumpHitDataReference.HasHitBlock = false;
-                // TODO: Check if the player can enter a sideways pipe
+                if (IsOnWall() && IsOnFloor() && MovementComponentReference.Direction != 0.0f && OverlappedPipe != null && OverlappedPipe is SidewaysPipe && OverlappedPipe.CanEnterPipe())
+                    EnterSidePipe();
             }
             if (!IsHittingEnemyAbove() && IsOnFloor())
             {
@@ -269,12 +269,28 @@ namespace Game.Player
 
         private void GoDownPipe()
         {
+            EnterPipe();
+            PlayerEventBus.Instance.EmitSignal("DownPipeEntered");
+            PipeAnimationPlayerReference.Play("pipe_down");
+        }
+
+        private void EnterSidePipe()
+        {
+            if (MovementComponentReference.Direction > 0.0f)
+                PipeAnimationPlayerReference.Play("pipe_right");
+            else if (MovementComponentReference.Direction < 0.0f)
+                PipeAnimationPlayerReference.Play("pipe_left");
+            PlayerEventBus.Instance.EmitSignal("SidePipeEntered");
+            EnterPipe();
+        }
+
+        private void EnterPipe()
+        {
             PlayerEventBus.Instance.EmitSignal("PipeEntered");
             OverlappedPipe.PlayPipeSound();
             _shouldMove = false;
             _velocity = Vector2.Zero;
             SetMovementDirection(0.0f);
-            PipeAnimationPlayerReference.Play("pipe_down");
         }
 
         public override void StopCrouching()
@@ -531,8 +547,8 @@ namespace Game.Player
 
         public override void OnPipeEntranceFinished()
         {
-            PlayerEventBus.Instance.EmitSignal("PlayerTeleported", OverlappedPipe.ToGlobal(OverlappedPipe.CameraExitPoint));
-            GlobalPosition = OverlappedPipe.ToGlobal(OverlappedPipe.PipeExitPoint);
+            PlayerEventBus.Instance.EmitSignal("PlayerTeleported", OverlappedPipe.CameraExitPoint);
+            GlobalPosition = OverlappedPipe.PipeExitPoint;
         }
 
         public override void OnPipeTransitionFinished()

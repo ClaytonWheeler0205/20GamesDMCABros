@@ -5,7 +5,6 @@ using Game.Player;
 
 namespace Game.Levels
 {
-
     public abstract class Pipe : Area2D
     {
 
@@ -58,14 +57,16 @@ namespace Game.Levels
         {
             if (Engine.EditorHint)
             {
+                Node markerContainer = new Node();
+                AddChild(markerContainer);
                 PackedScene levelMarkerScene = GD.Load<PackedScene>("res://Levels/Scenes/LevelMarker.tscn");
                 _pipeExitPointReference = levelMarkerScene.Instance<LevelMarker>();
                 _pipeExitPointReference.Position = _pipeExitPoint;
-                AddChild(_pipeExitPointReference);
+                markerContainer.AddChild(_pipeExitPointReference);
                 _pipeExitPointReference.MarkerIconReference.Texture = GD.Load<Texture>("res://Player/Art/VitoIdle.png");
                 _cameraExitPointReference = levelMarkerScene.Instance<LevelMarker>();
                 _cameraExitPointReference.Position = _cameraExitPoint;
-                AddChild(_cameraExitPointReference);
+                markerContainer.AddChild(_cameraExitPointReference);
                 _cameraExitPointReference.MarkerIconReference.Texture = GD.Load<Texture>("res://Levels/Art/CameraIcon.png");
                 return;
             }

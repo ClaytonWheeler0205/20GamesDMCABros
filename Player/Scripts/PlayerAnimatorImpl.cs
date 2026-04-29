@@ -12,6 +12,7 @@ namespace Game.Player
         private float _minimumSpeedForMovement = 10.0f;
         private Vector2 _shrinkSpriteOffset = new Vector2(0, -8);
         private bool _isShrinking = false;
+        private bool _enteringPipe = false;
 
         public override void _Ready()
         {
@@ -23,13 +24,14 @@ namespace Game.Player
             PlayerEventBus.Instance.Connect("DamageTaken", this, nameof(OnDamageTaken));
             PlayerEventBus.Instance.Connect("PlayerDied", this, nameof(OnPlayerDied));
             PlayerEventBus.Instance.Connect("PlayerReset", this, nameof(OnPlayerReset));
-            PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
+            PlayerEventBus.Instance.Connect("DownPipeEntered", this, nameof(OnDownPipeEntered));
+            PlayerEventBus.Instance.Connect("SidePipeEntered", this, nameof(OnSidePipeEntered));
             LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
         }
 
         public override void _Process(float delta)
         {
-            if (!Visible || _isShrinking)
+            if (!Visible || _isShrinking || _enteringPipe)
             {
                 return;
             }
@@ -134,18 +136,27 @@ namespace Game.Player
             FlipH = false;
         }
 
-        public void OnPipeEntered()
+        public void OnDownPipeEntered()
         {
-            if (Visible)
-            {
-                Play("idle");
-            }
+            if (!Visible)
+                return;
+            Play("idle");
+        }
+
+        public void OnSidePipeEntered()
+        {
+            if (!Visible)
+                return;
+            Play("walk");
+            SpeedScale = 1.0f;
+            _enteringPipe = true;
         }
 
         public void OnPipeEntranceFinished()
         {
             Offset = Vector2.Zero;
             FlipH = false;
+            _enteringPipe = false;
         }
     }
 }
