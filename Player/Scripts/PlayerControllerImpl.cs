@@ -53,7 +53,14 @@ namespace Game.Player
             IsControllerActive = false;
         }
 
-        public override void OnPipeTransitionFinished()
+        public override void OnPipeTransitionFinished(bool playExitAnimation)
+        {
+            if (playExitAnimation)
+                return;
+            IsControllerActive = true;
+        }
+
+        public override void OnPipeExitAnimationFinished()
         {
             IsControllerActive = true;
         }

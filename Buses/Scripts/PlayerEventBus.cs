@@ -22,6 +22,8 @@ namespace Game.Buses
         public delegate void SidePipeEntered();
         [Signal]
         public delegate void PlayerTeleported(Vector2 newCameraPosition);
+        [Signal]
+        public delegate void PipeExitAnimationFinished();
 
         private static PlayerEventBus _instance;
         public static PlayerEventBus Instance

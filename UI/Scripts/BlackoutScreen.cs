@@ -16,12 +16,12 @@ namespace Game.UI
             LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
         }
 
-        private async void OnPipeEntranceFinished()
+        private async void OnPipeEntranceFinished(bool playExitAnimation)
         {
             Visible = true;
             await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
             Visible = false;
-            LevelEventBus.Instance.EmitSignal("PipeTransitionFinished");
+            LevelEventBus.Instance.EmitSignal("PipeTransitionFinished", playExitAnimation);
         }
     }
 }

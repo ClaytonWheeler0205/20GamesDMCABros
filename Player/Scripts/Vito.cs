@@ -240,7 +240,7 @@ namespace Game.Player
         public abstract void Fall();
         public abstract void ResetPlayer();
         public abstract void OnInvincibilityFlashTimeTimeout();
-        public abstract void OnPipeEntranceFinished();
-        public abstract void OnPipeTransitionFinished();
+        public abstract void OnPipeEntranceFinished(bool playExitAnimation);
+        public abstract void OnPipeTransitionFinished(bool playExitAnimation);
     }
 }

@@ -109,7 +109,7 @@ namespace Game.Levels
             LastCheckpointInSubworld = lastCheckpointInSubworld;
         }
 
-        public override void OnPipeTransitionFinished()
+        public override void OnPipeTransitionFinished(bool playExitAnimation)
         {
             InSubworld = !InSubworld;
             UpdateLevelPalette();

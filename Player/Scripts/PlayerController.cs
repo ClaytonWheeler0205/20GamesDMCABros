@@ -34,9 +34,11 @@ namespace Game.Player
         {
             PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
             LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
+            PlayerEventBus.Instance.Connect("PipeExitAnimationFinished", this, nameof(OnPipeExitAnimationFinished));
         }
 
         public abstract void OnPipeEntered();
-        public abstract void OnPipeTransitionFinished();
+        public abstract void OnPipeTransitionFinished(bool playExitAnimation);
+        public abstract void OnPipeExitAnimationFinished();
     }
 }

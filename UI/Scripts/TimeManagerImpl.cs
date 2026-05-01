@@ -68,7 +68,14 @@ namespace Game.UI
             StopTimer();
         }
 
-        public override void OnPipeTransitionFinished()
+        public override void OnPipeTransitionFinished(bool playExitAnimation)
+        {
+            if (playExitAnimation)
+                return;
+            StartTimer();
+        }
+
+        public override void OnPipeExitAnimationFinished()
         {
             StartTimer();
         }

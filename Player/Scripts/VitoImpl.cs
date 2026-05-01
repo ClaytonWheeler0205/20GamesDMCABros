@@ -545,17 +545,33 @@ namespace Game.Player
             Die();
         }
 
-        public override void OnPipeEntranceFinished()
+        public override void OnPipeEntranceFinished(bool playExitAnimation)
         {
             PlayerEventBus.Instance.EmitSignal("PlayerTeleported", OverlappedPipe.CameraExitPoint);
             GlobalPosition = OverlappedPipe.PipeExitPoint;
         }
 
-        public override void OnPipeTransitionFinished()
+        public async override void OnPipeTransitionFinished(bool playExitAnimation)
         {
-            _shouldMove = true;
             StopCrouching();
             StopRunning();
+            if (playExitAnimation)
+            {
+                Hide();
+                PipeAnimationPlayerReference.Play("pipe_exit");
+                await ToSignal(GetTree().CreateTimer(0.05f), "timeout");
+                Show();
+                return;
+            }
+            _shouldMove = true;
+        }
+
+        public void OnExitAnimationFinished(string anim_name)
+        {
+            if (anim_name != "pipe_exit")
+                return;
+            _shouldMove = true;
+            PlayerEventBus.Instance.EmitSignal("PipeExitAnimationFinished");
         }
     }
 }

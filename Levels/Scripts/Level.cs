@@ -153,6 +153,6 @@ namespace Game.Levels
         public abstract void ResetPlayerSpawnPoint();
         public abstract void ResetLevel();
         public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition, bool lastCheckpointInSubworld);
-        public abstract void OnPipeTransitionFinished();
+        public abstract void OnPipeTransitionFinished(bool playExitAnimation);
     }
 }

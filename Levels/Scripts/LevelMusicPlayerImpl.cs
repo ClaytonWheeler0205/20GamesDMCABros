@@ -90,13 +90,13 @@ namespace Game.Levels
             StartLevelMusic();
         }
 
-        public override void OnPipeEntranceFinished()
+        public override void OnPipeEntranceFinished(bool playExitAnimation)
         {
             StopMusic();
             JinglePlayer.Instance.StreamPaused = true;
         }
 
-        public override void OnPipeTransitionFinished()
+        public override void OnPipeTransitionFinished(bool playExitAnimation)
         {
             SwitchMusic();
             InSubworld = !InSubworld;

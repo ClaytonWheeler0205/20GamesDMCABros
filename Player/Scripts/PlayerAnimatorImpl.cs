@@ -152,7 +152,7 @@ namespace Game.Player
             _enteringPipe = true;
         }
 
-        public void OnPipeEntranceFinished()
+        public void OnPipeEntranceFinished(bool playExitAnimation)
         {
             Offset = Vector2.Zero;
             FlipH = false;

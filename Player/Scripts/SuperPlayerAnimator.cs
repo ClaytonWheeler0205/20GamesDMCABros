@@ -223,7 +223,7 @@ namespace Game.Player
             _enteringPipe = true;
         }
 
-        public void OnPipeEntranceFinished()
+        public void OnPipeEntranceFinished(bool playExitAnimation)
         {
             _topPartToAnimateReference.Offset = Vector2.Zero;
             _topPartToAnimateReference.FlipH = false;
@@ -232,7 +232,7 @@ namespace Game.Player
             _enteringPipe = false;
         }
 
-        public void OnPipeTransitionFinished()
+        public void OnPipeTransitionFinished(bool playExitAnimation)
         {
             _topPartToAnimateReference.Play("idle");
             _bottomPartToAnimateReference.Play("idle");

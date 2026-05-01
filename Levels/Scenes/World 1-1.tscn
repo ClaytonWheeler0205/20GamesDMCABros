@@ -267,10 +267,11 @@ CameraExitPoint = Vector2( 896, 504 )
 position = Vector2( 1012, 576 )
 texture = ExtResource( 25 )
 
-[node name="DownwardsPipe2" parent="Pipes" instance=ExtResource( 31 )]
+[node name="SidewaysPipe" parent="Pipes" instance=ExtResource( 31 )]
 position = Vector2( 976, 576 )
 PipeExitPoint = Vector2( 2624, 296 )
 CameraExitPoint = Vector2( 2688, 233 )
+_playExitAnimation = true
 
 [node name="Blocks" type="Node2D" parent="."]
 use_parent_material = true

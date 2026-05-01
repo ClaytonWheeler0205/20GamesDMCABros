@@ -52,6 +52,8 @@ namespace Game.Levels
         {
             get { return _pipeRayCasts; }
         }
+        [Export]
+        private bool _playExitAnimation;
 
         public override void _Ready()
         {
@@ -110,7 +112,7 @@ namespace Game.Levels
 
         public void OnPipeSoundFinished()
         {
-            LevelEventBus.Instance.EmitSignal("PipeEntranceFinished");
+            LevelEventBus.Instance.EmitSignal("PipeEntranceFinished", _playExitAnimation);
         }
 
         public abstract bool CanEnterPipe();

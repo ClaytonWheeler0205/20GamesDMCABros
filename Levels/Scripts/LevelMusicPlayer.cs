@@ -86,7 +86,7 @@ namespace Game.Levels
         public abstract void OnStarEnding();
         public abstract void OnTimeLow();
         public abstract void OnHurryJingleFinished();
-        public abstract void OnPipeEntranceFinished();
-        public abstract void OnPipeTransitionFinished();
+        public abstract void OnPipeEntranceFinished(bool playExitAnimation);
+        public abstract void OnPipeTransitionFinished(bool playExitAnimation);
     }
 }
