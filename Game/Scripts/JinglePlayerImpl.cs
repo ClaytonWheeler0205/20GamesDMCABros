@@ -34,6 +34,8 @@ namespace Game
                     LoadStarmanTheme();
                     break;
                 case JingleType.CourseClear:
+                    LoadCourseClearJingle();
+                    Stream = _jingles[JingleType.CourseClear];
                     HurryJinglePlayed = false;
                     break;
                 case JingleType.CastleClear:
@@ -94,6 +96,13 @@ namespace Game
             _jingles[JingleType.StarmanFast] = GD.Load<AudioStream>("res://Items/Audio/starman_low_time.wav");
             _currentJingle = JingleType.StarmanFast;
             Stream = _jingles[JingleType.StarmanFast];
+        }
+
+        private void LoadCourseClearJingle()
+        {
+            if (_jingles[JingleType.CourseClear] != null)
+                return;
+            _jingles[JingleType.CourseClear] = GD.Load<AudioStream>("res://Game/Audio/course_clear.wav");
         }
 
         private void LoadDeathJingle()

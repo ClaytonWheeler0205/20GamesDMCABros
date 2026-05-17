@@ -16,13 +16,15 @@ namespace Game.Levels
         private Vector2 _vitoGoalPosition = new Vector2(-8.0f, 0.0f);
         private bool _shouldMoveDown;
         [Export]
+        private NodePath _vitoWalkPath;
+        private AnimationPlayer _vitoWalk;
+        [Export]
         private NodePath _flagSoundPath;
         private AudioStreamPlayer _flagSound;
 
         public override void _Ready()
         {
             SetNodeReferences();
-            StartEndingSequence(Size.Small);
         }
 
         private void SetNodeReferences()
@@ -30,6 +32,14 @@ namespace Game.Levels
             _flagAnimation = GetNode<AnimationPlayer>(_flagAnimationPath);
             _vitoVisual = GetNode<AnimatedSprite>(_vitoPath);
             _flagSound = GetNode<AudioStreamPlayer>(_flagSoundPath);
+            _vitoWalk = GetNode<AnimationPlayer>(_vitoWalkPath);
+        }
+
+        // This is a function for testing only!!!
+        public override void _UnhandledInput(InputEvent @event)
+        {
+            if (@event.IsActionPressed("jump"))
+                StartEndingSequence(Size.Big);
         }
 
         private void StartEndingSequence(Size playerSize)
@@ -58,22 +68,30 @@ namespace Game.Levels
                 _vitoVisual.Stop();
                 _vitoVisual.Frame = 0;
                 if (_flagAnimationFinished)
-                    FlipVito();
+                    PlayWalkSequence();
             }
 
         }
 
-        private void FlipVito()
+        private async void PlayWalkSequence()
         {
             _vitoVisual.FlipH = true;
             _vitoVisual.Position = new Vector2(-_vitoVisual.Position.x, _vitoVisual.Position.y);
+            await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+            _vitoVisual.FlipH = false;
+            if (_vitoVisual.Animation == "climb")
+                _vitoVisual.Play("walk");
+            else
+                _vitoVisual.Play("super_walk");
+            _vitoWalk.Play("end_walk");
+            JinglePlayer.Instance.PlayJingle(JingleType.CourseClear);
         }
 
         public void OnFlagAnimationFinished(string anim_name)
         {
             _flagAnimationFinished = true;
             if (!_shouldMoveDown)
-                FlipVito();
+                PlayWalkSequence();
         }
     }
 }

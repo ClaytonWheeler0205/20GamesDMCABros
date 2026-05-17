@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Levels/Art/FlagPole.png" type="Texture" id=1]
 [ext_resource path="res://Levels/Art/EndFlag.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Levels/Art/SuperVitoClimb.png" type="Texture" id=4]
 [ext_resource path="res://Levels/Scripts/EndFlag.cs" type="Script" id=5]
 [ext_resource path="res://Levels/Audio/flag_down.wav" type="AudioStream" id=6]
+[ext_resource path="res://Player/Art/VitoWalk.png" type="Texture" id=7]
+[ext_resource path="res://Player/Art/SuperVitoWalk.png" type="Texture" id=8]
 
 [sub_resource type="Animation" id=7]
 length = 0.001
@@ -56,6 +58,30 @@ region = Rect2( 0, 0, 16, 32 )
 atlas = ExtResource( 4 )
 region = Rect2( 16, 0, 16, 32 )
 
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 8 )
+region = Rect2( 16, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 8 )
+region = Rect2( 32, 0, 16, 32 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 7 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 7 )
+region = Rect2( 32, 0, 16, 16 )
+
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ SubResource( 2 ), SubResource( 3 ) ],
@@ -67,12 +93,68 @@ animations = [ {
 "loop": true,
 "name": "super_climb",
 "speed": 10.0
+}, {
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
+"loop": true,
+"name": "super_walk",
+"speed": 7.0
+}, {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "walk",
+"speed": 7.0
 } ]
+
+[sub_resource type="Animation" id=12]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 8, 0 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "end_walk"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 8, 0 ), Vector2( 16, 16 ), Vector2( 120, 16 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "hide"
+} ]
+}
 
 [node name="EndFlag" type="Node2D"]
 script = ExtResource( 5 )
 _flagAnimationPath = NodePath("Flag/AnimationPlayer")
 _vitoPath = NodePath("FakeVito")
+_vitoWalkPath = NodePath("FakeVito/AnimationPlayer")
 _flagSoundPath = NodePath("AudioStreamPlayer")
 
 [node name="Pole" type="Sprite" parent="."]
@@ -80,7 +162,7 @@ position = Vector2( 0, -80 )
 texture = ExtResource( 1 )
 
 [node name="Flag" type="Sprite" parent="."]
-position = Vector2( -8, -12 )
+position = Vector2( -8, -144 )
 texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Flag"]
@@ -95,10 +177,14 @@ shape = SubResource( 1 )
 
 [node name="FakeVito" type="AnimatedSprite" parent="."]
 visible = false
-position = Vector2( -8, -96 )
+position = Vector2( -8, -112 )
 frames = SubResource( 4 )
-animation = "climb"
+animation = "super_walk"
 offset = Vector2( 0, -8 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="FakeVito"]
+anims/RESET = SubResource( 12 )
+anims/end_walk = SubResource( 13 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
