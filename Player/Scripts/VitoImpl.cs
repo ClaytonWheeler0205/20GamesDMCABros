@@ -533,6 +533,14 @@ namespace Game.Player
             PauseMode = PauseModeEnum.Inherit;
         }
 
+        public override void FreezePlayer()
+        {
+            _shouldMove = false;
+            SetMovementDirection(0.0f);
+            _velocity = Vector2.Zero;
+            EmitSignal("PlayerFrozen");
+        }
+
         public override void OnInvincibilityFlashTimeTimeout()
         {
             InvincibilityFlashPlayerReference.Stop();

@@ -21,6 +21,7 @@ namespace Game.Player
                 if (value.IsValid())
                 {
                     _characterToControl = value;
+                    _characterToControl.Connect("PlayerFrozen", this, nameof(OnPlayerFrozen));
                 }
             }
         }
@@ -40,5 +41,6 @@ namespace Game.Player
         public abstract void OnPipeEntered();
         public abstract void OnPipeTransitionFinished(bool playExitAnimation);
         public abstract void OnPipeExitAnimationFinished();
+        public abstract void OnPlayerFrozen();
     }
 }

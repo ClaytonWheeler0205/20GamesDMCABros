@@ -9,6 +9,8 @@ public class LevelEventBus : Node
     public delegate void PipeEntranceFinished(bool playExitAnimation);
     [Signal]
     public delegate void PipeTransitionFinished(bool playExitAnimation);
+    [Signal]
+    public delegate void LevelFinished();
 
     private static LevelEventBus _instance;
     public static LevelEventBus Instance

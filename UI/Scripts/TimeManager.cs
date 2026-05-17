@@ -46,6 +46,7 @@ namespace Game.UI
             PlayerEventBus.Instance.Connect("PipeEntered", this, nameof(OnPipeEntered));
             LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
             PlayerEventBus.Instance.Connect("PipeExitAnimationFinished", this, nameof(OnPipeExitAnimationFinished));
+            LevelEventBus.Instance.Connect("LevelFinished", this, nameof(StopTimer));
         }
 
         private void SetNodeReferences()

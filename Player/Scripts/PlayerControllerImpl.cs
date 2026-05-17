@@ -64,5 +64,10 @@ namespace Game.Player
         {
             IsControllerActive = true;
         }
+
+        public override void OnPlayerFrozen()
+        {
+            IsControllerActive = false;
+        }
     }
 }

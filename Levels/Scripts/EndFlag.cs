@@ -35,13 +35,6 @@ namespace Game.Levels
             _vitoWalk = GetNode<AnimationPlayer>(_vitoWalkPath);
         }
 
-        // This is a function for testing only!!!
-        public override void _UnhandledInput(InputEvent @event)
-        {
-            if (@event.IsActionPressed("jump"))
-                StartEndingSequence(Size.Big);
-        }
-
         private void StartEndingSequence(Size playerSize)
         {
             _flagAnimation.Play("flag_down");
@@ -92,6 +85,25 @@ namespace Game.Levels
             _flagAnimationFinished = true;
             if (!_shouldMoveDown)
                 PlayWalkSequence();
+        }
+
+        public void OnBodyEntered(Node body)
+        {
+            if (body is Vito vito)
+            {
+                if (GlobalPlayerData.PlayerSize == Size.Small)
+                {
+                    _vitoVisual.GlobalPosition = new Vector2(_vitoVisual.GlobalPosition.x, vito.GlobalPosition.y + 8.0f);
+                }
+                else
+                {
+                    _vitoVisual.GlobalPosition = new Vector2(_vitoVisual.GlobalPosition.x, vito.GlobalPosition.y + 16.0f);
+                }
+                LevelEventBus.Instance.EmitSignal("LevelFinished");
+                vito.FreezePlayer();
+                vito.Hide();
+                StartEndingSequence(GlobalPlayerData.PlayerSize);
+            }
         }
     }
 }

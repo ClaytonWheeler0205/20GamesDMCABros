@@ -9,6 +9,9 @@ namespace Game.Player
 
     public abstract class Vito : KinematicBody2D
     {
+        [Signal]
+        public delegate void PlayerFrozen();
+
         [Export]
         private NodePath _jumpComponentPath;
         private JumpComponent _jumpComponentReference;
@@ -239,6 +242,7 @@ namespace Game.Player
         public abstract void TakeDamage();
         public abstract void Fall();
         public abstract void ResetPlayer();
+        public abstract void FreezePlayer();
         public abstract void OnInvincibilityFlashTimeTimeout();
         public abstract void OnPipeEntranceFinished(bool playExitAnimation);
         public abstract void OnPipeTransitionFinished(bool playExitAnimation);
