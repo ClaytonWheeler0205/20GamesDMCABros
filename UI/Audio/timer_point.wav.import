@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/timer_point.wav-b088d2137ee75f53f84e36f3221e1a5f.sample"
+
+[deps]
+
+source_file="res://UI/Audio/timer_point.wav"
+dest_files=[ "res://.import/timer_point.wav-b088d2137ee75f53f84e36f3221e1a5f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

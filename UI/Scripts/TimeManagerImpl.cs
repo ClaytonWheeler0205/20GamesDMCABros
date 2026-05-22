@@ -23,13 +23,26 @@ namespace Game.UI
 
         public override void ResetTimer()
         {
-            TimeLeft = 150;
+            TimeLeft = 400;
             UpdateTimerText();
         }
 
         public override void ShowTimer()
         {
             TimeTextReference.Visible = true;
+        }
+
+        public override void GiveTimePoint()
+        {
+            TimePointSoundReference.Play();
+            TimeLeft--;
+            UpdateTimerText();
+            PointsEventBus.Instance.EmitSignal("PointsGained", 50);
+            if (TimeLeft == 0)
+            {
+                TimePointAnimationReference.Stop();
+                LevelEventBus.Instance.EmitSignal("FinalScoreCountFinished");
+            }
         }
 
         public override void OnLevelTimerTimeout()
@@ -82,7 +95,7 @@ namespace Game.UI
 
         public override void OnLevelWalkFinished()
         {
-            GD.Print("Do time things");
+            TimePointAnimationReference.Play("timer_points");
         }
     }
 }

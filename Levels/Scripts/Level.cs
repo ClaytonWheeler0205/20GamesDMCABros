@@ -57,6 +57,13 @@ namespace Game.Levels
         {
             get { return _startingPointReference; }
         }
+        [Export]
+        private NodePath _flagAnimationPath;
+        private AnimationPlayer _flagAnimationReference;
+        protected AnimationPlayer FlagAnimationReference
+        {
+            get { return _flagAnimationReference; }
+        }
         private Vector2 _levelStartPosition;
         protected Vector2 LevelStartPosition
         {
@@ -128,12 +135,14 @@ namespace Game.Levels
             _checkpointContainerReference = GetNode<Node>(_checkpointContainerPath);
             _deathPitsReference = GetNode<Node>(_deathPitsPath);
             _startingPointReference = GetNode<Position2D>(_startingPointPath);
+            _flagAnimationReference = GetNode<AnimationPlayer>(_flagAnimationPath);
         }
 
         private void SetNodeConnections()
         {
             SetCheckpointConnections();
             LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
+            LevelEventBus.Instance.Connect("FinalScoreCountFinished", this, nameof(OnFinalScoreCountFinished));
         }
 
         private void SetCheckpointConnections()
@@ -154,5 +163,6 @@ namespace Game.Levels
         public abstract void ResetLevel();
         public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition, bool lastCheckpointInSubworld);
         public abstract void OnPipeTransitionFinished(bool playExitAnimation);
+        public abstract void OnFinalScoreCountFinished();
     }
 }

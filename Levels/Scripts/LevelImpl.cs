@@ -128,5 +128,10 @@ namespace Game.Levels
                 CoinsMaterial.SetShaderParam("palette_code", (int)WorldType);
             }
         }
+
+        public override void OnFinalScoreCountFinished()
+        {
+            FlagAnimationReference.Play("flag_up");
+        }
     }
 }

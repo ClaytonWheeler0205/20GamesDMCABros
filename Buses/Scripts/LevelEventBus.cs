@@ -15,6 +15,8 @@ public class LevelEventBus : Node
     public delegate void LevelWalkStarted();
     [Signal]
     public delegate void LevelWalkFinished();
+    [Signal]
+    public delegate void FinalScoreCountFinished();
 
     private static LevelEventBus _instance;
     public static LevelEventBus Instance

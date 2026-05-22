@@ -1,3 +1,4 @@
+using Game.Buses;
 using Game.Player;
 using Godot;
 
@@ -21,6 +22,9 @@ namespace Game.Levels
         [Export]
         private NodePath _flagSoundPath;
         private AudioStreamPlayer _flagSound;
+        [Export]
+        private NodePath _flagPointsPath;
+        private Sprite _flagPointsReference;
 
         public override void _Ready()
         {
@@ -33,6 +37,7 @@ namespace Game.Levels
             _vitoVisual = GetNode<AnimatedSprite>(_vitoPath);
             _flagSound = GetNode<AudioStreamPlayer>(_flagSoundPath);
             _vitoWalk = GetNode<AnimationPlayer>(_vitoWalkPath);
+            _flagPointsReference = GetNode<Sprite>(_flagPointsPath);
         }
 
         private void StartEndingSequence(Size playerSize)
@@ -40,6 +45,7 @@ namespace Game.Levels
             _flagAnimation.Play("flag_down");
             _flagSound.Play();
             _vitoVisual.Show();
+            _flagPointsReference.Show();
             _shouldMoveDown = true;
             if (playerSize == Size.Big)
             {
@@ -100,11 +106,40 @@ namespace Game.Levels
                 {
                     _vitoVisual.GlobalPosition = new Vector2(_vitoVisual.GlobalPosition.x, vito.GlobalPosition.y + 16.0f);
                 }
+                AwardFlagPoints();
                 LevelEventBus.Instance.EmitSignal("LevelFinished");
                 JinglePlayer.Instance.StopJingle();
                 vito.FreezePlayer();
                 vito.Hide();
                 StartEndingSequence(GlobalPlayerData.PlayerSize);
+            }
+        }
+
+        private void AwardFlagPoints()
+        {
+            if (_vitoVisual.Position.y >= -16.0f)
+            {
+                PointsEventBus.Instance.EmitSignal("PointsGained", 100);
+                _flagPointsReference.Texture = GD.Load<Texture>("res://UI/Art/100Points.png");
+            }
+            else if (_vitoVisual.Position.y >= -64.0f)
+            {
+                PointsEventBus.Instance.EmitSignal("PointsGained", 400);
+                _flagPointsReference.Texture = GD.Load<Texture>("res://UI/Art/400Points.png");
+            }
+            else if (_vitoVisual.Position.y >= -80.0f)
+            {
+                PointsEventBus.Instance.EmitSignal("PointsGained", 800);
+                _flagPointsReference.Texture = GD.Load<Texture>("res://UI/Art/800Points.png");
+            }
+            else if (_vitoVisual.Position.y >= -128.0f)
+            {
+                PointsEventBus.Instance.EmitSignal("PointsGained", 2000);
+                _flagPointsReference.Texture = GD.Load<Texture>("res://UI/Art/2000Points.png");
+            }
+            else
+            {
+                PointsEventBus.Instance.EmitSignal("PointsGained", 5000);
             }
         }
 

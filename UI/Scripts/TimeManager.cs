@@ -20,6 +20,20 @@ namespace Game.UI
         {
             get { return _timeTextReference; }
         }
+        [Export]
+        private NodePath _timePointSoundPath;
+        private AudioStreamPlayer _timePointSoundReference;
+        protected AudioStreamPlayer TimePointSoundReference
+        {
+            get { return _timePointSoundReference; }
+        }
+        [Export]
+        private NodePath _timePointAnimationPath;
+        private AnimationPlayer _timePointAnimationReference;
+        protected AnimationPlayer TimePointAnimationReference
+        {
+            get { return _timePointAnimationReference; }
+        }
         private int _timeLeft = 400;
         public int TimeLeft
         {
@@ -54,6 +68,8 @@ namespace Game.UI
         {
             _levelTimerReference = GetNode<Timer>(_levelTimerPath);
             _timeTextReference = GetNode<Label>(_timeTextPath);
+            _timePointSoundReference = GetNode<AudioStreamPlayer>(_timePointSoundPath);
+            _timePointAnimationReference = GetNode<AnimationPlayer>(_timePointAnimationPath);
         }
 
         public abstract void StartTimer();
@@ -64,6 +80,7 @@ namespace Game.UI
         public abstract void HideTimer();
 
         public abstract void ShowTimer();
+        public abstract void GiveTimePoint();
 
         public abstract void OnLevelTimerTimeout();
         public abstract void OnPipeEntered();
