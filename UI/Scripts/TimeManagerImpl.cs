@@ -79,5 +79,10 @@ namespace Game.UI
         {
             StartTimer();
         }
+
+        public override void OnLevelWalkFinished()
+        {
+            GD.Print("Do time things");
+        }
     }
 }

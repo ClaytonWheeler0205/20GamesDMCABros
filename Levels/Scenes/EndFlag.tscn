@@ -191,3 +191,4 @@ stream = ExtResource( 6 )
 
 [connection signal="animation_finished" from="Flag/AnimationPlayer" to="." method="OnFlagAnimationFinished"]
 [connection signal="body_entered" from="GoalArea" to="." method="OnBodyEntered"]
+[connection signal="animation_finished" from="FakeVito/AnimationPlayer" to="." method="OnWalkSequenceFinished"]

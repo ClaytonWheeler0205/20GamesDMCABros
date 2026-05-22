@@ -71,6 +71,7 @@ namespace Game.Levels
             _vitoVisual.FlipH = true;
             _vitoVisual.Position = new Vector2(-_vitoVisual.Position.x, _vitoVisual.Position.y);
             await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+            LevelEventBus.Instance.EmitSignal("LevelWalkStarted");
             _vitoVisual.FlipH = false;
             if (_vitoVisual.Animation == "climb")
                 _vitoVisual.Play("walk");
@@ -100,10 +101,16 @@ namespace Game.Levels
                     _vitoVisual.GlobalPosition = new Vector2(_vitoVisual.GlobalPosition.x, vito.GlobalPosition.y + 16.0f);
                 }
                 LevelEventBus.Instance.EmitSignal("LevelFinished");
+                JinglePlayer.Instance.StopJingle();
                 vito.FreezePlayer();
                 vito.Hide();
                 StartEndingSequence(GlobalPlayerData.PlayerSize);
             }
+        }
+
+        public void OnWalkSequenceFinished(string anim_name)
+        {
+            LevelEventBus.Instance.EmitSignal("LevelWalkFinished");
         }
     }
 }

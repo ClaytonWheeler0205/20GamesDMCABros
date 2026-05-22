@@ -12,7 +12,8 @@ namespace Game
         Ending,
         Death,
         GameOver,
-        Hurry
+        Hurry,
+        None
     }
 
     public abstract class JinglePlayer : AudioStreamPlayer

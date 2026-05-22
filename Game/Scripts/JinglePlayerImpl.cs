@@ -35,6 +35,7 @@ namespace Game
                     break;
                 case JingleType.CourseClear:
                     LoadCourseClearJingle();
+                    _currentJingle = JingleType.CourseClear;
                     Stream = _jingles[JingleType.CourseClear];
                     HurryJinglePlayed = false;
                     break;
@@ -134,6 +135,7 @@ namespace Game
 
         public override void StopJingle()
         {
+            _currentJingle = JingleType.None;
             Stop();
         }
 

@@ -47,6 +47,7 @@ namespace Game.UI
             LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
             PlayerEventBus.Instance.Connect("PipeExitAnimationFinished", this, nameof(OnPipeExitAnimationFinished));
             LevelEventBus.Instance.Connect("LevelFinished", this, nameof(StopTimer));
+            LevelEventBus.Instance.Connect("LevelWalkFinished", this, nameof(OnLevelWalkFinished));
         }
 
         private void SetNodeReferences()
@@ -68,5 +69,6 @@ namespace Game.UI
         public abstract void OnPipeEntered();
         public abstract void OnPipeTransitionFinished(bool playExitAnimation);
         public abstract void OnPipeExitAnimationFinished();
+        public abstract void OnLevelWalkFinished();
     }
 }

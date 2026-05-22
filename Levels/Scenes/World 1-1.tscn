@@ -933,7 +933,7 @@ position = Vector2( 58, 328 )
 position = Vector2( 968, 584 )
 
 [node name="CameraBlocker2" parent="CameraBlockers" instance=ExtResource( 28 )]
-position = Vector2( 3384, 328 )
+position = Vector2( 3424, 328 )
 
 [node name="EndFlag" parent="." instance=ExtResource( 32 )]
 position = Vector2( 3176, 320 )

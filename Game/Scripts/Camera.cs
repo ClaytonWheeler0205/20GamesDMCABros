@@ -1,4 +1,5 @@
 using Game.Buses;
+using Game.Levels;
 using Game.Player;
 using Godot;
 using Util.ExtensionMethods;
@@ -12,6 +13,7 @@ namespace Game
         private Vector2 _screenSize;
         private float _scrollSpeed;
         private bool _shouldScroll = false;
+        private bool _shouldLevelScroll = false;
         private bool _cameraLocked = false;
         private Vito _followTarget;
 
@@ -26,6 +28,7 @@ namespace Game
         private void SetNodeConnections()
         {
             PlayerEventBus.Instance.Connect("PlayerTeleported", this, nameof(OnPlayerTeleported));
+            LevelEventBus.Instance.Connect("LevelWalkStarted", this, nameof(OnLevelWalkStarted));
         }
 
         public void ApplyCameraPosition()
@@ -37,6 +40,13 @@ namespace Game
 
         public override void _PhysicsProcess(float delta)
         {
+            if (_shouldLevelScroll && !_cameraLocked)
+            {
+                Vector2 levelTargetPos = new Vector2(Position.x + 16.0f, Position.y);
+                Position = Position.MoveToward(levelTargetPos, delta * 90.0f);
+                ApplyCameraPosition();
+                return;
+            }
             if (!_shouldScroll || _cameraLocked)
             {
                 return;
@@ -111,6 +121,11 @@ namespace Game
                 return;
             }
             _cameraLocked = false;
+        }
+
+        public void OnLevelWalkStarted()
+        {
+            _shouldLevelScroll = true;
         }
     }
 }
