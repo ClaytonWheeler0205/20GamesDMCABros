@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 namespace Game.Levels
@@ -12,6 +13,9 @@ namespace Game.Levels
 
     public abstract class Level : Node2D
     {
+        [Signal]
+        public delegate void FireworksFinished();
+
         [Export]
         private NodePath _musicPlayerPath;
         private LevelMusicPlayer _musicPlayerReference;
@@ -64,6 +68,28 @@ namespace Game.Levels
         {
             get { return _flagAnimationReference; }
         }
+        [Export]
+        private NodePath _fireworkPath;
+        private AnimatedSprite _fireworkReference;
+        protected AnimatedSprite FireworkReference
+        {
+            get { return _fireworkReference; }
+        }
+        [Export]
+        private NodePath _fireworkExplosionPath;
+        private AudioStreamPlayer _fireworkExplosionReference;
+        protected AudioStreamPlayer FireworkExplosionReference
+        {
+            get { return _fireworkExplosionReference; }
+        }
+        [Export]
+        private NodePath _fireworkLocationsPath;
+        private Node _fireworkLocationsReference;
+        private List<Node2D> _fireworkLocations;
+        protected List<Node2D> FireworkLocations
+        {
+            get { return _fireworkLocations; }
+        }
         private Vector2 _levelStartPosition;
         protected Vector2 LevelStartPosition
         {
@@ -114,11 +140,30 @@ namespace Game.Levels
         {
             get { return _coinsMaterial; }
         }
+        private int _secondOnesPlace;
+        protected int SecondOnesPlace
+        {
+            get { return _secondOnesPlace; }
+            set { _secondOnesPlace = value; }
+        }
+        private int _fireworkLocationIndex = -1;
+        protected int FireworkLocationIndex
+        {
+            get { return _fireworkLocationIndex; }
+            set { _fireworkLocationIndex = value; }
+        }
+        private int _lastFireworkLocationIndex = -1;
+        protected int LastFireWorkLocationIndex
+        {
+            get { return _lastFireworkLocationIndex; }
+            set { _lastFireworkLocationIndex = value; }
+        }
 
         public override void _Ready()
         {
             SetNodeReferences();
             SetNodeConnections();
+            SetupFireworkLocations();
             _paletteMaterial = (ShaderMaterial)Material;
             _coinsMaterial = (ShaderMaterial)_coinContainerReference.Material;
             _levelStartPosition = _startingPointReference.GlobalPosition;
@@ -136,6 +181,9 @@ namespace Game.Levels
             _deathPitsReference = GetNode<Node>(_deathPitsPath);
             _startingPointReference = GetNode<Position2D>(_startingPointPath);
             _flagAnimationReference = GetNode<AnimationPlayer>(_flagAnimationPath);
+            _fireworkReference = GetNode<AnimatedSprite>(_fireworkPath);
+            _fireworkExplosionReference = GetNode<AudioStreamPlayer>(_fireworkExplosionPath);
+            _fireworkLocationsReference = GetNode(_fireworkLocationsPath);
         }
 
         private void SetNodeConnections()
@@ -156,6 +204,18 @@ namespace Game.Levels
             }
         }
 
+        private void SetupFireworkLocations()
+        {
+            _fireworkLocations = new List<Node2D>();
+            for (int i = 0; i < _fireworkLocationsReference.GetChildCount(); i++)
+            {
+                if (_fireworkLocationsReference.GetChild(i) is Node2D node2D)
+                {
+                    _fireworkLocations.Add(node2D);
+                }
+            }
+        }
+
         // TODO: Remove the bool parameter. Split these into two different method calls
         public abstract void Start(bool firstLoad);
         public abstract Vector2 GetPlayerSpawnPoint();
@@ -163,6 +223,8 @@ namespace Game.Levels
         public abstract void ResetLevel();
         public abstract void OnPlayerReachedCheckpoint(Vector2 checkpointPosition, Vector2 cameraPosition, bool lastCheckpointInSubworld);
         public abstract void OnPipeTransitionFinished(bool playExitAnimation);
-        public abstract void OnFinalScoreCountFinished();
+        public abstract void OnFinalScoreCountFinished(int secondForFireworks);
+        public abstract void OnFlagAnimationFinished(string anim_name);
+        public abstract void OnFireworkAnimationFinished();
     }
 }

@@ -1,7 +1,9 @@
 using Game.Blocks;
+using Game.Buses;
 using Game.Enemies;
 using Game.Items;
 using Godot;
+using Util;
 using Util.ExtensionMethods;
 
 namespace Game.Levels
@@ -129,9 +131,48 @@ namespace Game.Levels
             }
         }
 
-        public override void OnFinalScoreCountFinished()
+        public override void OnFinalScoreCountFinished(int secondForFireworks)
         {
             FlagAnimationReference.Play("flag_up");
+            SecondOnesPlace = secondForFireworks;
+        }
+
+        public override void OnFlagAnimationFinished(string anim_name)
+        {
+            if (anim_name != "flag_up")
+                return;
+            if (SecondOnesPlace != 1 && SecondOnesPlace != 3 && SecondOnesPlace != 6)
+            {
+                EmitSignal("FireworksFinished");
+                return;
+            }
+            PlayFirework();
+        }
+
+        private void PlayFirework()
+        {
+            if (SecondOnesPlace == 0)
+            {
+                EmitSignal("FireworksFinished");
+                return;
+            }
+            while (FireworkLocationIndex == LastFireWorkLocationIndex)
+                FireworkLocationIndex = GDRandom.RandiRange(0, FireworkLocations.Count - 1);
+            FireworkReference.GlobalPosition = FireworkLocations[FireworkLocationIndex].GlobalPosition;
+            LastFireWorkLocationIndex = FireworkLocationIndex;
+            FireworkReference.Frame = 0;
+            FireworkReference.Show();
+            FireworkReference.Play("firework");
+            FireworkExplosionReference.Play();
+            PointsEventBus.Instance.EmitSignal("PointsGained", 500);
+            SecondOnesPlace--;
+        }
+
+        public async override void OnFireworkAnimationFinished()
+        {
+            FireworkReference.Hide();
+            await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+            PlayFirework();
         }
     }
 }

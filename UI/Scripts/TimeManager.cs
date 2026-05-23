@@ -46,6 +46,12 @@ namespace Game.UI
                 }
             }
         }
+        private int _timeOnesPlace;
+        protected int TimeOnesPlace
+        {
+            get { return _timeOnesPlace; }
+            set { _timeOnesPlace = value; }
+        }
         protected const float SECOND_DUIRATION = 0.4f;
 
         public override void _Ready()

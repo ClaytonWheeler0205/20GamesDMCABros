@@ -41,7 +41,7 @@ namespace Game.UI
             if (TimeLeft == 0)
             {
                 TimePointAnimationReference.Stop();
-                LevelEventBus.Instance.EmitSignal("FinalScoreCountFinished");
+                LevelEventBus.Instance.EmitSignal("FinalScoreCountFinished", TimeOnesPlace);
             }
         }
 
@@ -95,6 +95,7 @@ namespace Game.UI
 
         public override void OnLevelWalkFinished()
         {
+            TimeOnesPlace = TimeLeft % 10;
             TimePointAnimationReference.Play("timer_points");
         }
     }

@@ -16,7 +16,7 @@ public class LevelEventBus : Node
     [Signal]
     public delegate void LevelWalkFinished();
     [Signal]
-    public delegate void FinalScoreCountFinished();
+    public delegate void FinalScoreCountFinished(int secondForFireworks);
 
     private static LevelEventBus _instance;
     public static LevelEventBus Instance
