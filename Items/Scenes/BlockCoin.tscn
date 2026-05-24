@@ -87,7 +87,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -48 ) ]
 }
 
-[node name="BlockCoin" type="Node2D"]
+[node name="BlockCoin" type="Node2D" groups=["block_item"]]
 script = ExtResource( 3 )
 _coinSpritePath = NodePath("CoinSprite")
 _pointsSpritePath = NodePath("PointSprite")

@@ -107,6 +107,7 @@ namespace Game
             _camera.ApplyCameraPosition();
             _player.GlobalPosition = _currentLevel.GetPlayerSpawnPoint();
             _currentLevel.ResetLevel();
+            GetTree().CallGroup("block_item", "queue_free");
             _levelStartScreen.Visible = true;
             StartGame();
         }
