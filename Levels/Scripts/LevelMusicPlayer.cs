@@ -52,6 +52,12 @@ namespace Game.Levels
             get { return _shouldStarmanThemePlay; }
             set { _shouldStarmanThemePlay = value; }
         }
+        private bool _levelFinished;
+        protected bool LevelFinished
+        {
+            get { return _levelFinished; }
+            set { _levelFinished = value; }
+        }
 
         public override void _Ready()
         {
@@ -76,7 +82,7 @@ namespace Game.Levels
             LevelEventBus.Instance.Connect("HurryJingleFinished", this, nameof(OnHurryJingleFinished));
             LevelEventBus.Instance.Connect("PipeEntranceFinished", this, nameof(OnPipeEntranceFinished));
             LevelEventBus.Instance.Connect("PipeTransitionFinished", this, nameof(OnPipeTransitionFinished));
-            LevelEventBus.Instance.Connect("LevelFinished", this, nameof(StopMusic));
+            LevelEventBus.Instance.Connect("LevelFinished", this, nameof(OnLevelFinished));
         }
 
         public abstract void StartLevelMusic();
@@ -89,5 +95,6 @@ namespace Game.Levels
         public abstract void OnHurryJingleFinished();
         public abstract void OnPipeEntranceFinished(bool playExitAnimation);
         public abstract void OnPipeTransitionFinished(bool playExitAnimation);
+        public abstract void OnLevelFinished();
     }
 }

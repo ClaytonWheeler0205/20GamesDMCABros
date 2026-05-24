@@ -44,5 +44,6 @@ namespace Game
         public abstract void PlayJingle(JingleType jingleToPlay);
         public abstract void StopJingle();
         public abstract void OnJingleFinished();
+        public abstract void OnStarFinished();
     }
 }

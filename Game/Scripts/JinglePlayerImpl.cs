@@ -150,5 +150,11 @@ namespace Game
                 LevelEventBus.Instance.EmitSignal("HurryJingleFinished");
             }
         }
+
+        public override void OnStarFinished()
+        {
+            if (_currentJingle == JingleType.Starman || _currentJingle == JingleType.StarmanFast)
+                Stop();
+        }
     }
 }

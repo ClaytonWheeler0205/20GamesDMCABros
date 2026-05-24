@@ -109,6 +109,7 @@ namespace Game.Levels
                 AwardFlagPoints();
                 LevelEventBus.Instance.EmitSignal("LevelFinished");
                 JinglePlayer.Instance.StopJingle();
+                _vitoVisual.Material = vito.Material;
                 vito.FreezePlayer();
                 vito.Hide();
                 StartEndingSequence(GlobalPlayerData.PlayerSize);

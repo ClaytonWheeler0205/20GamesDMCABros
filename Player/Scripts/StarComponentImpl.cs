@@ -31,7 +31,6 @@ namespace Game.Player
         public override void OnMusicTimeTimeout()
         {
             PowerupEventBus.Instance.EmitSignal("StarEnding");
-            JinglePlayer.Instance.StopJingle();
         }
 
         public override void OnFastFlashTimeTimeout()

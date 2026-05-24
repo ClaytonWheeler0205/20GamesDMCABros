@@ -5,6 +5,8 @@ namespace Game.Levels
     {
         public override void StartLevelMusic()
         {
+            if (LevelFinished)
+                return;
             if (InSubworld)
             {
                 PlaySubworldMusic();
@@ -100,6 +102,14 @@ namespace Game.Levels
         {
             SwitchMusic();
             InSubworld = !InSubworld;
+        }
+
+        public override void OnLevelFinished()
+        {
+            StopMusic();
+            ShouldStarmanThemePlay = false;
+            IsLowTime = false;
+            LevelFinished = true;
         }
     }
 }
