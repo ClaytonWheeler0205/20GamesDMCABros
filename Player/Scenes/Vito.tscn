@@ -614,9 +614,9 @@ script = ExtResource( 3 )
 _jumpPower = -410.0
 _bouncePower = -225.0
 _superJumpSpeedRequirement = 140.0
+_jumpSoundPath = NodePath("AudioStreamPlayer")
 _jumpBufferPath = NodePath("JumpBufferTimer")
 _coyoteTimerPath = NodePath("CoyoteTimer")
-_jumpSoundPath = NodePath("AudioStreamPlayer")
 
 [node name="JumpBufferTimer" type="Timer" parent="JumpComponent"]
 process_mode = 0

@@ -29,5 +29,6 @@ namespace Game.Projectiles
         }
 
         public abstract Fireball GetFireball();
+        public abstract void DisableFireballs();
     }
 }

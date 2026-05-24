@@ -58,9 +58,22 @@ namespace Game.Player
         {
             get { return _terminalVelocity; }
         }
+        [Export]
+        private NodePath _jumpSoundPath;
+        private AudioStreamPlayer _jumpSoundReference;
+        protected AudioStreamPlayer JumpSoundReference
+        {
+            get { return _jumpSoundReference; }
+        }
+
+        public override void _Ready()
+        {
+            _jumpSoundReference = GetNode<AudioStreamPlayer>(_jumpSoundPath);
+        }
 
         public abstract float GetGravity(float yDirection);
         public abstract void AttemptJump();
         public abstract void ReleaseJump();
+        public abstract void StopJumpSound();
     }
 }

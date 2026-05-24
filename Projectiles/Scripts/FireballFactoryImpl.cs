@@ -16,5 +16,13 @@ namespace Game.Projectiles
             }
             return fireballToGive;
         }
+
+        public override void DisableFireballs()
+        {
+            foreach (Fireball fireball in Fireballs)
+            {
+                fireball.DisableProjectile();
+            }
+        }
     }
 }

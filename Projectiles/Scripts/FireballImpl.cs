@@ -22,6 +22,12 @@ namespace Game.Projectiles
             Enabled = true;
         }
 
+        public override void DisableProjectile()
+        {
+            FireballSoundReference.Stop();
+            Disable();
+        }
+
         public void OnAnimationFinished()
         {
             if (VisualReference.Animation != "explosion")
@@ -38,7 +44,15 @@ namespace Game.Projectiles
 
         private void Disable()
         {
+            MovementReference.StopVelocity();
+            MovementReference.CanMove = false;
+            TopWallDetectorReference.Enabled = false;
+            BottomWallDetectorReference.Enabled = false;
+            HitboxReference.SetDeferred("disabled", true);
+            PhysicalHitboxReference.SetDeferred("disabled", true);
             VisualReference.Visible = false;
+            VisualReference.Stop();
+            VisualReference.Frame = 0;
             Enabled = false;
         }
     }

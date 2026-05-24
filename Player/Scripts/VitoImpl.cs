@@ -314,7 +314,6 @@ namespace Game.Player
 
         public override void ShootFireball()
         {
-            //TODO: fix the bug with the fireball factory where its position can be above or below the usual position
             if (!HasFlower || !CanThrow)
             {
                 return;
@@ -530,6 +529,8 @@ namespace Game.Player
                 _shouldSeek = false;
             }
             PlayerEventBus.Instance.EmitSignal("PlayerReset");
+            FireballPoolReference.DisableFireballs();
+            JumpComponentReference.StopJumpSound();
             PauseMode = PauseModeEnum.Inherit;
         }
 

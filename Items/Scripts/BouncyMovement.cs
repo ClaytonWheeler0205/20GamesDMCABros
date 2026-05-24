@@ -74,5 +74,10 @@ namespace Game.Items
         {
             _velocity = (int)_movementDirection * _speed * Vector2.Right;
         }
+
+        public void StopVelocity()
+        {
+            _velocity = Vector2.Zero;
+        }
     }
 }

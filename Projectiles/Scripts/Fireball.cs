@@ -154,5 +154,6 @@ namespace Game.Projectiles
         }
 
         public abstract void Enable();
+        public abstract void DisableProjectile();
     }
 }
