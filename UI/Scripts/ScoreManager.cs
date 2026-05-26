@@ -10,11 +10,15 @@ namespace Game.UI
         private NodePath _scoreTextPath;
         private Label _scoreTextReference;
         private int _points;
+        private int _highScore;
+
+        private ConfigFile _config = new ConfigFile();
 
         public override void _Ready()
         {
             SetNodeReferences();
             SetNodeConnections();
+            LoadHighScore();
         }
 
         private void SetNodeReferences()
@@ -27,10 +31,25 @@ namespace Game.UI
             PointsEventBus.Instance.Connect("PointsGained", this, nameof(OnPointsGained));
         }
 
+        private void LoadHighScore()
+        {
+            Error err = _config.Load("user://dmcabros_highscore.cfg");
+
+            if (err != Error.Ok)
+                return;
+
+            _highScore = (int)_config.GetValue("DCMABrosPlayerScore", "dmcabros_high_score");
+        }
+
         public void OnPointsGained(int pointValue)
         {
             _points += pointValue;
             UpdateScoreText();
+            if (_points > _highScore)
+            {
+                _highScore = _points;
+                SaveHighScore();
+            }
         }
         private void UpdateScoreText()
         {
@@ -54,6 +73,12 @@ namespace Game.UI
             {
                 _scoreTextReference.Text = $"{_points}";
             }
+        }
+
+        private void SaveHighScore()
+        {
+            _config.SetValue("DCMABrosPlayerScore", "dmcabros_high_score", _highScore);
+            _config.Save("user://dmcabros_highscore.cfg");
         }
     }
 }

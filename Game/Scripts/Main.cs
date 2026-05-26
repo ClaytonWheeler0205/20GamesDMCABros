@@ -87,6 +87,8 @@ namespace Game
             {
                 _gameOverScreen.Visible = true;
                 JinglePlayer.Instance.PlayJingle(JingleType.GameOver);
+                await ToSignal(GetTree().CreateTimer(6.0f), "timeout");
+                GetTree().ChangeScene("res://Game/Scenes/TitleScreen.tscn");
                 return;
             }
             if (_timeUp)
@@ -122,6 +124,12 @@ namespace Game
         public void OnTimeUp()
         {
             _timeUp = true;
+        }
+
+        public async void OnFireworksFinished()
+        {
+            await ToSignal(GetTree().CreateTimer(2.0f), "timeout");
+            GetTree().ChangeScene("res://Game/Scenes/TitleScreen.tscn");
         }
     }
 }

@@ -50,3 +50,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
 script = ExtResource( 10 )
+
+[connection signal="FireworksFinished" from="World 1-1" to="." method="OnFireworksFinished"]
