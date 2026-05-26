@@ -19,7 +19,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -16 ) ]
 }
 
-[node name="PointText" type="Node2D"]
+[node name="PointText" type="Node2D" groups=["point_text"]]
 z_index = 1
 z_as_relative = false
 script = ExtResource( 1 )

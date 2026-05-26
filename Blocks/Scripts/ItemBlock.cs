@@ -122,6 +122,9 @@ namespace Game.Blocks
             {
                 BlockVisualReference.Visible = true;
             }
+            if (_coinsTimer.IsValid())
+                _coinsTimer.Stop();
+            _timerStopped = false;
         }
 
         public void OnBlockHitByPlayer()
