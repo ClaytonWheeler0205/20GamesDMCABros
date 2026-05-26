@@ -27,6 +27,7 @@ namespace Game.Player
             SetupCollisionDictionaries();
             SetupNodeConnections();
             SetupEnemyDetection();
+            PaletteComponentReference.SetPlayerColor(0);
             _debug = GetNode<VitoDebug>(_debugPath);
         }
 

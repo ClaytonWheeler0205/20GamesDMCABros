@@ -1,3 +1,4 @@
+using Game.Player;
 using Godot;
 
 namespace Game.UI
@@ -16,6 +17,7 @@ namespace Game.UI
             _highScoreTextReference = GetNode<Label>(_highScoreTextPath);
             DisplayHighScore();
             GetTree().Paused = false;
+            GlobalPlayerData.PlayerSize = Size.Small;
         }
 
         private void DisplayHighScore()
