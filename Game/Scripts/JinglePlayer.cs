@@ -1,3 +1,4 @@
+using Game.Buses;
 using Godot;
 using Util.ExtensionMethods;
 
@@ -39,11 +40,12 @@ namespace Game
                 return;
             }
             _instance = this;
+            PowerupEventBus.Instance.Connect("StarEnding", this, nameof(OnStarEnding));
         }
 
         public abstract void PlayJingle(JingleType jingleToPlay);
         public abstract void StopJingle();
         public abstract void OnJingleFinished();
-        public abstract void OnStarFinished();
+        public abstract void OnStarEnding();
     }
 }

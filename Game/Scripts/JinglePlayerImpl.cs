@@ -151,7 +151,7 @@ namespace Game
             }
         }
 
-        public override void OnStarFinished()
+        public override void OnStarEnding()
         {
             if (_currentJingle == JingleType.Starman || _currentJingle == JingleType.StarmanFast)
                 Stop();
