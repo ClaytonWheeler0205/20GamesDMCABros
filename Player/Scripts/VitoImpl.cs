@@ -540,6 +540,9 @@ namespace Game.Player
             _shouldMove = false;
             SetMovementDirection(0.0f);
             _velocity = Vector2.Zero;
+            InvincibilityFlashPlayerReference.Stop();
+            IncinvibilityFlashTimerReference.Stop();
+            Visible = false;
             EmitSignal("PlayerFrozen");
         }
 
